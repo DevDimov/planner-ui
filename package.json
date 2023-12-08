@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.8.8",
+    "@auth0/auth0-react": "^2.2.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,8 +13,12 @@
     "@types/node": "^16.18.61",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -20,12 +27,15 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:storybook/recommended"
     ]
   },
   "browserslist": {
@@ -41,10 +51,18 @@
     ]
   },
   "devDependencies": {
-    "@apollo/client": "^3.8.7",
-    "@auth0/auth0-react": "^2.2.3",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "dotenv": "^16.3.1",
-    "graphql": "^16.8.1"
+    "@storybook/addon-essentials": "^7.6.4",
+    "@storybook/addon-interactions": "^7.6.4",
+    "@storybook/addon-links": "^7.6.4",
+    "@storybook/addon-onboarding": "^1.0.9",
+    "@storybook/blocks": "^7.6.4",
+    "@storybook/preset-create-react-app": "^7.6.4",
+    "@storybook/react": "^7.6.4",
+    "@storybook/react-webpack5": "^7.6.4",
+    "@storybook/test": "^7.6.4",
+    "eslint-plugin-storybook": "^0.6.15",
+    "prop-types": "^15.8.1",
+    "storybook": "^7.6.4",
+    "webpack": "^5.89.0"
   }
 }

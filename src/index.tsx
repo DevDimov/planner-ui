@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -12,6 +13,9 @@ import {
   createHttpLink,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import Root from './routes/root'
+import ErrorRoute from './routes/errorPage'
+import CalendarRoute from './routes/calendar'
 
 const AuthorizedApolloProvider = ({ children }: any) => {
   const { isAuthenticated, getIdTokenClaims } = useAuth0()
@@ -44,6 +48,20 @@ const AuthorizedApolloProvider = ({ children }: any) => {
   return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
 }
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+    errorElement: <ErrorRoute />,
+    children: [
+      {
+        path: 'calendar',
+        element: <CalendarRoute />,
+      },
+    ],
+  },
+])
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
@@ -54,7 +72,8 @@ root.render(
   >
     <AuthorizedApolloProvider>
       <React.StrictMode>
-        <App />
+        <RouterProvider router={router} />
+        {/* <App /> */}
       </React.StrictMode>
     </AuthorizedApolloProvider>
   </Auth0Provider>
