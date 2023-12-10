@@ -9,6 +9,27 @@
   grid-template-rows: auto;
 }
 
+.week-grid {
+  grid-column: 1 / -1;
+  background-color: aliceblue;
+  min-height: 5px;
+}
+
+.week-container {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: auto;
+}
+
+.week-events {
+  grid-column: 1 / -1;
+  grid-row-start: 2;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: auto;
+}
+
 .weekdays {
   display: flex;
   flex-direction: row;
