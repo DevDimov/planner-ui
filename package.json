@@ -6,6 +6,7 @@
     "@apollo/client": "^3.8.8",
     "@auth0/auth0-react": "^2.2.3",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@mui/base": "^5.0.0-beta.27",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -56,14 +57,18 @@
     "@storybook/addon-interactions": "^7.6.4",
     "@storybook/addon-links": "^7.6.4",
     "@storybook/addon-onboarding": "^1.0.9",
+    "@storybook/addon-styling-webpack": "^0.0.5",
     "@storybook/blocks": "^7.6.4",
     "@storybook/preset-create-react-app": "^7.6.4",
     "@storybook/react": "^7.6.4",
     "@storybook/react-webpack5": "^7.6.4",
     "@storybook/test": "^7.6.4",
     "eslint-plugin-storybook": "^0.6.15",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9",
     "prop-types": "^15.8.1",
     "storybook": "^7.6.4",
+    "tailwindcss": "^3.3.6",
     "webpack": "^5.89.0"
   }
 }
