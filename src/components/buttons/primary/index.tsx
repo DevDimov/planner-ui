@@ -5,5 +5,9 @@ type PrimaryButtonProps = {
 }
 
 export default function PrimaryButton({ title }: PrimaryButtonProps) {
-  return <Button className="rounded-sm bg-blue-500 px-2 py-1">{title}</Button>
+  return (
+    <Button className="rounded-sm bg-blue-500 px-3 py-1 text-white hover:bg-blue-400">
+      {title}
+    </Button>
+  )
 }
