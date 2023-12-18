@@ -1,13 +1,37 @@
 import { Button } from '@mui/base/Button'
-import EventInstanceTag from '../tags/eventInstanceTag'
+import EventInstanceTag, {
+  EventInstanceTagProps,
+} from '../tags/eventInstanceTag'
 
-type EventInstanceProps = {
+export type EventInstanceProps = {
   label: string
-  colStart: string
-  colEnd: string
-  tags: string[]
+  colStart: '1' | '2' | '3' | '4' | '5' | '6' | '7'
+  colEnd: '2' | '3' | '4' | '5' | '6' | '7' | '8'
+  dateStart: Date
+  dateEnd: Date
+  tags: EventInstanceTagProps[]
 }
-//C5D9F7
+
+const colStarts = {
+  '1': 'col-start-1',
+  '2': 'col-start-2',
+  '3': 'col-start-3',
+  '4': 'col-start-4',
+  '5': 'col-start-5',
+  '6': 'col-start-6',
+  '7': 'col-start-7',
+}
+
+const colEnds = {
+  '2': 'col-end-2',
+  '3': 'col-end-3',
+  '4': 'col-end-4',
+  '5': 'col-end-5',
+  '6': 'col-end-6',
+  '7': 'col-end-7',
+  '8': 'col-end-8',
+}
+
 export default function EventInstance({
   label,
   colStart,
@@ -15,14 +39,17 @@ export default function EventInstance({
   tags,
 }: EventInstanceProps) {
   return (
-    <Button disabled={true} className="bg-white">
-      <div className="border-blue-100 grid grid-cols-1 grid-rows-2 justify-items-start rounded-sm border-2 p-1.5">
-        <div className="grid-row-1 text-md font-sans font-medium text-black leading-4">
+    <Button
+      disabled={true}
+      className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}
+    >
+      <div className="rounded-sm border-2 border-blue-100 p-1.5">
+        <div className="text-md text-left font-sans font-medium leading-4 text-black">
           {label}
         </div>
-        <div className="flex gap-1.5">
+        <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
           {tags.map((tag) => {
-            return <EventInstanceTag label={tag} color={''} />
+            return <EventInstanceTag label={tag.label} color={tag.color} />
           })}
         </div>
       </div>
