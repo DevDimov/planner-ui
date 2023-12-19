@@ -10,7 +10,7 @@ const meta: Meta<typeof CalendarWeek> = {
 export default meta
 type Story = StoryObj<typeof CalendarWeek>
 
-const entries = [
+const days = [
   new Date(2023, 11, 25),
   new Date(2023, 11, 26),
   new Date(2023, 11, 27),
@@ -22,19 +22,19 @@ const entries = [
 
 export const NoEvents: Story = {
   args: {
-    entries,
+    days,
     occurrences: [],
   },
 }
 
 export const SingleDayEvent: Story = {
   args: {
-    entries,
+    days,
     occurrences: [
       {
         label: 'Single Day Event',
-        dateStart: entries[0],
-        dateEnd: entries[0],
+        dateStart: days[0],
+        dateEnd: days[0],
         colStart: '1',
         colEnd: '2',
         tags: [{ label: 'Blue', color: 'blue' }],
@@ -45,12 +45,12 @@ export const SingleDayEvent: Story = {
 
 export const SingleDayEventMaxTags: Story = {
   args: {
-    entries,
+    days,
     occurrences: [
       {
         label: 'Single Day Event Max Tags',
-        dateStart: entries[0],
-        dateEnd: entries[0],
+        dateStart: days[0],
+        dateEnd: days[0],
         colStart: '1',
         colEnd: '2',
         tags: [
@@ -68,12 +68,12 @@ export const SingleDayEventMaxTags: Story = {
 
 export const MultiDayEvent: Story = {
   args: {
-    entries,
+    days,
     occurrences: [
       {
         label: 'Multi Day Event',
-        dateStart: entries[1],
-        dateEnd: entries[4],
+        dateStart: days[1],
+        dateEnd: days[4],
         colStart: '2',
         colEnd: '6',
         tags: [{ label: 'Blue', color: 'blue' }],
@@ -84,12 +84,12 @@ export const MultiDayEvent: Story = {
 
 export const FullWeekEvent: Story = {
   args: {
-    entries,
+    days,
     occurrences: [
       {
         label: 'Full week Event',
-        dateStart: entries[0],
-        dateEnd: entries[6],
+        dateStart: days[0],
+        dateEnd: days[6],
         colStart: '1',
         colEnd: '8',
         tags: [{ label: 'Blue', color: 'blue' }],
@@ -98,26 +98,90 @@ export const FullWeekEvent: Story = {
   },
 }
 
-// export const MultipleTags: Story = {
-//   args: {
-//     label: 'Instance with multiple tags',
-//     tags: [
-//       { label: 'Red', color: 'red' },
-//       { label: 'Orange', color: 'orange' },
-//       { label: 'Yellow', color: 'yellow' },
-//     ],
-//   },
-// }
+export const SingleDayEvents: Story = {
+  args: {
+    days,
+    occurrences: [
+      {
+        label: 'Event One',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '2',
+        tags: [{ label: 'Blue', color: 'blue' }],
+      },
+      {
+        label: 'Event Two',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '2',
+        tags: [{ label: 'Yellow', color: 'yellow' }],
+      },
+      {
+        label: 'Event Three',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '2',
+        tags: [{ label: 'Violet', color: 'violet' }],
+      },
+    ],
+  },
+}
 
-// export const MaxTags: Story = {
-//   args: {
-//     label: 'Instance with maximum tags',
-//     tags: [
-//       { label: 'Red', color: 'red' },
-//       { label: 'Orange', color: 'orange' },
-//       { label: 'Yellow', color: 'yellow' },
-//       { label: 'Green', color: 'green' },
-//       { label: 'Blue', color: 'blue' },
-//     ],
-//   },
-// }
+export const MultiDayEvents: Story = {
+  args: {
+    days,
+    occurrences: [
+      {
+        label: 'Event One',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '2',
+        tags: [{ label: 'Blue', color: 'blue' }],
+      },
+      {
+        label: 'Event Two',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '5',
+        tags: [{ label: 'Yellow', color: 'yellow' }],
+      },
+      {
+        label: 'Event Five',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '7',
+        colEnd: '8',
+        tags: [{ label: 'Red', color: 'red' }],
+      },
+      {
+        label: 'Event Three',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '1',
+        colEnd: '3',
+        tags: [{ label: 'Violet', color: 'violet' }],
+      },
+      {
+        label: 'Event Four',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '3',
+        colEnd: '6',
+        tags: [{ label: 'Green', color: 'green' }],
+      },
+      {
+        label: 'Event Six',
+        dateStart: days[0],
+        dateEnd: days[0],
+        colStart: '6',
+        colEnd: '7',
+        tags: [{ label: 'Indogo', color: 'indigo' }],
+      },
+    ],
+  },
+}

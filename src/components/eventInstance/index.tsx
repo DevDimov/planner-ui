@@ -43,7 +43,7 @@ export default function EventInstance({
       disabled={true}
       className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}
     >
-      <div className="rounded-sm border-2 border-blue-100 p-1.5">
+      <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
         <div className="text-md text-left font-sans font-medium leading-4 text-black">
           {label}
         </div>

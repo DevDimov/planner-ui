@@ -1,32 +1,32 @@
 import format from 'date-fns/format'
 import EventInstance, { EventInstanceProps } from '../../eventInstance'
-import isSameDay from 'date-fns/isSameDay'
-import getDay from 'date-fns/getDay'
+import isSameMonth from 'date-fns/isSameMonth'
+import isWeekend from 'date-fns/isWeekend'
+import { getDayColorClass } from './utils/getDayColorClass'
 
 export type CalendarWeekProps = {
-  entries: Date[]
-  days?: string[]
+  days: Date[]
   occurrences: EventInstanceProps[]
 }
 
-export default function CalendarWeek({
-  entries,
-  occurrences,
-}: CalendarWeekProps) {
+export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
   return (
     <div className="col-span-full grid grid-cols-7 font-inter">
-      {entries.map((day) => {
+      {days.map((day) => {
         const dateTime = format(day, 'yyyy-MM-dd')
+        const colorClass = getDayColorClass(day)
         return (
-          <time dateTime={dateTime} key={dateTime}>
+          <time
+            dateTime={dateTime}
+            key={dateTime}
+            className={`my-2 ml-2 font-medium ${colorClass}`}
+          >
             {format(day, 'd')}
           </time>
         )
       })}
 
-      <div
-        className="col-span-full row-start-2 grid grid-cols-7"
-      >
+      <div className="col-span-full row-start-2 grid grid-cols-7">
         {occurrences.map((occurrence) => {
           const { label, tags, dateStart, dateEnd, colStart, colEnd } =
             occurrence
