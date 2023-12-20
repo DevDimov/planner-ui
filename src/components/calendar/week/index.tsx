@@ -1,7 +1,5 @@
 import format from 'date-fns/format'
 import EventInstance, { EventInstanceProps } from '../../eventInstance'
-import isSameMonth from 'date-fns/isSameMonth'
-import isWeekend from 'date-fns/isWeekend'
 import { getDayColorClass } from './utils/getDayColorClass'
 
 export type CalendarWeekProps = {
