@@ -13,6 +13,7 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
       {days.map((day) => {
         const dateTime = format(day, 'yyyy-MM-dd')
         const colorClass = getDayColorClass(day)
+
         return (
           <time
             dateTime={dateTime}
@@ -28,6 +29,7 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
         {occurrences.map((occurrence) => {
           const { label, tags, dateStart, dateEnd, colStart, colEnd } =
             occurrence
+
           return (
             <EventInstance
               label={label}

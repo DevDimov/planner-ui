@@ -15,8 +15,6 @@ type Story = StoryObj<typeof CalendarControls>
 
 export const DecemberHeader: Story = {
   args: {
-    startOfMonth: new Date(2023, 11, 1)
+    currentMonth: new Date(2023, 11, 1),
   },
 }
-
-

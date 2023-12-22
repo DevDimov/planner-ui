@@ -13,8 +13,8 @@ const meta: Meta<typeof SecondaryButton> = {
 export default meta
 type Story = StoryObj<typeof SecondaryButton>
 
-export const SecondaryPrevious: Story = {
+export const Secondary: Story = {
   args: {
-    title: 'Previous',
+    title: 'Secondary',
   },
 }

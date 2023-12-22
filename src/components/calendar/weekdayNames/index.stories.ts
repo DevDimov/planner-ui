@@ -9,10 +9,4 @@ const meta: Meta<typeof WeekdayNames> = {
 export default meta
 type Story = StoryObj<typeof WeekdayNames>
 
-const weekdayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-export const MonToSun: Story = {
-  args: {
-    weekdayNames,
-  },
-}
+export const MonToSun: Story = {}

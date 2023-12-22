@@ -1,5 +1,12 @@
+import { useContext } from 'react'
+import { CalendarContext } from '../../../context/calendar'
+
 export default function WeekdayNames() {
-  const weekdayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const { weekStartsOn } = useContext(CalendarContext)
+  let weekdayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  if (weekStartsOn === 0) {
+    weekdayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  }
 
   return (
     <div className="grid grid-cols-7 px-4 pb-2 font-medium">
