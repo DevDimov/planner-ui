@@ -11,64 +11,64 @@ const weekdays = [
   new Date(2023, 11, 31),
 ]
 
-const sevenDayEvent = {
-  start: '2023-12-25T00:00:00.000Z',
-  end: '2023-12-31T00:00:00.000Z',
+const sevendDateTimeayEvent = {
+  startDateTime: '2023-12-25T00:00:00.000Z',
+  endDateTime: '2023-12-31T00:00:00.000Z',
 }
 
 const oneDayEvent = {
-  start: '2023-12-27T00:00:00.000Z',
-  end: '2023-12-27T00:00:00.000Z',
+  startDateTime: '2023-12-27T00:00:00.000Z',
+  endDateTime: '2023-12-27T00:00:00.000Z',
 }
 
 const threeDayEvent = {
-  start: '2023-12-27T00:00:00.000Z',
-  end: '2023-12-29T00:00:00.000Z',
+  startDateTime: '2023-12-27T00:00:00.000Z',
+  endDateTime: '2023-12-29T00:00:00.000Z',
 }
 
-const oneDayEventWeekStart = {
-  start: '2023-12-25T00:00:00.000Z',
-  end: '2023-12-25T00:00:00.000Z',
+const oneDayEventWeekstartDateTime = {
+  startDateTime: '2023-12-25T00:00:00.000Z',
+  endDateTime: '2023-12-25T00:00:00.000Z',
 }
 
-const oneDayEventWeekEnd = {
-  start: '2023-12-31T00:00:00.000Z',
-  end: '2023-12-31T00:00:00.000Z',
+const oneDayEventWeekendDateTime = {
+  startDateTime: '2023-12-31T00:00:00.000Z',
+  endDateTime: '2023-12-31T00:00:00.000Z',
 }
 
 const multiWeekEvent = {
-  start: '2023-12-24T00:00:00.000Z',
-  end: '2024-01-01T00:00:00.000Z',
+  startDateTime: '2023-12-24T00:00:00.000Z',
+  endDateTime: '2024-01-01T00:00:00.000Z',
 }
 
-const eventStartsThisWeek = {
-  start: '2023-12-28T00:00:00.000Z',
-  end: '2023-01-01T00:00:00.000Z',
+const eventstartDateTimesThisWeek = {
+  startDateTime: '2023-12-28T00:00:00.000Z',
+  endDateTime: '2023-01-01T00:00:00.000Z',
 }
 
-const eventEndsThisWeek = {
-  start: '2023-12-22T00:00:00.000Z',
-  end: '2023-12-28T00:00:00.000Z',
+const eventendDateTimesThisWeek = {
+  startDateTime: '2023-12-22T00:00:00.000Z',
+  endDateTime: '2023-12-28T00:00:00.000Z',
 }
 
 const eventOutsideThisWeek = {
-  start: '2000-01-01T00:00:00.000Z',
-  end: '2000-01-02T00:00:00.000Z',
+  startDateTime: '2000-01-01T00:00:00.000Z',
+  endDateTime: '2000-01-02T00:00:00.000Z',
 }
 
 test('returns the columns for a 7-day event', () => {
   const actual = getEventColumns({
     weekdays,
-    event: sevenDayEvent,
+    event: sevendDateTimeayEvent,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 1, gridColumnEnd: 8 })
+  expect(actual).toEqual({ colStart: 1, colEnd: 8 })
 })
 
 test('returns the columns for a 1-day event', () => {
   const actual = getEventColumns({ weekdays, event: oneDayEvent })
 
-  expect(actual).toEqual({ gridColumnStart: 3, gridColumnEnd: 4 })
+  expect(actual).toEqual({ colStart: 3, colEnd: 4 })
 })
 
 test('returns the columns for a 3-day event', () => {
@@ -77,25 +77,25 @@ test('returns the columns for a 3-day event', () => {
     event: threeDayEvent,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 3, gridColumnEnd: 6 })
+  expect(actual).toEqual({ colStart: 3, colEnd: 6 })
 })
 
-test('returns the columns for a 1-day event at the start of a week', () => {
+test('returns the columns for a 1-day event at the startDateTime of a week', () => {
   const actual = getEventColumns({
     weekdays,
-    event: oneDayEventWeekStart,
+    event: oneDayEventWeekstartDateTime,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 1, gridColumnEnd: 2 })
+  expect(actual).toEqual({ colStart: 1, colEnd: 2 })
 })
 
-test('returns the columns for a 1-day event at the end of a week', () => {
+test('returns the columns for a 1-day event at the endDateTime of a week', () => {
   const actual = getEventColumns({
     weekdays,
-    event: oneDayEventWeekEnd,
+    event: oneDayEventWeekendDateTime,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 7, gridColumnEnd: 8 })
+  expect(actual).toEqual({ colStart: 7, colEnd: 8 })
 })
 
 test('returns the columns for a multi-week event that encompasses the given week', () => {
@@ -104,25 +104,25 @@ test('returns the columns for a multi-week event that encompasses the given week
     event: multiWeekEvent,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 1, gridColumnEnd: 8 })
+  expect(actual).toEqual({ colStart: 1, colEnd: 8 })
 })
 
-test('returns the columns for an event that only starts the given week', () => {
+test('returns the columns for an event that only startDateTimes the given week', () => {
   const actual = getEventColumns({
     weekdays,
-    event: eventStartsThisWeek,
+    event: eventstartDateTimesThisWeek,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 4, gridColumnEnd: 8 })
+  expect(actual).toEqual({ colStart: 4, colEnd: 8 })
 })
 
-test('returns the columns for an event that only ends the given week', () => {
+test('returns the columns for an event that only endDateTimes the given week', () => {
   const actual = getEventColumns({
     weekdays,
-    event: eventEndsThisWeek,
+    event: eventendDateTimesThisWeek,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 1, gridColumnEnd: 5 })
+  expect(actual).toEqual({ colStart: 1, colEnd: 5 })
 })
 
 test('returns the zeros for an event outside the scope of the given week', () => {
@@ -131,5 +131,5 @@ test('returns the zeros for an event outside the scope of the given week', () =>
     event: eventOutsideThisWeek,
   })
 
-  expect(actual).toEqual({ gridColumnStart: 0, gridColumnEnd: 0 })
+  expect(actual).toEqual({ colStart: 0, colEnd: 0 })
 })

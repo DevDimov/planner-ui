@@ -1,10 +1,12 @@
 import format from 'date-fns/format'
-import EventInstance, { EventInstanceProps } from '../../eventInstance'
+import EventInstance from '../../eventInstance'
 import { getDayColorClass } from './utils/getDayColorClass'
+import { EventInstanceOccurrenceRef } from '../../../gql/codegen/graphql'
+import { getEventColumns } from '../utils/getEventColumns'
 
 export type CalendarWeekProps = {
   days: Date[]
-  occurrences: EventInstanceProps[]
+  occurrences: EventInstanceOccurrenceRef[]
 }
 
 export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
@@ -26,16 +28,21 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
       })}
 
       <div className="col-span-full row-start-2 grid grid-cols-7">
-        {occurrences.map((occurrence) => {
-          const { label, tags, dateStart, dateEnd, colStart, colEnd } =
-            occurrence
+        {occurrences && occurrences.map((occurrence) => {
+          const { iid, eventInstance, startDateTime, endDateTime } = occurrence
+
+          const { colStart, colEnd } = getEventColumns({
+            weekdays: days,
+            event: { startDateTime, endDateTime },
+          })
 
           return (
             <EventInstance
-              label={label}
-              tags={tags}
-              dateStart={dateStart}
-              dateEnd={dateEnd}
+              key={iid}
+              label={eventInstance?.event?.label || 'Label'}
+              tags={eventInstance?.tags || []}
+              startDateTime={startDateTime}
+              endDateTime={endDateTime}
               colStart={colStart}
               colEnd={colEnd}
             />
