@@ -9,21 +9,11 @@ type GetEventColumnsType = {
   event: { startDateTime: string; endDateTime: string }
 }
 
-export type EventColumnIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-
-type GetEventColumnsRes = {
-  colStart: EventColumnIndex
-  colEnd: EventColumnIndex
-}
-
-export const getEventColumns = ({
-  weekdays,
-  event,
-}: GetEventColumnsType): GetEventColumnsRes => {
-  const columns: EventColumnIndex[] = [7, 1, 2, 3, 4, 5, 6]
+export const getEventColumns = ({ weekdays, event }: GetEventColumnsType) => {
+  const columns = [7, 1, 2, 3, 4, 5, 6]
   const length = weekdays.length
-  let colStart: EventColumnIndex = 0
-  let colEnd: EventColumnIndex = 0
+  let colStart = 0
+  let colEnd = 0
 
   const eventStart = parseISO(event.startDateTime)
   const eventEnd = parseISO(event.endDateTime)

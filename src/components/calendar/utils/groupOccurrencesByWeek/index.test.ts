@@ -1,5 +1,6 @@
 import { expect } from '@jest/globals'
 import { groupOccurrencesByWeek } from './index'
+import { EventInstanceOccurrenceRef } from '../../../../gql/codegen/graphql'
 
 test('groups two occurrences in one week', () => {
   const data = [
@@ -56,4 +57,14 @@ test('groups an array of 3 occurrences spanning 2 weeks', () => {
 
   expect(grouped['53']).toHaveLength(2)
   expect(grouped['1']).toHaveLength(1)
+})
+
+test('returns an empty object when argument is an empty array', () => {
+  const data: EventInstanceOccurrenceRef[] = []
+
+  const grouped = groupOccurrencesByWeek(data)
+  const groups = Object.keys(grouped)
+
+  expect(grouped).toEqual({})
+  expect(groups).toHaveLength(0)
 })
