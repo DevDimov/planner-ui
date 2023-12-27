@@ -17,6 +17,15 @@ export const SingleTag: Story = {
     label: 'Instance with one tag',
     // tags: [{ label: 'Violet', color: 'violet' }],
     tags: [{ label: 'Violet' }],
+    startDateTime: '2023-12-25',
+    endDateTime: '2023-12-31',
+    properties: [
+      {
+        iid: 'p1',
+        label: 'Event type',
+        value: 'Student',
+      },
+    ],
   },
 }
 
@@ -29,6 +38,8 @@ export const MultipleTags: Story = {
     //   { label: 'Yellow', color: 'yellow' },
     // ],
     tags: [{ label: 'Red' }, { label: 'Orange' }, { label: 'Yellow' }],
+    startDateTime: '2023-12-25',
+    endDateTime: '2023-12-31',
   },
 }
 

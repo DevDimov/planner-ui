@@ -19,6 +19,18 @@ export const mockQueryEventInstanceOccurrence = {
             id: 'auth0|65538f46da9fa0033488f080.Margo Dimova',
             iid: '0x1a5086a7df',
             label: 'Margo Dimova',
+            properties: [
+              {
+                iid: "p1",
+                label: "Event type",
+                value: "Student"
+              },
+              {
+                iid: "p2",
+                label: "Mobile",
+                value: "073xxx"
+              },
+            ]
           },
         },
       },
@@ -40,6 +52,7 @@ export const mockQueryEventInstanceOccurrence = {
             id: 'auth0|65538f46da9fa0033488f080.Margo Dimova',
             iid: '0x1a5086a7df',
             label: 'Margo Dimova',
+            properties: []
           },
         },
       },

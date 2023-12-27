@@ -22,7 +22,7 @@ export default function CalendarMonth({
   return (
     <div>
       <WeekdayNames />
-      <div className="grid h-full gap-y-12 border-2 border-blue-100 bg-blue-50 p-4 pb-16">
+      <div className="grid h-full gap-y-16 border-2 border-blue-100 bg-blue-50 p-4 pb-16">
         {Object.entries(weeksGroup).map(([weekNumber, days]) => {
           return (
             <CalendarWeek

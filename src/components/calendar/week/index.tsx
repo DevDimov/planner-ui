@@ -16,21 +16,21 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
   const { month } = useContext(CalendarContext)
 
   return (
-    <div className="col-span-full grid grid-cols-7 font-inter">
-      {days.map((day) => {
-        const dateTime = format(day, 'yyyy-MM-dd')
-        const colorClass = getDayColorClass(day, month)
+    <div className="col-span-full grid grid-cols-7 gap-y-1 font-inter font-medium">
+      <div className="col-span-full grid grid-cols-7">
+        {days.map((day) => {
+          const dateTime = format(day, 'yyyy-MM-dd')
+          const colorClass = getDayColorClass(day, month)
 
-        return (
-          <time
-            dateTime={dateTime}
-            key={dateTime}
-            className={`my-2 ml-2 font-medium ${colorClass}`}
-          >
-            {formatDay(day)}
-          </time>
-        )
-      })}
+          return (
+            <time dateTime={dateTime} key={dateTime}>
+              <span className={`${colorClass} rounded p-1`}>
+                {formatDay(day)}
+              </span>
+            </time>
+          )
+        })}
+      </div>
 
       <div className="col-span-full row-start-2 grid grid-cols-7">
         {occurrences &&
@@ -52,6 +52,7 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
                 endDateTime={endDateTime}
                 colStart={colStart}
                 colEnd={colEnd}
+                properties={eventInstance?.event?.properties || undefined}
               />
             )
           })}

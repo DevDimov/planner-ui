@@ -1,4 +1,5 @@
 import isSameMonth from 'date-fns/isSameMonth'
+import isToday from 'date-fns/isToday'
 import isWeekend from 'date-fns/isWeekend'
 
 /**
@@ -8,6 +9,8 @@ import isWeekend from 'date-fns/isWeekend'
  * @returns
  */
 export const getDayColorClass = (dateLeft: Date, dateRight: Date) => {
+  if (isToday(dateLeft)) return 'text-red-600'
+
   const isCurrentMonth = isSameMonth(dateLeft, dateRight)
   const dateIsWeekend = isWeekend(dateLeft)
 

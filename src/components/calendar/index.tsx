@@ -26,10 +26,7 @@ export default function Calendar({ occurrences }: CalendarProps) {
   //   )
   // }, [])
 
-  const groupedOccurrences = groupOccurrencesByWeek(
-    occurrences
-    // mockQueryEventInstanceOccurrence.data.queryEventInstanceOccurrence
-  )
+  const groupedOccurrences = groupOccurrencesByWeek(occurrences)
 
   return (
     <div>
