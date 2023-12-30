@@ -5,11 +5,11 @@ import { CalendarWeekProps } from './week'
 import startOfMonth from 'date-fns/startOfMonth'
 import { CalendarContext } from '../../context/calendar'
 import { groupOccurrencesByWeek } from './utils/groupOccurrencesByWeek'
-import { EventInstanceOccurrenceRef } from '../../gql/codegen/graphql'
+import { EventInstanceOccurrence, EventInstanceOccurrenceRef } from '../../gql/codegen/graphql'
 import { mockQueryEventInstanceOccurrence } from '../../mockData/queryEventInstanceOccurrence'
 
 export type CalendarProps = {
-  occurrences: EventInstanceOccurrenceRef[]
+  occurrences: EventInstanceOccurrence[]
 }
 
 export default function Calendar({ occurrences }: CalendarProps) {

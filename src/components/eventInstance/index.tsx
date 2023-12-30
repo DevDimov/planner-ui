@@ -10,8 +10,15 @@ import React from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
+import HorizontalDivider from '../forms/divider'
+import { GrClose } from 'react-icons/gr'
+import SecondaryButton from '../buttons/secondary'
+import { useMutation } from '@apollo/client/react/hooks/useMutation'
+import { DELETE_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/deleteEventInstanceOccurence'
+import PrimaryButton from '../buttons/primary'
 
 export type EventInstanceProps = {
+  iid: string
   label: string
   colStart: number
   colEnd: number
@@ -46,6 +53,7 @@ const colEnds = [
 ]
 
 export default function EventInstance({
+  iid,
   label,
   colStart,
   colEnd,
@@ -55,35 +63,62 @@ export default function EventInstance({
   // color
   properties,
 }: EventInstanceProps) {
+  // const [deleteOccurrence, { data, loading, error }] = useMutation(
+  //   DELETE_EVENT_INSTANCE_OCCURRENCE
+  // )
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
 
+  const handleOnMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    if (event.nativeEvent.button === 2) {
+      console.log('Right click')
+    }
+  }
+
+  // const handleDeleteOccurrence = () => {
+  //   deleteOccurrence({ variables: { iid } })
+
+  //   if (error) console.log('Erro mutating')
+  // }
+
   const open = Boolean(anchorEl)
-  const id = open ? 'simple-popper' : undefined
+  const id = open ? 'occurrence-iid-popper' : undefined
 
   return (
     <div className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}>
-      <Button onClick={handleClick} className="w-full bg-white">
+      <Button
+        onClick={handleClick}
+        // onMouseDown={handleOnMouseDown}
+        // onContextMenu={handleOnMouseDown}
+        className="w-full bg-white"
+      >
         <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
           <div className="text-md text-left font-sans font-medium leading-4 text-black">
             {label}
           </div>
           <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
-            {tags.map((tag) => {
-              return (
-                <EventInstanceTag label={tag.label || 'Label'} color={'blue'} />
-              )
-            })}
+            {tags &&
+              tags.map((tag) => {
+                return (
+                  <EventInstanceTag
+                    key={tag?.iid}
+                    label={tag.label || 'Label'}
+                    color={'blue'}
+                  />
+                )
+              })}
           </div>
         </div>
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
-        <div className="z-50 m-1 flex max-w-xs flex-col gap-y-4 rounded-sm border border-solid border-slate-200 bg-white p-3 font-inter text-slate-900 shadow-md dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100">
+        <div className="z-50 m-1 flex max-w-md flex-col gap-y-4 rounded-sm border border-solid border-slate-200 bg-white p-3 font-inter text-slate-900 shadow-md dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100">
           <div className="font-medium">{label}</div>
-          <div className="h-0.5 bg-gray-100"></div>
+          <HorizontalDivider />
           <div className="flex flex-col gap-y-4">
             <PropertyValuePair
               label={'From'}
@@ -96,7 +131,7 @@ export default function EventInstance({
           </div>
           {properties && properties.length > 0 && (
             <div className="flex flex-col gap-y-4">
-              <div className="h-0.5 bg-gray-100"></div>
+              <HorizontalDivider />
               {properties.map((prop) => {
                 // const { iid, label, value } = prop
 
@@ -110,6 +145,19 @@ export default function EventInstance({
               })}
             </div>
           )}
+          {/* <HorizontalDivider /> */}
+          <div className="flex gap-4 mt-4">
+            <PrimaryButton
+              title={'Edit'}
+              // onClick={handleDeleteOccurrence}
+              onClick={() => undefined}
+            />
+            <SecondaryButton
+              title={'Delete'}
+              // onClick={handleDeleteOccurrence}
+              onClick={() => undefined}
+            />
+          </div>
         </div>
       </Popper>
     </div>

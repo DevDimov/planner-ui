@@ -13,6 +13,10 @@ export const mockQueryEventInstanceOccurrence = {
               id: 'auth0|65538f46da9fa0033488f080.Work',
               iid: '0x1a5086a7dc',
               label: 'Work',
+              user: {
+                iid: '',
+                email: '',
+              },
             },
           ],
           event: {
@@ -21,16 +25,40 @@ export const mockQueryEventInstanceOccurrence = {
             label: 'Margo Dimova',
             properties: [
               {
-                iid: "p1",
-                label: "Event type",
-                value: "Student"
+                iid: 'p1',
+                id: '',
+                event: {
+                  id: '',
+                  iid: '',
+                  label: '',
+                  user: {
+                    iid: '',
+                    email: '',
+                  },
+                },
+                label: 'Event type',
+                value: 'Student',
               },
               {
-                iid: "p2",
-                label: "Mobile",
-                value: "073xxx"
+                iid: 'p2',
+                label: 'Mobile',
+                value: '073xxx',
+                id: '',
+                event: {
+                  id: '',
+                  iid: '',
+                  label: '',
+                  user: {
+                    iid: '',
+                    email: '',
+                  },
+                },
               },
-            ]
+            ],
+            user: {
+              email: 'vdimov@proton.me',
+              iid: '0x1a508680f9',
+            },
           },
         },
       },
@@ -46,13 +74,21 @@ export const mockQueryEventInstanceOccurrence = {
               id: 'auth0|65538f46da9fa0033488f080.Work',
               iid: '0x1a5086a7dc',
               label: 'Work',
+              user: {
+                iid: '',
+                email: '',
+              },
             },
           ],
           event: {
             id: 'auth0|65538f46da9fa0033488f080.Margo Dimova',
             iid: '0x1a5086a7df',
             label: 'Margo Dimova',
-            properties: []
+            properties: [],
+            user: {
+              email: 'vdimov@proton.me',
+              iid: '0x1a508680f9',
+            },
           },
         },
       },

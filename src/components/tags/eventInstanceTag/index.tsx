@@ -20,11 +20,10 @@ export default function EventInstanceTag({
   color,
 }: EventInstanceTagProps) {
   return (
-    <Button
+    <span
       className={`${colors[color]} rounded-sm px-2 py-0.5 font-sans text-sm font-normal text-white`}
-      disabled={true}
     >
       {label}
-    </Button>
+    </span>
   )
 }

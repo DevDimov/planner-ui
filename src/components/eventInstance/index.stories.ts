@@ -15,7 +15,6 @@ type Story = StoryObj<typeof EventInstance>
 export const SingleTag: Story = {
   args: {
     label: 'Instance with one tag',
-    // tags: [{ label: 'Violet', color: 'violet' }],
     tags: [{ label: 'Violet' }],
     startDateTime: '2023-12-25',
     endDateTime: '2023-12-31',
@@ -32,26 +31,12 @@ export const SingleTag: Story = {
 export const MultipleTags: Story = {
   args: {
     label: 'Instance with multiple tags',
-    // tags: [
-    //   { label: 'Red', color: 'red' },
-    //   { label: 'Orange', color: 'orange' },
-    //   { label: 'Yellow', color: 'yellow' },
-    // ],
-    tags: [{ label: 'Red' }, { label: 'Orange' }, { label: 'Yellow' }],
+    tags: [
+      { label: 'Red', iid: 't1' },
+      { label: 'Orange', iid: 't2' },
+      { label: 'Yellow', iid: 't3' },
+    ],
     startDateTime: '2023-12-25',
     endDateTime: '2023-12-31',
   },
 }
-
-// export const MaxTags: Story = {
-//   args: {
-//     label: 'Instance with maximum tags',
-//     tags: [
-//       { label: 'Red', color: 'red' },
-//       { label: 'Orange', color: 'orange' },
-//       { label: 'Yellow', color: 'yellow' },
-//       { label: 'Green', color: 'green' },
-//       { label: 'Blue', color: 'blue' },
-//     ],
-//   },
-// }

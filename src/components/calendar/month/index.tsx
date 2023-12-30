@@ -2,10 +2,10 @@ import { getAllDaysInMonth } from '../utils/getAllDaysInMonth'
 import { groupDatesByWeek } from '../utils/groupDatesByWeek'
 import CalendarWeek from '../week'
 import WeekdayNames from '../weekdayNames'
-import { EventInstanceOccurrenceRef } from '../../../gql/codegen/graphql'
+import { EventInstanceOccurrence, EventInstanceOccurrenceRef } from '../../../gql/codegen/graphql'
 
 export type GroupedOccurrences = {
-  [id: string]: EventInstanceOccurrenceRef[]
+  [id: string]: EventInstanceOccurrence[]
 }
 
 export type CalendarMonthProps = {
@@ -26,6 +26,7 @@ export default function CalendarMonth({
         {Object.entries(weeksGroup).map(([weekNumber, days]) => {
           return (
             <CalendarWeek
+              key={weekNumber}
               days={days}
               occurrences={
                 Object.keys(occurrences).length > 0
