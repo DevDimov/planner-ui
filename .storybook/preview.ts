@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react'
+import { MockedProvider } from '@apollo/client/testing'
 
 import '../src/output.css'
 
@@ -10,6 +11,10 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    apolloClient: {
+      MockedProvider,
+      // globalMocks: [],
     },
   },
 }

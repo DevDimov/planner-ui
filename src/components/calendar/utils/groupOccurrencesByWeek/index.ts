@@ -1,7 +1,7 @@
 import getWeek from 'date-fns/getWeek'
 import parseISO from 'date-fns/parseISO'
 import { groupBy } from 'lodash'
-import { EventInstanceOccurrence, EventInstanceOccurrenceRef } from '../../../../gql/codegen/graphql'
+import { EventInstanceOccurrence } from '../../../../gql/codegen/graphql'
 
 export const groupOccurrencesByWeek = (data: EventInstanceOccurrence[]) => {
 

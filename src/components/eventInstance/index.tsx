@@ -1,21 +1,21 @@
 import { Button } from '@mui/base/Button'
 import {
-  EventInstanceTagRef as EventInstanceTagType,
+  EventInstanceTag as EventInstanceTagType,
   EventPropertyRef,
   InputMaybe,
 } from '../../gql/codegen/graphql'
 import EventInstanceTag from '../tags/eventInstanceTag'
 import { Popper } from '@mui/base/Popper'
-import React from 'react'
+import React, { useContext } from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import HorizontalDivider from '../forms/divider'
-import { GrClose } from 'react-icons/gr'
 import SecondaryButton from '../buttons/secondary'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { DELETE_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/deleteEventInstanceOccurence'
 import PrimaryButton from '../buttons/primary'
+import { CalendarContext } from '../../context/calendar'
 
 export type EventInstanceProps = {
   iid: string
@@ -26,6 +26,7 @@ export type EventInstanceProps = {
   endDateTime: string
   tags: EventInstanceTagType[]
   properties?: InputMaybe<EventPropertyRef>[] | undefined
+  week: string
 }
 
 const colStarts = [
@@ -62,10 +63,25 @@ export default function EventInstance({
   tags,
   // color
   properties,
+  week,
 }: EventInstanceProps) {
-  // const [deleteOccurrence, { data, loading, error }] = useMutation(
-  //   DELETE_EVENT_INSTANCE_OCCURRENCE
-  // )
+  const { occurrences, setOccurrences } = useContext(CalendarContext)
+
+  const [deleteOccurrence, { data, loading, error }] = useMutation(
+    DELETE_EVENT_INSTANCE_OCCURRENCE
+  )
+
+  // if (loading) console.log('Loading mutation delete occurrence')
+  // if (error) console.log('Error deleting occurrence')
+  // if (data) {
+  //   console.log('mutation triggered', data)
+  //   const newOccurrences = occurrences[week].filter((occurrence) => {
+  //     return occurrence.iid !== iid
+  //   })
+  //   console.log(newOccurrences)
+  //   occurrences[week] = newOccurrences
+  //   setOccurrences(occurrences)
+  // }
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -73,18 +89,31 @@ export default function EventInstance({
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
 
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault()
-    if (event.nativeEvent.button === 2) {
-      console.log('Right click')
+  // const handleOnMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+  //   event.preventDefault()
+  //   if (event.nativeEvent.button === 2) {
+  //     console.log('Right click')
+  //   }
+  // }
+
+  const handleDeleteOccurrence = async () => {
+    const data = await deleteOccurrence({ variables: { filter: { iid } } })
+
+    if (loading) return console.log('Loading mutation delete occurrence')
+    if (error) return console.log('Error deleting occurrence')
+    if (data) {
+      
+      console.log('mutation triggered', data)
+      console.log(occurrences)
+      const newOccurrences = occurrences[week].filter((occurrence) => {
+        return occurrence.iid !== iid
+      })
+      console.log(newOccurrences)
+      occurrences[week] = newOccurrences
+      console.log(occurrences)
+      setOccurrences(occurrences)
     }
   }
-
-  // const handleDeleteOccurrence = () => {
-  //   deleteOccurrence({ variables: { iid } })
-
-  //   if (error) console.log('Erro mutating')
-  // }
 
   const open = Boolean(anchorEl)
   const id = open ? 'occurrence-iid-popper' : undefined
@@ -106,7 +135,7 @@ export default function EventInstance({
               tags.map((tag) => {
                 return (
                   <EventInstanceTag
-                    key={tag?.iid}
+                    key={tag.iid}
                     label={tag.label || 'Label'}
                     color={'blue'}
                   />
@@ -116,7 +145,7 @@ export default function EventInstance({
         </div>
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
-        <div className="z-50 m-1 flex max-w-md flex-col gap-y-4 rounded-sm border border-solid border-slate-200 bg-white p-3 font-inter text-slate-900 shadow-md dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100">
+        <div className="z-50 m-1 flex max-w-md flex-col gap-y-4 rounded-sm border border-solid border-slate-200 bg-white p-3 font-inter text-slate-900 shadow-md">
           <div className="font-medium">{label}</div>
           <HorizontalDivider />
           <div className="flex flex-col gap-y-4">
@@ -146,7 +175,7 @@ export default function EventInstance({
             </div>
           )}
           {/* <HorizontalDivider /> */}
-          <div className="flex gap-4 mt-4">
+          <div className="mt-4 flex gap-4">
             <PrimaryButton
               title={'Edit'}
               // onClick={handleDeleteOccurrence}
@@ -154,8 +183,11 @@ export default function EventInstance({
             />
             <SecondaryButton
               title={'Delete'}
-              // onClick={handleDeleteOccurrence}
-              onClick={() => undefined}
+              onClick={
+                // deleteOccurrence({ variables: { filter: { iid } } })
+                handleDeleteOccurrence
+              }
+              // onClick={() => undefined}
             />
           </div>
         </div>

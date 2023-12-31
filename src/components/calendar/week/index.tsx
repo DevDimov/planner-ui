@@ -1,7 +1,7 @@
 import format from 'date-fns/format'
 import EventInstance from '../../eventInstance'
 import { getDayColorClass } from './utils/getDayColorClass'
-import { EventInstanceOccurrence, EventInstanceOccurrenceRef } from '../../../gql/codegen/graphql'
+import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
 import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
@@ -10,9 +10,14 @@ import { formatDay } from './utils/formatDay'
 export type CalendarWeekProps = {
   days: Date[]
   occurrences: EventInstanceOccurrence[]
+  week: string
 }
 
-export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
+export default function CalendarWeek({
+  days,
+  occurrences,
+  week,
+}: CalendarWeekProps) {
   const { month } = useContext(CalendarContext)
 
   return (
@@ -47,13 +52,14 @@ export default function CalendarWeek({ days, occurrences }: CalendarWeekProps) {
               <EventInstance
                 iid={iid}
                 key={iid}
-                label={eventInstance?.event?.label || 'Label'}
-                tags={eventInstance?.tags || []}
+                label={eventInstance.event.label}
+                tags={eventInstance.tags || []}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 colStart={colStart}
                 colEnd={colEnd}
                 properties={eventInstance?.event?.properties || undefined}
+                week={week}
               />
             )
           })}
