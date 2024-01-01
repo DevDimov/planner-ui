@@ -13,7 +13,7 @@ type Story = StoryObj<typeof CalendarMonth>
 export const NoEvents: Story = {
   args: {
     month: new Date(2023, 11, 25),
-    occurrences: {},
+    occurrences: [],
   },
 }
 

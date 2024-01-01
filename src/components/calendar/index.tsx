@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import CalendarControls from './controls'
-import CalendarMonth, { GroupedOccurrences } from './month'
+import CalendarMonth from './month'
 import startOfMonth from 'date-fns/startOfMonth'
 import { CalendarContext } from '../../context/calendar'
-import { groupOccurrencesByWeek } from './utils/groupOccurrencesByWeek'
 import { mockQueryEventInstanceOccurrence } from '../../mockData/queryEventInstanceOccurrence'
+import { EventInstanceOccurrence } from '../../gql/codegen/graphql'
+import { QUERY_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/queryEventInstanceOccurrence'
+import { useQuery } from '@apollo/client'
 
 // export type CalendarProps = {
 //   occurrences: EventInstanceOccurrence[]
@@ -14,14 +16,20 @@ export default function Calendar() {
   const weekStartsOn = 1
 
   const [month, setMonth] = useState(startOfMonth(new Date()))
-  const [occurrences, setOccurrences] = useState<GroupedOccurrences>({})
+  const [occurrences, setOccurrences] = useState<EventInstanceOccurrence[]>([])
 
-  useEffect(() => {
-    const groupedOccurrences = groupOccurrencesByWeek(
-      mockQueryEventInstanceOccurrence
-    )
-    setOccurrences(groupedOccurrences)
-  }, [])
+  const { loading, error, data } = useQuery(QUERY_EVENT_INSTANCE_OCCURRENCE)
+
+  if (loading) console.log(loading)
+  if (error) console.log(error)
+
+  if (data) {
+    setOccurrences(mockQueryEventInstanceOccurrence)
+  }
+
+  // useEffect(() => {
+  //   setOccurrences(mockQueryEventInstanceOccurrence)
+  // }, [])
 
   return (
     <div>

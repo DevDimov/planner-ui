@@ -18,7 +18,7 @@ export const SunToSat: Story = {
       value={{
         month: new Date(),
         weekStartsOn: 0,
-        occurrences: {},
+        occurrences: [],
         setOccurrences: () => undefined,
       }}
     >

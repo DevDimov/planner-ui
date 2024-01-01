@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import { gql } from '../codegen'
 
-export const DELETE_EVENT_INSTANCE_OCCURRENCE = gql`
+export const DELETE_EVENT_INSTANCE_OCCURRENCE = gql(`
   mutation DeleteEventInstanceOccurrence(
     $filter: EventInstanceOccurrenceFilter!
   ) {
@@ -13,4 +13,4 @@ export const DELETE_EVENT_INSTANCE_OCCURRENCE = gql`
       }
     }
   }
-`
+`)

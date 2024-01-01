@@ -59,7 +59,6 @@ export default function CalendarWeek({
                 colStart={colStart}
                 colEnd={colEnd}
                 properties={eventInstance?.event?.properties || undefined}
-                week={week}
               />
             )
           })}

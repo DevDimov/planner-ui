@@ -9,9 +9,10 @@ const meta: Meta<typeof Calendar> = {
     apolloClient: {
       mocks: [
         {
+          delay: 1000,
           request: {
             query: DELETE_EVENT_INSTANCE_OCCURRENCE,
-            variables: { filter: { iid: '0x1a5086a7de2' } },
+            variables: { filter: { iid: ['0x1a5086a7de2'] } },
           },
           result: {
             data: {
@@ -25,6 +26,14 @@ const meta: Meta<typeof Calendar> = {
               },
             },
           },
+        },
+        {
+          delay: 1000,
+          request: {
+            query: DELETE_EVENT_INSTANCE_OCCURRENCE,
+            variables: { filter: { iid: ['0x1a5086a7de'] } },
+          },
+          error: new Error('This is a mock network error'),
         },
       ],
     },

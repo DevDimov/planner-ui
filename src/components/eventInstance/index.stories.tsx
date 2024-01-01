@@ -50,30 +50,31 @@ export const SingleTag: Story = {
       },
     ],
   },
-  parameters: {
-    apolloClient: {
-      mocks: [
-        {
-          request: {
-            query: DELETE_EVENT_INSTANCE_OCCURRENCE,
-            variables: { filter: { iid: 'mockIid' } },
-          },
-          result: {
-            data: {
-              deleteEventInstanceOccurrence: {
-                numUids: 1,
-                eventInstanceOccurrence: {
-                  iid: 'mockIid',
-                  endDateTime: '2023-11-30',
-                  startDateTime: '2023-11-31',
-                },
-              },
-            },
-          },
-        },
-      ],
-    },
-  },
+  // parameters: {
+  //   apolloClient: {
+  //     mocks: [
+  //       {
+  //         delay: 1000,
+  //         request: {
+  //           query: DELETE_EVENT_INSTANCE_OCCURRENCE,
+  //           variables: { filter: { iid: 'mockIid' } },
+  //         },
+  //         result: {
+  //           data: {
+  //             deleteEventInstanceOccurrence: {
+  //               numUids: 1,
+  //               eventInstanceOccurrence: {
+  //                 iid: 'mockIid',
+  //                 endDateTime: '2023-11-30',
+  //                 startDateTime: '2023-11-31',
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     ],
+  //   },
+  // },
 }
 
 export const MultipleTags: Story = {

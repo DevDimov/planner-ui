@@ -3,6 +3,7 @@ import { groupDatesByWeek } from '../utils/groupDatesByWeek'
 import CalendarWeek from '../week'
 import WeekdayNames from '../weekdayNames'
 import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
+import { groupOccurrencesByWeek } from '../utils/groupOccurrencesByWeek'
 
 export type GroupedOccurrences = {
   [id: string]: EventInstanceOccurrence[]
@@ -10,13 +11,14 @@ export type GroupedOccurrences = {
 
 export type CalendarMonthProps = {
   month: Date
-  occurrences: GroupedOccurrences
+  occurrences: EventInstanceOccurrence[]
 }
 
 export default function CalendarMonth({
   month,
   occurrences,
 }: CalendarMonthProps) {
+  const groupedOccurrences = groupOccurrencesByWeek(occurrences)
   const weeksGroup = groupDatesByWeek(getAllDaysInMonth(month))
 
   return (
@@ -30,9 +32,8 @@ export default function CalendarMonth({
               week={weekNumber}
               days={days}
               occurrences={
-                Object.keys(occurrences).length > 0
-                  ? occurrences[weekNumber]
-                  : []
+                // Object.keys(occurrences).length > 0
+                groupedOccurrences ? groupedOccurrences[weekNumber] : []
               }
             />
           )

@@ -26,7 +26,6 @@ export type EventInstanceProps = {
   endDateTime: string
   tags: EventInstanceTagType[]
   properties?: InputMaybe<EventPropertyRef>[] | undefined
-  week: string
 }
 
 const colStarts = [
@@ -63,25 +62,24 @@ export default function EventInstance({
   tags,
   // color
   properties,
-  week,
 }: EventInstanceProps) {
   const { occurrences, setOccurrences } = useContext(CalendarContext)
 
-  const [deleteOccurrence, { data, loading, error }] = useMutation(
+  const [deleteOccurrence, { loading, data, error }] = useMutation(
     DELETE_EVENT_INSTANCE_OCCURRENCE
   )
 
   // if (loading) console.log('Loading mutation delete occurrence')
-  // if (error) console.log('Error deleting occurrence')
-  // if (data) {
-  //   console.log('mutation triggered', data)
-  //   const newOccurrences = occurrences[week].filter((occurrence) => {
-  //     return occurrence.iid !== iid
-  //   })
-  //   console.log(newOccurrences)
-  //   occurrences[week] = newOccurrences
-  //   setOccurrences(occurrences)
-  // }
+
+  if (data) {
+    console.log('mutation triggered', data)
+    const newOccurrences = occurrences.filter((occurrence) => {
+      return occurrence.iid !== iid
+    })
+    setOccurrences(newOccurrences)
+  }
+
+  if (error) console.log('Error deleting occurrence')
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -96,24 +94,19 @@ export default function EventInstance({
   //   }
   // }
 
-  const handleDeleteOccurrence = async () => {
-    const data = await deleteOccurrence({ variables: { filter: { iid } } })
+  // const handleDeleteOccurrence = async () => {
+  //   const { data } = await deleteOccurrence({ variables: { filter: { iid } } })
 
-    if (loading) return console.log('Loading mutation delete occurrence')
-    if (error) return console.log('Error deleting occurrence')
-    if (data) {
-      
-      console.log('mutation triggered', data)
-      console.log(occurrences)
-      const newOccurrences = occurrences[week].filter((occurrence) => {
-        return occurrence.iid !== iid
-      })
-      console.log(newOccurrences)
-      occurrences[week] = newOccurrences
-      console.log(occurrences)
-      setOccurrences(occurrences)
-    }
-  }
+  //   if (loading) return console.log('Loading mutation delete occurrence')
+  //   if (error) return console.log('Error deleting occurrence')
+  //   if (data) {
+  //     console.log('mutation triggered', data)
+  //     const newOccurrences = occurrences.filter((occurrence) => {
+  //       return occurrence.iid !== iid
+  //     })
+  //     setOccurrences(newOccurrences)
+  //   }
+  // }
 
   const open = Boolean(anchorEl)
   const id = open ? 'occurrence-iid-popper' : undefined
@@ -182,12 +175,11 @@ export default function EventInstance({
               onClick={() => undefined}
             />
             <SecondaryButton
-              title={'Delete'}
-              onClick={
-                // deleteOccurrence({ variables: { filter: { iid } } })
-                handleDeleteOccurrence
+              title={loading ? 'Deleting...' : 'Delete'}
+              // onClick={handleDeleteOccurrence}
+              onClick={() =>
+                deleteOccurrence({ variables: { filter: { iid: [iid] } } })
               }
-              // onClick={() => undefined}
             />
           </div>
         </div>
