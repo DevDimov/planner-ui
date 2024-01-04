@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import CalendarControls from './controls'
 import CalendarMonth from './month'
 import startOfMonth from 'date-fns/startOfMonth'
 import { CalendarContext } from '../../context/calendar'
-import { mockQueryEventInstanceOccurrence } from '../../mockData/queryEventInstanceOccurrence'
 import { EventInstanceOccurrence } from '../../gql/codegen/graphql'
 import { QUERY_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/queryEventInstanceOccurrence'
-import { useQuery } from '@apollo/client'
-
-// export type CalendarProps = {
-//   occurrences: EventInstanceOccurrence[]
-// }
+import { useLazyQuery } from '@apollo/client'
 
 export default function Calendar() {
   const weekStartsOn = 1
@@ -18,18 +13,24 @@ export default function Calendar() {
   const [month, setMonth] = useState(startOfMonth(new Date()))
   const [occurrences, setOccurrences] = useState<EventInstanceOccurrence[]>([])
 
-  const { loading, error, data } = useQuery(QUERY_EVENT_INSTANCE_OCCURRENCE)
+  const [queryOccurrences] = useLazyQuery(QUERY_EVENT_INSTANCE_OCCURRENCE)
 
-  if (loading) console.log(loading)
-  if (error) console.log(error)
+  const fetchOccurrences = useCallback(async () => {
+    const { data, error } = await queryOccurrences()
 
-  if (data) {
-    setOccurrences(mockQueryEventInstanceOccurrence)
-  }
+    if (error) {
+      return console.log('There was an error', error)
+    }
 
-  // useEffect(() => {
-  //   setOccurrences(mockQueryEventInstanceOccurrence)
-  // }, [])
+    if (data) {
+      console.log('Data is available')
+      setOccurrences(data.queryEventInstanceOccurrence)
+    }
+  }, [queryOccurrences])
+
+  useEffect(() => {
+    fetchOccurrences().catch(console.error)
+  }, [fetchOccurrences])
 
   return (
     <div>

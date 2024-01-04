@@ -65,21 +65,9 @@ export default function EventInstance({
 }: EventInstanceProps) {
   const { occurrences, setOccurrences } = useContext(CalendarContext)
 
-  const [deleteOccurrence, { loading, data, error }] = useMutation(
+  const [deleteOccurrence, { loading }] = useMutation(
     DELETE_EVENT_INSTANCE_OCCURRENCE
   )
-
-  // if (loading) console.log('Loading mutation delete occurrence')
-
-  if (data) {
-    console.log('mutation triggered', data)
-    const newOccurrences = occurrences.filter((occurrence) => {
-      return occurrence.iid !== iid
-    })
-    setOccurrences(newOccurrences)
-  }
-
-  if (error) console.log('Error deleting occurrence')
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -94,31 +82,30 @@ export default function EventInstance({
   //   }
   // }
 
-  // const handleDeleteOccurrence = async () => {
-  //   const { data } = await deleteOccurrence({ variables: { filter: { iid } } })
+  const handleDeleteOccurrence = async () => {
+    try {
+      const { data } = await deleteOccurrence({
+        variables: { filter: { iid: [iid] } },
+      })
 
-  //   if (loading) return console.log('Loading mutation delete occurrence')
-  //   if (error) return console.log('Error deleting occurrence')
-  //   if (data) {
-  //     console.log('mutation triggered', data)
-  //     const newOccurrences = occurrences.filter((occurrence) => {
-  //       return occurrence.iid !== iid
-  //     })
-  //     setOccurrences(newOccurrences)
-  //   }
-  // }
+      if (data) {
+        console.log('mutation triggered', data)
+        const newOccurrences = occurrences.filter((occurrence) => {
+          return occurrence.iid !== iid
+        })
+        setOccurrences(newOccurrences)
+      }
+    } catch (error) {
+      console.log('Error deleting occurrence', error)
+    }
+  }
 
   const open = Boolean(anchorEl)
   const id = open ? 'occurrence-iid-popper' : undefined
 
   return (
     <div className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}>
-      <Button
-        onClick={handleClick}
-        // onMouseDown={handleOnMouseDown}
-        // onContextMenu={handleOnMouseDown}
-        className="w-full bg-white"
-      >
+      <Button onClick={handleClick} className="w-full bg-white">
         <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
           <div className="text-md text-left font-sans font-medium leading-4 text-black">
             {label}
@@ -176,10 +163,7 @@ export default function EventInstance({
             />
             <SecondaryButton
               title={loading ? 'Deleting...' : 'Delete'}
-              // onClick={handleDeleteOccurrence}
-              onClick={() =>
-                deleteOccurrence({ variables: { filter: { iid: [iid] } } })
-              }
+              onClick={handleDeleteOccurrence}
             />
           </div>
         </div>

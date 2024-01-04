@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import Calendar from './index'
 import { DELETE_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/deleteEventInstanceOccurence'
+import { QUERY_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/queryEventInstanceOccurrence'
+import { mockQueryEventInstanceOccurrence } from '../../mockData/queryEventInstanceOccurrence'
 
 const meta: Meta<typeof Calendar> = {
   title: 'Calendar/Full',
@@ -8,6 +10,18 @@ const meta: Meta<typeof Calendar> = {
   parameters: {
     apolloClient: {
       mocks: [
+        {
+          delay: 1000,
+          request: {
+            query: QUERY_EVENT_INSTANCE_OCCURRENCE,
+            // variables: { filter: { iid: ['0x1a5086a7de2'] } },
+          },
+          result: {
+            data: {
+              queryEventInstanceOccurrence: mockQueryEventInstanceOccurrence,
+            },
+          },
+        },
         {
           delay: 1000,
           request: {

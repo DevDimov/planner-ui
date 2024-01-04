@@ -32,7 +32,6 @@ export default function CalendarMonth({
               week={weekNumber}
               days={days}
               occurrences={
-                // Object.keys(occurrences).length > 0
                 groupedOccurrences ? groupedOccurrences[weekNumber] : []
               }
             />

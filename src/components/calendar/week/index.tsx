@@ -50,8 +50,8 @@ export default function CalendarWeek({
 
             return (
               <EventInstance
-                iid={iid}
                 key={iid}
+                iid={iid}
                 label={eventInstance.event.label}
                 tags={eventInstance.tags || []}
                 startDateTime={startDateTime}

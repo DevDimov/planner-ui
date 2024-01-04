@@ -1,4 +1,6 @@
-import { gql } from '../codegen/gql'
+// import { gql } from '../codegen/gql'
+
+import { gql } from "@apollo/client";
 
 export const QUERY_EVENT_INSTANCE_OCCURRENCE = gql(`
 query QueryEventInstanceOccurrence {
@@ -18,7 +20,14 @@ query QueryEventInstanceOccurrence {
         id
         iid
         label
+        properties {
+          id
+          iid
+          label
+          value
+        }
       }
     }
   }
-}`)
+}
+`)

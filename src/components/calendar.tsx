@@ -80,9 +80,8 @@ export default function Calendar() {
             <div
               key={'week-container' + key}
               className="week-container"
-              data-key={'week-container' + key}
             >
-              {entry.map((day, index) => {
+              {entry.map((day) => {
                 const dateTime = format(day, 'yyyy-MM-dd')
                 return (
                   <time dateTime={dateTime} key={dateTime}>
