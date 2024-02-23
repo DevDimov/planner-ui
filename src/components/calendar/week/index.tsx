@@ -6,6 +6,7 @@ import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
 import { formatDay } from './utils/formatDay'
+import EntryButton from '../../buttons/entry'
 
 export type CalendarWeekProps = {
   days: Date[]
@@ -28,16 +29,18 @@ export default function CalendarWeek({
           const colorClass = getDayColorClass(day, month)
 
           return (
-            <time dateTime={dateTime} key={dateTime}>
-              <span className={`${colorClass} rounded p-1`}>
-                {formatDay(day)}
-              </span>
-            </time>
+            <div>
+              <time dateTime={dateTime}>
+                <span className={`${colorClass} rounded p-1`}>
+                  {formatDay(day)}
+                </span>
+              </time>
+            </div>
           )
         })}
       </div>
 
-      <div className="col-span-full row-start-2 grid grid-cols-7">
+      <div className="col-span-full grid grid-cols-7">
         {occurrences &&
           occurrences.map((occurrence) => {
             const { iid, eventInstance, startDateTime, endDateTime } =
@@ -63,6 +66,20 @@ export default function CalendarWeek({
             )
           })}
       </div>
+
+      {days.map((day) => {
+        const dateTime = format(day, 'yyyy-MM-dd')
+
+        return (
+          <EntryButton
+            key={'entryButton' + dateTime}
+            title={'Add new'}
+            onClick={function (): void {
+              throw new Error('Function not implemented.')
+            }}
+          ></EntryButton>
+        )
+      })}
     </div>
   )
 }
