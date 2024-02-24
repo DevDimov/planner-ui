@@ -2,8 +2,10 @@ import format from 'date-fns/format'
 import { Dispatch, SetStateAction } from 'react'
 import subMonths from 'date-fns/subMonths'
 import addMonths from 'date-fns/addMonths'
-import IconButton from '../../buttons/icon'
 import { GrNext, GrPrevious } from 'react-icons/gr'
+import { Button } from '../../buttons'
+import CreateEventButton from '../../buttons/createEvent'
+import AddEntryButton from '../../buttons/addEntry'
 
 type CalendarControlProps = {
   month: Date
@@ -25,16 +27,30 @@ export default function CalendarControls({
   }
 
   return (
-    <div className="mb-6 flex flex-row items-center gap-2 p-4">
-      <span className="mr-8 text-xl font-medium">
-        {format(month, 'MMMM yyyy')}
-      </span>
-      <IconButton onClick={showPreviousMonth} title="Show previous month">
-        <GrPrevious />
-      </IconButton>
-      <IconButton onClick={showNextMonth} title="Show next month">
-        <GrNext />
-      </IconButton>
+    <div className="mb-6 flex flex-row items-center justify-between gap-2 p-4">
+      <div className="flex flex-row items-center gap-2">
+        <span className="mr-8 text-xl font-medium">
+          {format(month, 'MMMM yyyy')}
+        </span>
+        <Button
+          variant="outline"
+          onClick={showPreviousMonth}
+          title="Show previous month"
+        >
+          <GrPrevious />
+        </Button>
+        <Button
+          variant="outline"
+          onClick={showNextMonth}
+          title="Show next month"
+        >
+          <GrNext />
+        </Button>
+      </div>
+      <div className="flex gap-2">
+        <AddEntryButton />
+        <CreateEventButton />
+      </div>
     </div>
   )
 }

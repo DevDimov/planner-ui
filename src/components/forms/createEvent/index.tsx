@@ -1,37 +1,41 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { eventEntryFormSchema } from '../../../schema/eventEntry'
 import { z } from 'zod'
 
 import { Button } from '../../buttons'
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '../index'
-import { SelectEvent } from '../../select/selectEvent'
-import { SingleDateInput } from '../../input/singleDateInput'
-import { TypographyLarge } from '../../typography/large'
-import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventInstanceOccurrence'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../index'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
 import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
 import lodash from 'lodash'
+import { ADD_EVENT } from '../../../gql/operations/addEvent'
+import { createEventFormSchema } from '../../../schema/createEvent'
+import { Input } from '../../ui/input/default'
 
-type EventEntryFormProps = {
+type CreateEventFormProps = {
   onClose: () => void
 }
 
-export function AddEntryForm({ onClose }: EventEntryFormProps) {
+export function CreateEventForm({ onClose }: CreateEventFormProps) {
   // const [eventOptions, setEventOptions] = useState<
   //   { id: string; label: string }[]
   // >([])
 
   // const { occurrences } = React.useContext(CalendarContext)
 
-  const form = useForm<z.infer<typeof eventEntryFormSchema>>({
-    resolver: zodResolver(eventEntryFormSchema),
+  const form = useForm<z.infer<typeof createEventFormSchema>>({
+    resolver: zodResolver(createEventFormSchema),
     defaultValues: {
-      eventId: '',
-      startDateTime: undefined,
-      endDateTime: undefined,
+      label: '',
+      tags: [],
     },
   })
 
@@ -60,18 +64,18 @@ export function AddEntryForm({ onClose }: EventEntryFormProps) {
   //   setEventOptions(filteredEntries)
   // }, [occurrences])
 
-  const [addEventEntry, { loading, error, data }] = useMutation(ADD_EVENT_ENTRY)
+  const [addEventEntry, { loading, error, data }] = useMutation(ADD_EVENT)
 
   if (error) console.log('error', error)
 
-  function onSubmit(values: z.infer<typeof eventEntryFormSchema>) {
+  function onSubmit(values: z.infer<typeof createEventFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-    const { eventId, startDateTime, endDateTime } = values
-    addEventEntry({
-      // variables: { eventInstance: { id: eventId }, startDateTime, endDateTime },
-    })
+    // const { label, tags } = values
+    // addEventEntry({
+    //   // variables: { eventInstance: { id: eventId }, startDateTime, endDateTime },
+    // })
   }
 
   return (
@@ -82,49 +86,24 @@ export function AddEntryForm({ onClose }: EventEntryFormProps) {
       >
         <FormField
           control={form.control}
-          name="eventId"
+          name="label"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Event</FormLabel>
-              <SelectEvent
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                // options={eventOptions}
-                options={[
-                  { id: 'student1', label: 'Student1 Label' },
-                  { id: 'student2', label: 'Student2 Label' },
-                ]}
-              />
+              <FormLabel>Event label</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter label" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="startDateTime"
+          name="tags"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>From</FormLabel>
-              <SingleDateInput
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="Pick start date"
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="endDateTime"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>To</FormLabel>
-              <SingleDateInput
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="Pick end date"
-              />
+              <FormLabel>Tags</FormLabel>
+              <Input placeholder="Enter tags" {...field} />
               <FormMessage />
             </FormItem>
           )}

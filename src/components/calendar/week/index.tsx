@@ -6,7 +6,6 @@ import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
 import { formatDay } from './utils/formatDay'
-import EntryButton from '../../buttons/entry'
 
 export type CalendarWeekProps = {
   days: Date[]
@@ -22,7 +21,7 @@ export default function CalendarWeek({
   const { month } = useContext(CalendarContext)
 
   return (
-    <div className="col-span-full grid grid-cols-7 gap-y-1 font-inter font-medium">
+    <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
       <div className="col-span-full grid grid-cols-7">
         {days.map((day) => {
           const dateTime = format(day, 'yyyy-MM-dd')
@@ -66,20 +65,6 @@ export default function CalendarWeek({
             )
           })}
       </div>
-
-      {days.map((day) => {
-        const dateTime = format(day, 'yyyy-MM-dd')
-
-        return (
-          <EntryButton
-            key={'entryButton' + dateTime}
-            title={'Add new'}
-            onClick={function (): void {
-              throw new Error('Function not implemented.')
-            }}
-          ></EntryButton>
-        )
-      })}
     </div>
   )
 }

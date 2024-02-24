@@ -7,18 +7,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../index'
-import { FormControl } from '../../forms'
+import { FormControl, FormDescription } from '../../forms'
+import { CalendarContext } from '../../../context/calendar'
+import { TypographyLarge } from '../../typography/large'
+import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
+import lodash from 'lodash'
 
 type SelectEventProps = {
   value?: string
   defaultValue?: string
   onValueChange?: (...event: any[]) => void
+  options: { id: string; label: string }[]
 }
 
 export function SelectEvent({
   value,
   onValueChange,
   defaultValue,
+  options,
 }: SelectEventProps) {
   // const [value, setValue] = useState('')
 
@@ -33,12 +39,19 @@ export function SelectEvent({
           <SelectValue placeholder="Select event" />
         </SelectTrigger>
       </FormControl>
+      {/* <FormDescription>
+        Select an existing event to which to add new entry
+      </FormDescription> */}
       <SelectContent>
-        <SelectItem value="apple">Apple</SelectItem>
-        <SelectItem value="banana">Banana</SelectItem>
-        <SelectItem value="blueberry">Blueberry</SelectItem>
-        <SelectItem value="grapes">Grapes</SelectItem>
-        <SelectItem value="pineapple">Pineapple</SelectItem>
+        {options.map((option) => {
+          const eventId = option.id
+          const eventLabel = option.label
+          return (
+            <SelectItem key={eventId} value={eventId}>
+              {eventLabel}
+            </SelectItem>
+          )
+        })}
       </SelectContent>
     </Select>
   )

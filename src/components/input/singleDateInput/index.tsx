@@ -14,9 +14,14 @@ import {
 type SingleDateInputProps = {
   value: Date
   onChange: (...event: any[]) => void
+  placeholder?: string
 }
 
-export function SingleDateInput({ value, onChange }: SingleDateInputProps) {
+export function SingleDateInput({
+  value,
+  onChange,
+  placeholder,
+}: SingleDateInputProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,7 +33,11 @@ export function SingleDateInput({ value, onChange }: SingleDateInputProps) {
               value && 'text-muted-foreground'
             )}
           >
-            {value ? format(value, 'PPP') : <span>Pick a date</span>}
+            {value ? (
+              format(value, 'PPP')
+            ) : (
+              <span>{placeholder || 'Pick a date'}</span>
+            )}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
           </Button>
         </FormControl>
@@ -40,6 +49,7 @@ export function SingleDateInput({ value, onChange }: SingleDateInputProps) {
           onSelect={onChange}
           disabled={(date) => date < new Date('1900-01-01')}
           initialFocus
+          weekStartsOn={1}
         />
         <PopoverClose className="w-full p-2">
           <div className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground">

@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import { gql } from '../codegen/gql'
 
-export const ADD_EVENT_INSTANCE_OCCURRENCE = gql`
+export const ADD_EVENT_ENTRY = gql(`
   mutation AddEventInstanceOccurrence(
     $input: [AddEventInstanceOccurrenceInput!]!
   ) {
@@ -8,4 +8,4 @@ export const ADD_EVENT_INSTANCE_OCCURRENCE = gql`
       numUids
     }
   }
-`
+`)
