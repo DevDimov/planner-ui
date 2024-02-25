@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { eventEntryFormSchema } from '../../../schema/eventEntry'
+import { addEntryFormSchema } from '../../../schema/addEntry'
 import { z } from 'zod'
 
 import { Button } from '../../buttons'
@@ -15,19 +15,19 @@ import { CalendarContext } from '../../../context/calendar'
 import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
 import lodash from 'lodash'
 
-type EventEntryFormProps = {
+type AddEntryFormProps = {
   onClose: () => void
 }
 
-export function AddEntryForm({ onClose }: EventEntryFormProps) {
+export function AddEntryForm({ onClose }: AddEntryFormProps) {
   // const [eventOptions, setEventOptions] = useState<
   //   { id: string; label: string }[]
   // >([])
 
   // const { occurrences } = React.useContext(CalendarContext)
 
-  const form = useForm<z.infer<typeof eventEntryFormSchema>>({
-    resolver: zodResolver(eventEntryFormSchema),
+  const form = useForm<z.infer<typeof addEntryFormSchema>>({
+    resolver: zodResolver(addEntryFormSchema),
     defaultValues: {
       eventId: '',
       startDateTime: undefined,
@@ -64,7 +64,7 @@ export function AddEntryForm({ onClose }: EventEntryFormProps) {
 
   if (error) console.log('error', error)
 
-  function onSubmit(values: z.infer<typeof eventEntryFormSchema>) {
+  function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)

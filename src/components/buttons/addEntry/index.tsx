@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../../ui/dialog'
-import { AddEntryForm } from '../../forms/eventEntry'
+import { AddEntryForm } from '../../forms/addEntry'
 
 export default function AddEntryButton() {
   const [open, setOpen] = React.useState(false)
