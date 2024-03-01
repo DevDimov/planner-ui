@@ -8,18 +8,24 @@ export const ADD_EVENT = gql(`
         id
         iid
         label
+        tags {
+          iid
+          id
+          label
+        }
+        properties {
+          iid
+          id
+          label
+          value
+        }
+        entries {
+          iid
+          startDateTime
+          endDateTime
+        }
         user {
           email
-        }
-        instances {
-          iid
-          occurrences {
-            iid
-          }
-          tags {
-            id
-            label
-          }
         }
       }
     }

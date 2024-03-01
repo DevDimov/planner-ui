@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core'
+import { gql } from '../codegen/gql'
 
-export const UPDATE_EVENT = gql`
+export const UPDATE_EVENT = gql(`
   mutation UpdateEvent($input: UpdateEventInput!) {
     updateEvent(input: $input) {
       numUids
@@ -11,4 +11,4 @@ export const UPDATE_EVENT = gql`
       }
     }
   }
-`
+`)

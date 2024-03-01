@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import { gql } from '../codegen/gql'
 
-export const DELETE_EVENT = gql`
+export const DELETE_EVENT = gql(`
   mutation DeleteEvent($filter: EventFilter!) {
     deleteEvent(filter: $filter) {
       numUids
@@ -10,4 +10,4 @@ export const DELETE_EVENT = gql`
       }
     }
   }
-`
+`)

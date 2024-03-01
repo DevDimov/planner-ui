@@ -1,48 +1,36 @@
 import { gql } from '../codegen/gql'
 
-// export const QUERY_EVENT = gql`
+// export const QUERY_EVENT = gql(`
 //   query QueryEvent($filter: EventFilter) {
 //     queryEvent(filter: $filter) {
 //       id
 //       iid
 //       label
-//       instances {
+//       tags {
 //         id
-//         occurrences {
-//           endDateTime
-//           startDateTime
-//           iid
-//         }
-//         tags {
-//           id
-//           iid
-//           label
-//         }
+//         iid
+//         label
 //       }
 //     }
 //   }
-// `
+// `)
 
 export const QUERY_ALL_EVENTS = gql(`
 query QueryEvent {
   queryEvent {
-    id
     iid
-    instances {
+    id
+    label
+    entries {
+      iid
+      startDateTime
+      endDateTime
+    }
+    tags {
       id
       iid
-      occurrences {
-        endDateTime
-        iid
-        startDateTime
-      }
-      tags {
-        id
-        iid
-        label
-      }
+      label
     }
-    label
     properties {
       id
       iid

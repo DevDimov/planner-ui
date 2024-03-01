@@ -8,23 +8,27 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from '../index'
 import { SelectEvent } from '../../select/selectEvent'
 import { SingleDateInput } from '../../input/singleDateInput'
 import { TypographyLarge } from '../../typography/large'
-import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventInstanceOccurrence'
+import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventEntry'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
-import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
+import { EventEntry } from '../../../gql/codegen/graphql'
 import lodash from 'lodash'
+import { useContext, useEffect, useState } from 'react'
 
 type AddEntryFormProps = {
   onClose: () => void
 }
 
-export function AddEntryForm({ onClose }: AddEntryFormProps) {
-  // const [eventOptions, setEventOptions] = useState<
-  //   { id: string; label: string }[]
-  // >([])
+type EventOption = {
+  id: string
+  label: string
+}
 
-  // const { occurrences } = React.useContext(CalendarContext)
+export function AddEntryForm({ onClose }: AddEntryFormProps) {
+  const [eventOptions, setEventOptions] = useState<EventOption[]>([])
+
+  const { entries, setEntries } = useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof addEntryFormSchema>>({
     resolver: zodResolver(addEntryFormSchema),
@@ -35,43 +39,54 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
     },
   })
 
-  // useEffect(() => {
-  //   let uniqueEntries: EventInstanceOccurrence[] = []
-  //   if (occurrences) {
-  //     uniqueEntries = lodash.uniqBy(occurrences, (e) => {
-  //       return e.eventInstance.id
-  //     })
-  //   }
+  useEffect(() => {
+    let uniqueEntries: EventEntry[] = []
+    if (entries) {
+      uniqueEntries = lodash.uniqBy(entries, (e) => {
+        return e.event.id
+      })
+    }
 
-  //   let filteredEntries: { id: string; label: string }[] = []
+    let filteredEntries: EventOption[] = []
 
-  //   if (uniqueEntries) {
-  //     filteredEntries = uniqueEntries.map((entry) => {
-  //       return {
-  //         label: entry.eventInstance.id,
-  //         id: entry.eventInstance.iid,
-  //         // label: entry.eventInstance.label,
-  //       }
-  //     })
-  //   }
+    if (uniqueEntries) {
+      filteredEntries = uniqueEntries.map((entry) => {
+        const eventLabel = entry.event.label
+        const tags = entry.event.tags
+          ?.map((tag) => {
+            return tag && tag.label
+          })
+          .toString()
 
-  //   console.log(uniqueEntries)
+        return {
+          id: entry.event.iid,
+          label: tags ? `${eventLabel} ${tags}` : eventLabel,
+        }
+      })
+    }
 
-  //   setEventOptions(filteredEntries)
-  // }, [occurrences])
+    setEventOptions(filteredEntries)
+  }, [entries])
 
-  const [addEventEntry, { loading, error, data }] = useMutation(ADD_EVENT_ENTRY)
+  const [addEventEntry, { loading, error }] = useMutation(ADD_EVENT_ENTRY)
 
   if (error) console.log('error', error)
 
-  function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
     const { eventId, startDateTime, endDateTime } = values
-    addEventEntry({
-      // variables: { eventInstance: { id: eventId }, startDateTime, endDateTime },
+    const { data } = await addEventEntry({
+      variables: {
+        input: {
+          startDateTime: startDateTime.toISOString(),
+          endDateTime: endDateTime.toISOString(),
+          event: { id: eventId },
+        },
+      },
     })
+
+    if (data) {
+      setEntries([...entries, data?.addEventEntry?.eventEntry])
+    }
   }
 
   return (
@@ -89,11 +104,11 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
               <SelectEvent
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                // options={eventOptions}
-                options={[
-                  { id: 'student1', label: 'Student1 Label' },
-                  { id: 'student2', label: 'Student2 Label' },
-                ]}
+                options={eventOptions}
+                // options={[
+                //   { id: 'student1', label: 'Student1 Label' },
+                //   { id: 'student2', label: 'Student2 Label' },
+                // ]}
               />
               <FormMessage />
             </FormItem>

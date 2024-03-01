@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction, createContext } from 'react'
-import { EventInstanceOccurrence } from '../../gql/codegen/graphql'
+import { EventEntry } from '../../gql/codegen/graphql'
 
 const defaultValue: {
   month: Date
   weekStartsOn: number
-  occurrences: EventInstanceOccurrence[]
-  setOccurrences: Dispatch<SetStateAction<EventInstanceOccurrence[]>>
+  entries: EventEntry[]
+  setEntries: Dispatch<SetStateAction<EventEntry[]>>
 } = {
   month: new Date(),
   weekStartsOn: 1,
-  occurrences: [],
-  setOccurrences: () => {},
+  entries: [],
+  setEntries: () => {},
 }
 
 export const CalendarContext = createContext(defaultValue)

@@ -15,7 +15,6 @@ import {
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
-import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
 import { ADD_EVENT } from '../../../gql/operations/addEvent'
 import { createEventFormSchema } from '../../../schema/createEvent'
 import { Input } from '../../ui/input/default'

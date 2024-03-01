@@ -23,21 +23,22 @@ const days = [
 export const NoEvents: Story = {
   args: {
     days,
-    occurrences: [],
+    entries: [],
   },
 }
 
 export const SingleDayEvent: Story = {
   args: {
     days,
-    occurrences: [
+    entries: [
       {
         iid: '0x1a5086a7de',
         startDateTime: '2023-12-25T00:00:00Z',
         endDateTime: '2023-12-31T00:00:00Z',
-        eventInstance: {
+        event: {
           iid: '0x1a5086a7dd',
           id: 'auth0|65538f46da9fa0033488f080.Single Day Event.At work',
+          label: 'Single Day Event',
           tags: [
             {
               id: 'auth0|65538f46da9fa0033488f080.Work',
@@ -49,14 +50,9 @@ export const SingleDayEvent: Story = {
               },
             },
           ],
-          event: {
-            id: 'auth0|65538f46da9fa0033488f080.Single Day Event',
-            iid: '0x1a5086a7df',
-            label: 'Single Day Event',
-            user: {
-              email: 'vdim@example.com',
-              iid: 'u1',
-            },
+          user: {
+            email: 'vdim@example.com',
+            iid: 'u1',
           },
         },
       },

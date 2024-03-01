@@ -26,74 +26,33 @@ export type Scalars = {
   Int64: { input: any; output: any; }
 };
 
-export type AddEventInput = {
-  id: Scalars['String']['input'];
-  instances?: InputMaybe<Array<InputMaybe<EventInstanceRef>>>;
-  label: Scalars['String']['input'];
-  properties?: InputMaybe<Array<InputMaybe<EventPropertyRef>>>;
-  user: UserRef;
-};
-
-export type AddEventInstanceInput = {
-  event: EventRef;
-  id: Scalars['String']['input'];
-  occurrences?: InputMaybe<Array<EventInstanceOccurrenceRef>>;
-  tags?: InputMaybe<Array<EventInstanceTagRef>>;
-};
-
-export type AddEventInstanceOccurrenceInput = {
+export type AddEventEntryInput = {
   endDateTime: Scalars['DateTime']['input'];
-  eventInstance: EventInstanceRef;
+  event: EventRef;
   startDateTime: Scalars['DateTime']['input'];
 };
 
-export type AddEventInstanceOccurrencePayload = {
-  __typename?: 'AddEventInstanceOccurrencePayload';
-  eventInstanceOccurrence?: Maybe<Array<Maybe<EventInstanceOccurrence>>>;
+export type AddEventEntryPayload = {
+  __typename?: 'AddEventEntryPayload';
+  eventEntry?: Maybe<Array<Maybe<EventEntry>>>;
   numUids?: Maybe<Scalars['Int']['output']>;
 };
 
 
-export type AddEventInstanceOccurrencePayloadEventInstanceOccurrenceArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
+export type AddEventEntryPayloadEventEntryArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOccurrenceOrder>;
+  order?: InputMaybe<EventEntryOrder>;
 };
 
-export type AddEventInstancePayload = {
-  __typename?: 'AddEventInstancePayload';
-  eventInstance?: Maybe<Array<Maybe<EventInstance>>>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type AddEventInstancePayloadEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
-};
-
-export type AddEventInstanceTagInput = {
-  eventInstance?: InputMaybe<Array<EventInstanceRef>>;
+export type AddEventInput = {
+  entries?: InputMaybe<Array<InputMaybe<EventEntryRef>>>;
   id: Scalars['String']['input'];
   label: Scalars['String']['input'];
+  properties?: InputMaybe<Array<InputMaybe<EventPropertyRef>>>;
+  tags?: InputMaybe<Array<TagRef>>;
   user: UserRef;
-};
-
-export type AddEventInstanceTagPayload = {
-  __typename?: 'AddEventInstanceTagPayload';
-  eventInstanceTag?: Maybe<Array<Maybe<EventInstanceTag>>>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type AddEventInstanceTagPayloadEventInstanceTagArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
 };
 
 export type AddEventPayload = {
@@ -131,10 +90,31 @@ export type AddEventPropertyPayloadEventPropertyArgs = {
   order?: InputMaybe<EventPropertyOrder>;
 };
 
+export type AddTagInput = {
+  events?: InputMaybe<Array<EventRef>>;
+  id: Scalars['String']['input'];
+  label: Scalars['String']['input'];
+  user: UserRef;
+};
+
+export type AddTagPayload = {
+  __typename?: 'AddTagPayload';
+  numUids?: Maybe<Scalars['Int']['output']>;
+  tag?: Maybe<Array<Maybe<Tag>>>;
+};
+
+
+export type AddTagPayloadTagArgs = {
+  filter?: InputMaybe<TagFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TagOrder>;
+};
+
 export type AddUserInput = {
   email: Scalars['String']['input'];
   events?: InputMaybe<Array<InputMaybe<EventRef>>>;
-  tags?: InputMaybe<Array<InputMaybe<EventInstanceTagRef>>>;
+  tags?: InputMaybe<Array<InputMaybe<TagRef>>>;
 };
 
 export type AddUserPayload = {
@@ -190,49 +170,19 @@ export type DateTimeRange = {
   min: Scalars['DateTime']['input'];
 };
 
-export type DeleteEventInstanceOccurrencePayload = {
-  __typename?: 'DeleteEventInstanceOccurrencePayload';
-  eventInstanceOccurrence?: Maybe<Array<Maybe<EventInstanceOccurrence>>>;
+export type DeleteEventEntryPayload = {
+  __typename?: 'DeleteEventEntryPayload';
+  eventEntry?: Maybe<Array<Maybe<EventEntry>>>;
   msg?: Maybe<Scalars['String']['output']>;
   numUids?: Maybe<Scalars['Int']['output']>;
 };
 
 
-export type DeleteEventInstanceOccurrencePayloadEventInstanceOccurrenceArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
+export type DeleteEventEntryPayloadEventEntryArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOccurrenceOrder>;
-};
-
-export type DeleteEventInstancePayload = {
-  __typename?: 'DeleteEventInstancePayload';
-  eventInstance?: Maybe<Array<Maybe<EventInstance>>>;
-  msg?: Maybe<Scalars['String']['output']>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type DeleteEventInstancePayloadEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
-};
-
-export type DeleteEventInstanceTagPayload = {
-  __typename?: 'DeleteEventInstanceTagPayload';
-  eventInstanceTag?: Maybe<Array<Maybe<EventInstanceTag>>>;
-  msg?: Maybe<Scalars['String']['output']>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type DeleteEventInstanceTagPayloadEventInstanceTagArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
+  order?: InputMaybe<EventEntryOrder>;
 };
 
 export type DeleteEventPayload = {
@@ -263,6 +213,21 @@ export type DeleteEventPropertyPayloadEventPropertyArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<EventPropertyOrder>;
+};
+
+export type DeleteTagPayload = {
+  __typename?: 'DeleteTagPayload';
+  msg?: Maybe<Scalars['String']['output']>;
+  numUids?: Maybe<Scalars['Int']['output']>;
+  tag?: Maybe<Array<Maybe<Tag>>>;
+};
+
+
+export type DeleteTagPayloadTagArgs = {
+  filter?: InputMaybe<TagFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TagOrder>;
 };
 
 export type DeleteUserPayload = {
@@ -300,27 +265,29 @@ export enum DgraphIndex {
 
 export type Event = {
   __typename?: 'Event';
+  entries?: Maybe<Array<Maybe<EventEntry>>>;
+  entriesAggregate?: Maybe<EventEntryAggregateResult>;
   id: Scalars['String']['output'];
   iid: Scalars['ID']['output'];
-  instances?: Maybe<Array<Maybe<EventInstance>>>;
-  instancesAggregate?: Maybe<EventInstanceAggregateResult>;
   label: Scalars['String']['output'];
   properties?: Maybe<Array<Maybe<EventProperty>>>;
   propertiesAggregate?: Maybe<EventPropertyAggregateResult>;
+  tags?: Maybe<Array<Tag>>;
+  tagsAggregate?: Maybe<TagAggregateResult>;
   user: User;
 };
 
 
-export type EventInstancesArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
+export type EventEntriesArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
+  order?: InputMaybe<EventEntryOrder>;
 };
 
 
-export type EventInstancesAggregateArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
+export type EventEntriesAggregateArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
 };
 
 
@@ -337,6 +304,19 @@ export type EventPropertiesAggregateArgs = {
 };
 
 
+export type EventTagsArgs = {
+  filter?: InputMaybe<TagFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TagOrder>;
+};
+
+
+export type EventTagsAggregateArgs = {
+  filter?: InputMaybe<TagFilter>;
+};
+
+
 export type EventUserArgs = {
   filter?: InputMaybe<UserFilter>;
 };
@@ -350,6 +330,68 @@ export type EventAggregateResult = {
   labelMin?: Maybe<Scalars['String']['output']>;
 };
 
+export type EventEntry = {
+  __typename?: 'EventEntry';
+  endDateTime: Scalars['DateTime']['output'];
+  event: Event;
+  iid: Scalars['ID']['output'];
+  startDateTime: Scalars['DateTime']['output'];
+};
+
+
+export type EventEntryEventArgs = {
+  filter?: InputMaybe<EventFilter>;
+};
+
+export type EventEntryAggregateResult = {
+  __typename?: 'EventEntryAggregateResult';
+  count?: Maybe<Scalars['Int']['output']>;
+  endDateTimeMax?: Maybe<Scalars['DateTime']['output']>;
+  endDateTimeMin?: Maybe<Scalars['DateTime']['output']>;
+  startDateTimeMax?: Maybe<Scalars['DateTime']['output']>;
+  startDateTimeMin?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type EventEntryFilter = {
+  and?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
+  endDateTime?: InputMaybe<DateTimeFilter>;
+  has?: InputMaybe<Array<InputMaybe<EventEntryHasFilter>>>;
+  iid?: InputMaybe<Array<Scalars['ID']['input']>>;
+  not?: InputMaybe<EventEntryFilter>;
+  or?: InputMaybe<Array<InputMaybe<EventEntryFilter>>>;
+  startDateTime?: InputMaybe<DateTimeFilter>;
+};
+
+export enum EventEntryHasFilter {
+  EndDateTime = 'endDateTime',
+  Event = 'event',
+  StartDateTime = 'startDateTime'
+}
+
+export type EventEntryOrder = {
+  asc?: InputMaybe<EventEntryOrderable>;
+  desc?: InputMaybe<EventEntryOrderable>;
+  then?: InputMaybe<EventEntryOrder>;
+};
+
+export enum EventEntryOrderable {
+  EndDateTime = 'endDateTime',
+  StartDateTime = 'startDateTime'
+}
+
+export type EventEntryPatch = {
+  endDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+  event?: InputMaybe<EventRef>;
+  startDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type EventEntryRef = {
+  endDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+  event?: InputMaybe<EventRef>;
+  iid?: InputMaybe<Scalars['ID']['input']>;
+  startDateTime?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type EventFilter = {
   and?: InputMaybe<Array<InputMaybe<EventFilter>>>;
   has?: InputMaybe<Array<InputMaybe<EventHasFilter>>>;
@@ -360,241 +402,13 @@ export type EventFilter = {
 };
 
 export enum EventHasFilter {
+  Entries = 'entries',
   Id = 'id',
-  Instances = 'instances',
   Label = 'label',
   Properties = 'properties',
+  Tags = 'tags',
   User = 'user'
 }
-
-export type EventInstance = {
-  __typename?: 'EventInstance';
-  event: Event;
-  id: Scalars['String']['output'];
-  iid: Scalars['ID']['output'];
-  occurrences?: Maybe<Array<EventInstanceOccurrence>>;
-  occurrencesAggregate?: Maybe<EventInstanceOccurrenceAggregateResult>;
-  tags?: Maybe<Array<EventInstanceTag>>;
-  tagsAggregate?: Maybe<EventInstanceTagAggregateResult>;
-};
-
-
-export type EventInstanceEventArgs = {
-  filter?: InputMaybe<EventFilter>;
-};
-
-
-export type EventInstanceOccurrencesArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOccurrenceOrder>;
-};
-
-
-export type EventInstanceOccurrencesAggregateArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
-};
-
-
-export type EventInstanceTagsArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
-};
-
-
-export type EventInstanceTagsAggregateArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-};
-
-export type EventInstanceAggregateResult = {
-  __typename?: 'EventInstanceAggregateResult';
-  count?: Maybe<Scalars['Int']['output']>;
-  idMax?: Maybe<Scalars['String']['output']>;
-  idMin?: Maybe<Scalars['String']['output']>;
-};
-
-export type EventInstanceFilter = {
-  and?: InputMaybe<Array<InputMaybe<EventInstanceFilter>>>;
-  has?: InputMaybe<Array<InputMaybe<EventInstanceHasFilter>>>;
-  id?: InputMaybe<StringHashFilter>;
-  iid?: InputMaybe<Array<Scalars['ID']['input']>>;
-  not?: InputMaybe<EventInstanceFilter>;
-  or?: InputMaybe<Array<InputMaybe<EventInstanceFilter>>>;
-};
-
-export enum EventInstanceHasFilter {
-  Event = 'event',
-  Id = 'id',
-  Occurrences = 'occurrences',
-  Tags = 'tags'
-}
-
-export type EventInstanceOccurrence = {
-  __typename?: 'EventInstanceOccurrence';
-  endDateTime: Scalars['DateTime']['output'];
-  eventInstance: EventInstance;
-  iid: Scalars['ID']['output'];
-  startDateTime: Scalars['DateTime']['output'];
-};
-
-
-export type EventInstanceOccurrenceEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-};
-
-export type EventInstanceOccurrenceAggregateResult = {
-  __typename?: 'EventInstanceOccurrenceAggregateResult';
-  count?: Maybe<Scalars['Int']['output']>;
-  endDateTimeMax?: Maybe<Scalars['DateTime']['output']>;
-  endDateTimeMin?: Maybe<Scalars['DateTime']['output']>;
-  startDateTimeMax?: Maybe<Scalars['DateTime']['output']>;
-  startDateTimeMin?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type EventInstanceOccurrenceFilter = {
-  and?: InputMaybe<Array<InputMaybe<EventInstanceOccurrenceFilter>>>;
-  endDateTime?: InputMaybe<DateTimeFilter>;
-  has?: InputMaybe<Array<InputMaybe<EventInstanceOccurrenceHasFilter>>>;
-  iid?: InputMaybe<Array<Scalars['ID']['input']>>;
-  not?: InputMaybe<EventInstanceOccurrenceFilter>;
-  or?: InputMaybe<Array<InputMaybe<EventInstanceOccurrenceFilter>>>;
-  startDateTime?: InputMaybe<DateTimeFilter>;
-};
-
-export enum EventInstanceOccurrenceHasFilter {
-  EndDateTime = 'endDateTime',
-  EventInstance = 'eventInstance',
-  StartDateTime = 'startDateTime'
-}
-
-export type EventInstanceOccurrenceOrder = {
-  asc?: InputMaybe<EventInstanceOccurrenceOrderable>;
-  desc?: InputMaybe<EventInstanceOccurrenceOrderable>;
-  then?: InputMaybe<EventInstanceOccurrenceOrder>;
-};
-
-export enum EventInstanceOccurrenceOrderable {
-  EndDateTime = 'endDateTime',
-  StartDateTime = 'startDateTime'
-}
-
-export type EventInstanceOccurrencePatch = {
-  endDateTime?: InputMaybe<Scalars['DateTime']['input']>;
-  eventInstance?: InputMaybe<EventInstanceRef>;
-  startDateTime?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type EventInstanceOccurrenceRef = {
-  endDateTime?: InputMaybe<Scalars['DateTime']['input']>;
-  eventInstance?: InputMaybe<EventInstanceRef>;
-  iid?: InputMaybe<Scalars['ID']['input']>;
-  startDateTime?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type EventInstanceOrder = {
-  asc?: InputMaybe<EventInstanceOrderable>;
-  desc?: InputMaybe<EventInstanceOrderable>;
-  then?: InputMaybe<EventInstanceOrder>;
-};
-
-export enum EventInstanceOrderable {
-  Id = 'id'
-}
-
-export type EventInstancePatch = {
-  event?: InputMaybe<EventRef>;
-  occurrences?: InputMaybe<Array<EventInstanceOccurrenceRef>>;
-  tags?: InputMaybe<Array<EventInstanceTagRef>>;
-};
-
-export type EventInstanceRef = {
-  event?: InputMaybe<EventRef>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  iid?: InputMaybe<Scalars['ID']['input']>;
-  occurrences?: InputMaybe<Array<EventInstanceOccurrenceRef>>;
-  tags?: InputMaybe<Array<EventInstanceTagRef>>;
-};
-
-export type EventInstanceTag = {
-  __typename?: 'EventInstanceTag';
-  eventInstance?: Maybe<Array<EventInstance>>;
-  eventInstanceAggregate?: Maybe<EventInstanceAggregateResult>;
-  id: Scalars['String']['output'];
-  iid: Scalars['ID']['output'];
-  label: Scalars['String']['output'];
-  user: User;
-};
-
-
-export type EventInstanceTagEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
-};
-
-
-export type EventInstanceTagEventInstanceAggregateArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-};
-
-
-export type EventInstanceTagUserArgs = {
-  filter?: InputMaybe<UserFilter>;
-};
-
-export type EventInstanceTagAggregateResult = {
-  __typename?: 'EventInstanceTagAggregateResult';
-  count?: Maybe<Scalars['Int']['output']>;
-  idMax?: Maybe<Scalars['String']['output']>;
-  idMin?: Maybe<Scalars['String']['output']>;
-  labelMax?: Maybe<Scalars['String']['output']>;
-  labelMin?: Maybe<Scalars['String']['output']>;
-};
-
-export type EventInstanceTagFilter = {
-  and?: InputMaybe<Array<InputMaybe<EventInstanceTagFilter>>>;
-  has?: InputMaybe<Array<InputMaybe<EventInstanceTagHasFilter>>>;
-  id?: InputMaybe<StringHashFilter>;
-  iid?: InputMaybe<Array<Scalars['ID']['input']>>;
-  not?: InputMaybe<EventInstanceTagFilter>;
-  or?: InputMaybe<Array<InputMaybe<EventInstanceTagFilter>>>;
-};
-
-export enum EventInstanceTagHasFilter {
-  EventInstance = 'eventInstance',
-  Id = 'id',
-  Label = 'label',
-  User = 'user'
-}
-
-export type EventInstanceTagOrder = {
-  asc?: InputMaybe<EventInstanceTagOrderable>;
-  desc?: InputMaybe<EventInstanceTagOrderable>;
-  then?: InputMaybe<EventInstanceTagOrder>;
-};
-
-export enum EventInstanceTagOrderable {
-  Id = 'id',
-  Label = 'label'
-}
-
-export type EventInstanceTagPatch = {
-  eventInstance?: InputMaybe<Array<EventInstanceRef>>;
-  label?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserRef>;
-};
-
-export type EventInstanceTagRef = {
-  eventInstance?: InputMaybe<Array<EventInstanceRef>>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  iid?: InputMaybe<Scalars['ID']['input']>;
-  label?: InputMaybe<Scalars['String']['input']>;
-  user?: InputMaybe<UserRef>;
-};
 
 export type EventOrder = {
   asc?: InputMaybe<EventOrderable>;
@@ -608,9 +422,10 @@ export enum EventOrderable {
 }
 
 export type EventPatch = {
-  instances?: InputMaybe<Array<InputMaybe<EventInstanceRef>>>;
+  entries?: InputMaybe<Array<InputMaybe<EventEntryRef>>>;
   label?: InputMaybe<Scalars['String']['input']>;
   properties?: InputMaybe<Array<InputMaybe<EventPropertyRef>>>;
+  tags?: InputMaybe<Array<TagRef>>;
   user?: InputMaybe<UserRef>;
 };
 
@@ -682,11 +497,12 @@ export type EventPropertyRef = {
 };
 
 export type EventRef = {
+  entries?: InputMaybe<Array<InputMaybe<EventEntryRef>>>;
   id?: InputMaybe<Scalars['String']['input']>;
   iid?: InputMaybe<Scalars['ID']['input']>;
-  instances?: InputMaybe<Array<InputMaybe<EventInstanceRef>>>;
   label?: InputMaybe<Scalars['String']['input']>;
   properties?: InputMaybe<Array<InputMaybe<EventPropertyRef>>>;
+  tags?: InputMaybe<Array<TagRef>>;
   user?: InputMaybe<UserRef>;
 };
 
@@ -778,22 +594,19 @@ export type MultiPolygonRef = {
 export type Mutation = {
   __typename?: 'Mutation';
   addEvent?: Maybe<AddEventPayload>;
-  addEventInstance?: Maybe<AddEventInstancePayload>;
-  addEventInstanceOccurrence?: Maybe<AddEventInstanceOccurrencePayload>;
-  addEventInstanceTag?: Maybe<AddEventInstanceTagPayload>;
+  addEventEntry?: Maybe<AddEventEntryPayload>;
   addEventProperty?: Maybe<AddEventPropertyPayload>;
+  addTag?: Maybe<AddTagPayload>;
   addUser?: Maybe<AddUserPayload>;
   deleteEvent?: Maybe<DeleteEventPayload>;
-  deleteEventInstance?: Maybe<DeleteEventInstancePayload>;
-  deleteEventInstanceOccurrence?: Maybe<DeleteEventInstanceOccurrencePayload>;
-  deleteEventInstanceTag?: Maybe<DeleteEventInstanceTagPayload>;
+  deleteEventEntry?: Maybe<DeleteEventEntryPayload>;
   deleteEventProperty?: Maybe<DeleteEventPropertyPayload>;
+  deleteTag?: Maybe<DeleteTagPayload>;
   deleteUser?: Maybe<DeleteUserPayload>;
   updateEvent?: Maybe<UpdateEventPayload>;
-  updateEventInstance?: Maybe<UpdateEventInstancePayload>;
-  updateEventInstanceOccurrence?: Maybe<UpdateEventInstanceOccurrencePayload>;
-  updateEventInstanceTag?: Maybe<UpdateEventInstanceTagPayload>;
+  updateEventEntry?: Maybe<UpdateEventEntryPayload>;
   updateEventProperty?: Maybe<UpdateEventPropertyPayload>;
+  updateTag?: Maybe<UpdateTagPayload>;
   updateUser?: Maybe<UpdateUserPayload>;
 };
 
@@ -804,25 +617,19 @@ export type MutationAddEventArgs = {
 };
 
 
-export type MutationAddEventInstanceArgs = {
-  input: Array<AddEventInstanceInput>;
-  upsert?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
-export type MutationAddEventInstanceOccurrenceArgs = {
-  input: Array<AddEventInstanceOccurrenceInput>;
-};
-
-
-export type MutationAddEventInstanceTagArgs = {
-  input: Array<AddEventInstanceTagInput>;
-  upsert?: InputMaybe<Scalars['Boolean']['input']>;
+export type MutationAddEventEntryArgs = {
+  input: Array<AddEventEntryInput>;
 };
 
 
 export type MutationAddEventPropertyArgs = {
   input: Array<AddEventPropertyInput>;
+  upsert?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type MutationAddTagArgs = {
+  input: Array<AddTagInput>;
   upsert?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -838,23 +645,18 @@ export type MutationDeleteEventArgs = {
 };
 
 
-export type MutationDeleteEventInstanceArgs = {
-  filter: EventInstanceFilter;
-};
-
-
-export type MutationDeleteEventInstanceOccurrenceArgs = {
-  filter: EventInstanceOccurrenceFilter;
-};
-
-
-export type MutationDeleteEventInstanceTagArgs = {
-  filter: EventInstanceTagFilter;
+export type MutationDeleteEventEntryArgs = {
+  filter: EventEntryFilter;
 };
 
 
 export type MutationDeleteEventPropertyArgs = {
   filter: EventPropertyFilter;
+};
+
+
+export type MutationDeleteTagArgs = {
+  filter: TagFilter;
 };
 
 
@@ -868,23 +670,18 @@ export type MutationUpdateEventArgs = {
 };
 
 
-export type MutationUpdateEventInstanceArgs = {
-  input: UpdateEventInstanceInput;
-};
-
-
-export type MutationUpdateEventInstanceOccurrenceArgs = {
-  input: UpdateEventInstanceOccurrenceInput;
-};
-
-
-export type MutationUpdateEventInstanceTagArgs = {
-  input: UpdateEventInstanceTagInput;
+export type MutationUpdateEventEntryArgs = {
+  input: UpdateEventEntryInput;
 };
 
 
 export type MutationUpdateEventPropertyArgs = {
   input: UpdateEventPropertyInput;
+};
+
+
+export type MutationUpdateTagArgs = {
+  input: UpdateTagInput;
 };
 
 
@@ -941,22 +738,19 @@ export type PolygonRef = {
 export type Query = {
   __typename?: 'Query';
   aggregateEvent?: Maybe<EventAggregateResult>;
-  aggregateEventInstance?: Maybe<EventInstanceAggregateResult>;
-  aggregateEventInstanceOccurrence?: Maybe<EventInstanceOccurrenceAggregateResult>;
-  aggregateEventInstanceTag?: Maybe<EventInstanceTagAggregateResult>;
+  aggregateEventEntry?: Maybe<EventEntryAggregateResult>;
   aggregateEventProperty?: Maybe<EventPropertyAggregateResult>;
+  aggregateTag?: Maybe<TagAggregateResult>;
   aggregateUser?: Maybe<UserAggregateResult>;
   getEvent?: Maybe<Event>;
-  getEventInstance?: Maybe<EventInstance>;
-  getEventInstanceOccurrence?: Maybe<EventInstanceOccurrence>;
-  getEventInstanceTag?: Maybe<EventInstanceTag>;
+  getEventEntry?: Maybe<EventEntry>;
   getEventProperty?: Maybe<EventProperty>;
+  getTag?: Maybe<Tag>;
   getUser?: Maybe<User>;
   queryEvent?: Maybe<Array<Maybe<Event>>>;
-  queryEventInstance?: Maybe<Array<Maybe<EventInstance>>>;
-  queryEventInstanceOccurrence?: Maybe<Array<Maybe<EventInstanceOccurrence>>>;
-  queryEventInstanceTag?: Maybe<Array<Maybe<EventInstanceTag>>>;
+  queryEventEntry?: Maybe<Array<Maybe<EventEntry>>>;
   queryEventProperty?: Maybe<Array<Maybe<EventProperty>>>;
+  queryTag?: Maybe<Array<Maybe<Tag>>>;
   queryUser?: Maybe<Array<Maybe<User>>>;
 };
 
@@ -966,23 +760,18 @@ export type QueryAggregateEventArgs = {
 };
 
 
-export type QueryAggregateEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-};
-
-
-export type QueryAggregateEventInstanceOccurrenceArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
-};
-
-
-export type QueryAggregateEventInstanceTagArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
+export type QueryAggregateEventEntryArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
 };
 
 
 export type QueryAggregateEventPropertyArgs = {
   filter?: InputMaybe<EventPropertyFilter>;
+};
+
+
+export type QueryAggregateTagArgs = {
+  filter?: InputMaybe<TagFilter>;
 };
 
 
@@ -997,24 +786,18 @@ export type QueryGetEventArgs = {
 };
 
 
-export type QueryGetEventInstanceArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  iid?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryGetEventInstanceOccurrenceArgs = {
+export type QueryGetEventEntryArgs = {
   iid: Scalars['ID']['input'];
 };
 
 
-export type QueryGetEventInstanceTagArgs = {
+export type QueryGetEventPropertyArgs = {
   id?: InputMaybe<Scalars['String']['input']>;
   iid?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
-export type QueryGetEventPropertyArgs = {
+export type QueryGetTagArgs = {
   id?: InputMaybe<Scalars['String']['input']>;
   iid?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -1034,27 +817,11 @@ export type QueryQueryEventArgs = {
 };
 
 
-export type QueryQueryEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
+export type QueryQueryEventEntryArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
-};
-
-
-export type QueryQueryEventInstanceOccurrenceArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOccurrenceOrder>;
-};
-
-
-export type QueryQueryEventInstanceTagArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
+  order?: InputMaybe<EventEntryOrder>;
 };
 
 
@@ -1063,6 +830,14 @@ export type QueryQueryEventPropertyArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<EventPropertyOrder>;
+};
+
+
+export type QueryQueryTagArgs = {
+  filter?: InputMaybe<TagFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TagOrder>;
 };
 
 
@@ -1107,70 +882,108 @@ export type StringTermFilter = {
   anyofterms?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Tag = {
+  __typename?: 'Tag';
+  events?: Maybe<Array<Event>>;
+  eventsAggregate?: Maybe<EventAggregateResult>;
+  id: Scalars['String']['output'];
+  iid: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  user: User;
+};
+
+
+export type TagEventsArgs = {
+  filter?: InputMaybe<EventFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<EventOrder>;
+};
+
+
+export type TagEventsAggregateArgs = {
+  filter?: InputMaybe<EventFilter>;
+};
+
+
+export type TagUserArgs = {
+  filter?: InputMaybe<UserFilter>;
+};
+
+export type TagAggregateResult = {
+  __typename?: 'TagAggregateResult';
+  count?: Maybe<Scalars['Int']['output']>;
+  idMax?: Maybe<Scalars['String']['output']>;
+  idMin?: Maybe<Scalars['String']['output']>;
+  labelMax?: Maybe<Scalars['String']['output']>;
+  labelMin?: Maybe<Scalars['String']['output']>;
+};
+
+export type TagFilter = {
+  and?: InputMaybe<Array<InputMaybe<TagFilter>>>;
+  has?: InputMaybe<Array<InputMaybe<TagHasFilter>>>;
+  id?: InputMaybe<StringHashFilter>;
+  iid?: InputMaybe<Array<Scalars['ID']['input']>>;
+  not?: InputMaybe<TagFilter>;
+  or?: InputMaybe<Array<InputMaybe<TagFilter>>>;
+};
+
+export enum TagHasFilter {
+  Events = 'events',
+  Id = 'id',
+  Label = 'label',
+  User = 'user'
+}
+
+export type TagOrder = {
+  asc?: InputMaybe<TagOrderable>;
+  desc?: InputMaybe<TagOrderable>;
+  then?: InputMaybe<TagOrder>;
+};
+
+export enum TagOrderable {
+  Id = 'id',
+  Label = 'label'
+}
+
+export type TagPatch = {
+  events?: InputMaybe<Array<EventRef>>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UserRef>;
+};
+
+export type TagRef = {
+  events?: InputMaybe<Array<EventRef>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  iid?: InputMaybe<Scalars['ID']['input']>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  user?: InputMaybe<UserRef>;
+};
+
+export type UpdateEventEntryInput = {
+  filter: EventEntryFilter;
+  remove?: InputMaybe<EventEntryPatch>;
+  set?: InputMaybe<EventEntryPatch>;
+};
+
+export type UpdateEventEntryPayload = {
+  __typename?: 'UpdateEventEntryPayload';
+  eventEntry?: Maybe<Array<Maybe<EventEntry>>>;
+  numUids?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type UpdateEventEntryPayloadEventEntryArgs = {
+  filter?: InputMaybe<EventEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<EventEntryOrder>;
+};
+
 export type UpdateEventInput = {
   filter: EventFilter;
   remove?: InputMaybe<EventPatch>;
   set?: InputMaybe<EventPatch>;
-};
-
-export type UpdateEventInstanceInput = {
-  filter: EventInstanceFilter;
-  remove?: InputMaybe<EventInstancePatch>;
-  set?: InputMaybe<EventInstancePatch>;
-};
-
-export type UpdateEventInstanceOccurrenceInput = {
-  filter: EventInstanceOccurrenceFilter;
-  remove?: InputMaybe<EventInstanceOccurrencePatch>;
-  set?: InputMaybe<EventInstanceOccurrencePatch>;
-};
-
-export type UpdateEventInstanceOccurrencePayload = {
-  __typename?: 'UpdateEventInstanceOccurrencePayload';
-  eventInstanceOccurrence?: Maybe<Array<Maybe<EventInstanceOccurrence>>>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type UpdateEventInstanceOccurrencePayloadEventInstanceOccurrenceArgs = {
-  filter?: InputMaybe<EventInstanceOccurrenceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOccurrenceOrder>;
-};
-
-export type UpdateEventInstancePayload = {
-  __typename?: 'UpdateEventInstancePayload';
-  eventInstance?: Maybe<Array<Maybe<EventInstance>>>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type UpdateEventInstancePayloadEventInstanceArgs = {
-  filter?: InputMaybe<EventInstanceFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceOrder>;
-};
-
-export type UpdateEventInstanceTagInput = {
-  filter: EventInstanceTagFilter;
-  remove?: InputMaybe<EventInstanceTagPatch>;
-  set?: InputMaybe<EventInstanceTagPatch>;
-};
-
-export type UpdateEventInstanceTagPayload = {
-  __typename?: 'UpdateEventInstanceTagPayload';
-  eventInstanceTag?: Maybe<Array<Maybe<EventInstanceTag>>>;
-  numUids?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type UpdateEventInstanceTagPayloadEventInstanceTagArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
 };
 
 export type UpdateEventPayload = {
@@ -1207,6 +1020,26 @@ export type UpdateEventPropertyPayloadEventPropertyArgs = {
   order?: InputMaybe<EventPropertyOrder>;
 };
 
+export type UpdateTagInput = {
+  filter: TagFilter;
+  remove?: InputMaybe<TagPatch>;
+  set?: InputMaybe<TagPatch>;
+};
+
+export type UpdateTagPayload = {
+  __typename?: 'UpdateTagPayload';
+  numUids?: Maybe<Scalars['Int']['output']>;
+  tag?: Maybe<Array<Maybe<Tag>>>;
+};
+
+
+export type UpdateTagPayloadTagArgs = {
+  filter?: InputMaybe<TagFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<TagOrder>;
+};
+
 export type UpdateUserInput = {
   filter: UserFilter;
   remove?: InputMaybe<UserPatch>;
@@ -1233,8 +1066,8 @@ export type User = {
   events?: Maybe<Array<Maybe<Event>>>;
   eventsAggregate?: Maybe<EventAggregateResult>;
   iid: Scalars['ID']['output'];
-  tags?: Maybe<Array<Maybe<EventInstanceTag>>>;
-  tagsAggregate?: Maybe<EventInstanceTagAggregateResult>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
+  tagsAggregate?: Maybe<TagAggregateResult>;
 };
 
 
@@ -1252,15 +1085,15 @@ export type UserEventsAggregateArgs = {
 
 
 export type UserTagsArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
+  filter?: InputMaybe<TagFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<EventInstanceTagOrder>;
+  order?: InputMaybe<TagOrder>;
 };
 
 
 export type UserTagsAggregateArgs = {
-  filter?: InputMaybe<EventInstanceTagFilter>;
+  filter?: InputMaybe<TagFilter>;
 };
 
 export type UserAggregateResult = {
@@ -1297,14 +1130,14 @@ export enum UserOrderable {
 
 export type UserPatch = {
   events?: InputMaybe<Array<InputMaybe<EventRef>>>;
-  tags?: InputMaybe<Array<InputMaybe<EventInstanceTagRef>>>;
+  tags?: InputMaybe<Array<InputMaybe<TagRef>>>;
 };
 
 export type UserRef = {
   email?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<Array<InputMaybe<EventRef>>>;
   iid?: InputMaybe<Scalars['ID']['input']>;
-  tags?: InputMaybe<Array<InputMaybe<EventInstanceTagRef>>>;
+  tags?: InputMaybe<Array<InputMaybe<TagRef>>>;
 };
 
 export type WithinFilter = {
@@ -1316,21 +1149,14 @@ export type AddEventMutationVariables = Exact<{
 }>;
 
 
-export type AddEventMutation = { __typename?: 'Mutation', addEvent?: { __typename?: 'AddEventPayload', numUids?: number | null, event?: Array<{ __typename?: 'Event', id: string, iid: string, label: string, user: { __typename?: 'User', email: string }, instances?: Array<{ __typename?: 'EventInstance', iid: string, occurrences?: Array<{ __typename?: 'EventInstanceOccurrence', iid: string }> | null, tags?: Array<{ __typename?: 'EventInstanceTag', id: string, label: string }> | null } | null> | null } | null> | null } | null };
+export type AddEventMutation = { __typename?: 'Mutation', addEvent?: { __typename?: 'AddEventPayload', numUids?: number | null, event?: Array<{ __typename?: 'Event', id: string, iid: string, label: string, tags?: Array<{ __typename?: 'Tag', iid: string, id: string, label: string }> | null, properties?: Array<{ __typename?: 'EventProperty', iid: string, id: string, label: string, value: string } | null> | null, entries?: Array<{ __typename?: 'EventEntry', iid: string, startDateTime: any, endDateTime: any } | null> | null, user: { __typename?: 'User', email: string } } | null> | null } | null };
 
-export type AddEventInstanceMutationVariables = Exact<{
-  input: Array<AddEventInstanceInput> | AddEventInstanceInput;
+export type AddEventEntryMutationVariables = Exact<{
+  input: Array<AddEventEntryInput> | AddEventEntryInput;
 }>;
 
 
-export type AddEventInstanceMutation = { __typename?: 'Mutation', addEventInstance?: { __typename?: 'AddEventInstancePayload', numUids?: number | null, eventInstance?: Array<{ __typename?: 'EventInstance', iid: string, occurrences?: Array<{ __typename?: 'EventInstanceOccurrence', iid: string, endDateTime: any, startDateTime: any }> | null } | null> | null } | null };
-
-export type AddEventInstanceOccurrenceMutationVariables = Exact<{
-  input: Array<AddEventInstanceOccurrenceInput> | AddEventInstanceOccurrenceInput;
-}>;
-
-
-export type AddEventInstanceOccurrenceMutation = { __typename?: 'Mutation', addEventInstanceOccurrence?: { __typename?: 'AddEventInstanceOccurrencePayload', numUids?: number | null } | null };
+export type AddEventEntryMutation = { __typename?: 'Mutation', addEventEntry?: { __typename?: 'AddEventEntryPayload', numUids?: number | null, eventEntry?: Array<{ __typename?: 'EventEntry', iid: string, startDateTime: any, endDateTime: any, event: { __typename?: 'Event', id: string, iid: string, label: string, tags?: Array<{ __typename?: 'Tag', id: string, iid: string, label: string }> | null, properties?: Array<{ __typename?: 'EventProperty', id: string, iid: string, label: string, value: string } | null> | null } } | null> | null } | null };
 
 export type AddEventPropertyMutationVariables = Exact<{
   input: Array<AddEventPropertyInput> | AddEventPropertyInput;
@@ -1354,26 +1180,12 @@ export type DeleteEventMutationVariables = Exact<{
 
 export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', numUids?: number | null, event?: Array<{ __typename?: 'Event', id: string, label: string } | null> | null } | null };
 
-export type DeleteEventInstanceMutationVariables = Exact<{
-  filter: EventInstanceFilter;
+export type DeleteEventEntryMutationVariables = Exact<{
+  filter: EventEntryFilter;
 }>;
 
 
-export type DeleteEventInstanceMutation = { __typename?: 'Mutation', deleteEventInstance?: { __typename?: 'DeleteEventInstancePayload', numUids?: number | null, eventInstance?: Array<{ __typename?: 'EventInstance', iid: string } | null> | null } | null };
-
-export type DeleteEventInstanceOccurrenceMutationVariables = Exact<{
-  filter: EventInstanceOccurrenceFilter;
-}>;
-
-
-export type DeleteEventInstanceOccurrenceMutation = { __typename?: 'Mutation', deleteEventInstanceOccurrence?: { __typename?: 'DeleteEventInstanceOccurrencePayload', numUids?: number | null, eventInstanceOccurrence?: Array<{ __typename?: 'EventInstanceOccurrence', endDateTime: any, iid: string, startDateTime: any } | null> | null } | null };
-
-export type DeleteEventInstanceTagMutationVariables = Exact<{
-  filter: EventInstanceTagFilter;
-}>;
-
-
-export type DeleteEventInstanceTagMutation = { __typename?: 'Mutation', deleteEventInstanceTag?: { __typename?: 'DeleteEventInstanceTagPayload', numUids?: number | null, eventInstanceTag?: Array<{ __typename?: 'EventInstanceTag', id: string, iid: string, label: string } | null> | null } | null };
+export type DeleteEventEntryMutation = { __typename?: 'Mutation', deleteEventEntry?: { __typename?: 'DeleteEventEntryPayload', numUids?: number | null, eventEntry?: Array<{ __typename?: 'EventEntry', endDateTime: any, iid: string, startDateTime: any } | null> | null } | null };
 
 export type DeleteEventPropertyMutationVariables = Exact<{
   filter: EventPropertyFilter;
@@ -1381,6 +1193,13 @@ export type DeleteEventPropertyMutationVariables = Exact<{
 
 
 export type DeleteEventPropertyMutation = { __typename?: 'Mutation', deleteEventProperty?: { __typename?: 'DeleteEventPropertyPayload', numUids?: number | null, eventProperty?: Array<{ __typename?: 'EventProperty', id: string, iid: string, label: string, value: string, event: { __typename?: 'Event', id: string, label: string } } | null> | null } | null };
+
+export type DeleteTagMutationVariables = Exact<{
+  filter: TagFilter;
+}>;
+
+
+export type DeleteTagMutation = { __typename?: 'Mutation', deleteTag?: { __typename?: 'DeleteTagPayload', numUids?: number | null, tag?: Array<{ __typename?: 'Tag', id: string, iid: string, label: string } | null> | null } | null };
 
 export type DeleteUserMutationVariables = Exact<{
   filter: UserFilter;
@@ -1392,26 +1211,21 @@ export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typ
 export type QueryEventQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryEventQuery = { __typename?: 'Query', queryEvent?: Array<{ __typename?: 'Event', id: string, iid: string, label: string, instances?: Array<{ __typename?: 'EventInstance', id: string, iid: string, occurrences?: Array<{ __typename?: 'EventInstanceOccurrence', endDateTime: any, iid: string, startDateTime: any }> | null, tags?: Array<{ __typename?: 'EventInstanceTag', id: string, iid: string, label: string }> | null } | null> | null, properties?: Array<{ __typename?: 'EventProperty', id: string, iid: string, label: string, value: string } | null> | null, user: { __typename?: 'User', email: string, iid: string } } | null> | null };
+export type QueryEventQuery = { __typename?: 'Query', queryEvent?: Array<{ __typename?: 'Event', iid: string, id: string, label: string, entries?: Array<{ __typename?: 'EventEntry', iid: string, startDateTime: any, endDateTime: any } | null> | null, tags?: Array<{ __typename?: 'Tag', id: string, iid: string, label: string }> | null, properties?: Array<{ __typename?: 'EventProperty', id: string, iid: string, label: string, value: string } | null> | null, user: { __typename?: 'User', email: string, iid: string } } | null> | null };
 
-export type QueryEventInstanceQueryVariables = Exact<{
+export type QueryEventEntryQueryVariables = Exact<{
   filter?: InputMaybe<EventFilter>;
 }>;
 
 
-export type QueryEventInstanceQuery = { __typename?: 'Query', queryEventInstance?: Array<{ __typename?: 'EventInstance', iid: string, occurrences?: Array<{ __typename?: 'EventInstanceOccurrence', iid: string, endDateTime: any, startDateTime: any }> | null, event: { __typename?: 'Event', id: string }, tags?: Array<{ __typename?: 'EventInstanceTag', label: string, iid: string, id: string }> | null } | null> | null };
-
-export type QueryEventInstanceOccurrenceQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type QueryEventInstanceOccurrenceQuery = { __typename?: 'Query', queryEventInstanceOccurrence?: Array<{ __typename?: 'EventInstanceOccurrence', iid: string, startDateTime: any, endDateTime: any, eventInstance: { __typename?: 'EventInstance', iid: string, id: string, tags?: Array<{ __typename?: 'EventInstanceTag', id: string, iid: string, label: string }> | null, event: { __typename?: 'Event', id: string, iid: string, label: string, properties?: Array<{ __typename?: 'EventProperty', id: string, iid: string, label: string, value: string } | null> | null } } } | null> | null };
+export type QueryEventEntryQuery = { __typename?: 'Query', queryEventEntry?: Array<{ __typename?: 'EventEntry', iid: string, startDateTime: any, endDateTime: any, event: { __typename?: 'Event', iid: string, id: string, label: string, tags?: Array<{ __typename?: 'Tag', iid: string, id: string, label: string }> | null, properties?: Array<{ __typename?: 'EventProperty', iid: string, id: string, label: string, value: string } | null> | null } } | null> | null };
 
 export type QueryEventPropertyQueryVariables = Exact<{
   filter?: InputMaybe<EventPropertyFilter>;
 }>;
 
 
-export type QueryEventPropertyQuery = { __typename?: 'Query', queryEventProperty?: Array<{ __typename?: 'EventProperty', id: string, label: string, value: string, event: { __typename?: 'Event', user: { __typename?: 'User', email: string } } } | null> | null };
+export type QueryEventPropertyQuery = { __typename?: 'Query', queryEventProperty?: Array<{ __typename?: 'EventProperty', iid: string, id: string, label: string, value: string, event: { __typename?: 'Event', iid: string, id: string, label: string } } | null> | null };
 
 export type QueryUserQueryVariables = Exact<{
   filter?: InputMaybe<UserFilter>;
@@ -1427,12 +1241,12 @@ export type UpdateEventMutationVariables = Exact<{
 
 export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'UpdateEventPayload', numUids?: number | null, event?: Array<{ __typename?: 'Event', id: string, iid: string, label: string } | null> | null } | null };
 
-export type UpdateEventInstanceMutationVariables = Exact<{
-  input: UpdateEventInstanceInput;
+export type UpdateEventEntryMutationVariables = Exact<{
+  input: UpdateEventEntryInput;
 }>;
 
 
-export type UpdateEventInstanceMutation = { __typename?: 'Mutation', updateEventInstance?: { __typename?: 'UpdateEventInstancePayload', numUids?: number | null, eventInstance?: Array<{ __typename?: 'EventInstance', iid: string } | null> | null } | null };
+export type UpdateEventEntryMutation = { __typename?: 'Mutation', updateEventEntry?: { __typename?: 'UpdateEventEntryPayload', numUids?: number | null, eventEntry?: Array<{ __typename?: 'EventEntry', iid: string } | null> | null } | null };
 
 export type UpdateEventPropertyMutationVariables = Exact<{
   input: UpdateEventPropertyInput;
@@ -1449,23 +1263,20 @@ export type MutationMutationVariables = Exact<{
 export type MutationMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', numUids?: number | null } | null };
 
 
-export const AddEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEvent"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEvent"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"instances"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"occurrences"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<AddEventMutation, AddEventMutationVariables>;
-export const AddEventInstanceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEventInstance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventInstanceInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEventInstance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"occurrences"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AddEventInstanceMutation, AddEventInstanceMutationVariables>;
-export const AddEventInstanceOccurrenceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEventInstanceOccurrence"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventInstanceOccurrenceInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEventInstanceOccurrence"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}}]}}]}}]} as unknown as DocumentNode<AddEventInstanceOccurrenceMutation, AddEventInstanceOccurrenceMutationVariables>;
+export const AddEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEvent"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEvent"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"entries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AddEventMutation, AddEventMutationVariables>;
+export const AddEventEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEventEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventEntryInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEventEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventEntry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<AddEventEntryMutation, AddEventEntryMutationVariables>;
 export const AddEventPropertyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEventProperty"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddEventPropertyInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEventProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventProperty"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<AddEventPropertyMutation, AddEventPropertyMutationVariables>;
 export const AddUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddUserInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"upsert"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"upsert"},"value":{"kind":"Variable","name":{"kind":"Name","value":"upsert"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}}]}}]}}]} as unknown as DocumentNode<AddUserMutation, AddUserMutationVariables>;
 export const DeleteEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEvent"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEvent"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventMutation, DeleteEventMutationVariables>;
-export const DeleteEventInstanceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEventInstance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventInstanceFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEventInstance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventInstanceMutation, DeleteEventInstanceMutationVariables>;
-export const DeleteEventInstanceOccurrenceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEventInstanceOccurrence"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventInstanceOccurrenceFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEventInstanceOccurrence"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstanceOccurrence"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventInstanceOccurrenceMutation, DeleteEventInstanceOccurrenceMutationVariables>;
-export const DeleteEventInstanceTagDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEventInstanceTag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventInstanceTagFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEventInstanceTag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstanceTag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventInstanceTagMutation, DeleteEventInstanceTagMutationVariables>;
+export const DeleteEventEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEventEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventEntryFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEventEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventEntry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventEntryMutation, DeleteEventEntryMutationVariables>;
 export const DeleteEventPropertyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteEventProperty"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventPropertyFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteEventProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventProperty"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]}}]} as unknown as DocumentNode<DeleteEventPropertyMutation, DeleteEventPropertyMutationVariables>;
+export const DeleteTagDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTag"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TagFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTag"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"tag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteTagMutation, DeleteTagMutationVariables>;
 export const DeleteUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserFilter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}}]}}]}}]} as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>;
-export const QueryEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEvent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEvent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"instances"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"occurrences"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventQuery, QueryEventQueryVariables>;
-export const QueryEventInstanceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEventInstance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventFilter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEventInstance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"occurrences"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}}]}},{"kind":"Field","name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventInstanceQuery, QueryEventInstanceQueryVariables>;
-export const QueryEventInstanceOccurrenceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEventInstanceOccurrence"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEventInstanceOccurrence"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventInstanceOccurrenceQuery, QueryEventInstanceOccurrenceQueryVariables>;
-export const QueryEventPropertyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEventProperty"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventPropertyFilter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEventProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventPropertyQuery, QueryEventPropertyQueryVariables>;
+export const QueryEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEvent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEvent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"entries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventQuery, QueryEventQueryVariables>;
+export const QueryEventEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEventEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventFilter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEventEntry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"startDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"endDateTime"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"tags"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventEntryQuery, QueryEventEntryQueryVariables>;
+export const QueryEventPropertyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryEventProperty"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventPropertyFilter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryEventProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]} as unknown as DocumentNode<QueryEventPropertyQuery, QueryEventPropertyQueryVariables>;
 export const QueryUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QueryUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserFilter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"queryUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]} as unknown as DocumentNode<QueryUserQuery, QueryUserQueryVariables>;
 export const UpdateEventDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateEvent"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateEventInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateEvent"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"iid"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateEventMutation, UpdateEventMutationVariables>;
-export const UpdateEventInstanceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateEventInstance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateEventInstanceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateEventInstance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventInstance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateEventInstanceMutation, UpdateEventInstanceMutationVariables>;
+export const UpdateEventEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateEventEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateEventEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateEventEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventEntry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"iid"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateEventEntryMutation, UpdateEventEntryMutationVariables>;
 export const UpdateEventPropertyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateEventProperty"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateEventPropertyInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateEventProperty"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}},{"kind":"Field","name":{"kind":"Name","value":"eventProperty"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UpdateEventPropertyMutation, UpdateEventPropertyMutationVariables>;
 export const MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Mutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numUids"}}]}}]}}]} as unknown as DocumentNode<MutationMutation, MutationMutationVariables>;

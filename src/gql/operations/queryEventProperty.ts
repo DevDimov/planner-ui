@@ -1,16 +1,17 @@
-import { gql } from '@apollo/client'
+import { gql } from '../codegen/gql'
 
-export const QUERY_EVENT_PROPERTY = gql`
+export const QUERY_EVENT_PROPERTY = gql(`
   query QueryEventProperty($filter: EventPropertyFilter) {
     queryEventProperty(filter: $filter) {
+      iid
       id
       label
       value
       event {
-        user {
-          email
-        }
+        iid
+        id
+        label
       }
     }
   }
-`
+`)

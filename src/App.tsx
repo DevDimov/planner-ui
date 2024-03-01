@@ -4,7 +4,7 @@ import LogoutButton from './authentication/logout'
 import Calendar from './components/calendar/index'
 import { useState, useEffect } from 'react'
 import { EventInstanceOccurrence } from './gql/codegen/graphql'
-import { mockQueryEventInstanceOccurrence } from './mockData/queryEventInstanceOccurrence'
+import { mockQueryEventEntry } from './mockData/queryEventEntry'
 
 function App() {
   // const { isAuthenticated } = useAuth0()

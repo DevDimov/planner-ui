@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import {
   Select,
   SelectContent,
@@ -7,11 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../index'
-import { FormControl, FormDescription } from '../../forms'
-import { CalendarContext } from '../../../context/calendar'
-import { TypographyLarge } from '../../typography/large'
-import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
-import lodash from 'lodash'
+import { FormControl } from '../../forms'
 
 type SelectEventProps = {
   value?: string
@@ -26,11 +20,6 @@ export function SelectEvent({
   defaultValue,
   options,
 }: SelectEventProps) {
-  // const [value, setValue] = useState('')
-
-  // const handleOnValueChange = (newValue: string) => {
-  //   if (newValue !== value) setValue(newValue)
-  // }
 
   return (
     <Select defaultValue={defaultValue} onValueChange={onValueChange}>

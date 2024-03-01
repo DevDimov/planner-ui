@@ -1,7 +1,7 @@
 import format from 'date-fns/format'
-import EventInstance from '../../eventInstance'
+import Event from '../../eventInstance'
 import { getDayColorClass } from './utils/getDayColorClass'
-import { EventInstanceOccurrence } from '../../../gql/codegen/graphql'
+import { EventEntry } from '../../../gql/codegen/graphql'
 import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
@@ -9,13 +9,13 @@ import { formatDay } from './utils/formatDay'
 
 export type CalendarWeekProps = {
   days: Date[]
-  occurrences: EventInstanceOccurrence[]
+  entries: EventEntry[]
   week: string
 }
 
 export default function CalendarWeek({
   days,
-  occurrences,
+  entries,
   week,
 }: CalendarWeekProps) {
   const { month } = useContext(CalendarContext)
@@ -40,10 +40,10 @@ export default function CalendarWeek({
       </div>
 
       <div className="col-span-full grid grid-cols-7">
-        {occurrences &&
-          occurrences.map((occurrence) => {
-            const { iid, eventInstance, startDateTime, endDateTime } =
-              occurrence
+        {entries &&
+          entries.map((entry) => {
+            const { iid, event, startDateTime, endDateTime } =
+              entry
 
             const { colStart, colEnd } = getEventColumns({
               weekdays: days,
@@ -51,16 +51,16 @@ export default function CalendarWeek({
             })
 
             return (
-              <EventInstance
+              <Event
                 key={iid}
                 iid={iid}
-                label={eventInstance.event.label}
-                tags={eventInstance.tags || []}
+                label={event.label}
+                tags={event.tags || []}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 colStart={colStart}
                 colEnd={colEnd}
-                properties={eventInstance?.event?.properties || undefined}
+                properties={event.properties || undefined}
               />
             )
           })}

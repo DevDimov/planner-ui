@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import { gql } from '../codegen'
 
-export const ADD_EVENT_PROPERTY = gql`
+export const ADD_EVENT_PROPERTY = gql(`
   mutation AddEventProperty($input: [AddEventPropertyInput!]!) {
     addEventProperty(input: $input) {
       numUids
@@ -18,4 +18,4 @@ export const ADD_EVENT_PROPERTY = gql`
       }
     }
   }
-`
+`)

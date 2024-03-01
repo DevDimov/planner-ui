@@ -1,6 +1,6 @@
 import { Button } from '@mui/base/Button'
 import {
-  EventInstanceTag as EventInstanceTagType,
+  Tag as EventTagType,
   EventPropertyRef,
   InputMaybe,
 } from '../../gql/codegen/graphql'
@@ -13,18 +13,18 @@ import parseISO from 'date-fns/parseISO'
 import HorizontalDivider from '../forms/divider'
 import SecondaryButton from '../buttons/secondary'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
-import { DELETE_EVENT_INSTANCE_OCCURRENCE } from '../../gql/operations/deleteEventInstanceOccurence'
+import { DELETE_EVENT_ENTRY } from '../../gql/operations/deleteEventEntry'
 import PrimaryButton from '../buttons/primary'
 import { CalendarContext } from '../../context/calendar'
 
-export type EventInstanceProps = {
+export type EventProps = {
   iid: string
   label: string
   colStart: number
   colEnd: number
   startDateTime: string
   endDateTime: string
-  tags: EventInstanceTagType[]
+  tags: EventTagType[]
   properties?: InputMaybe<EventPropertyRef>[] | undefined
 }
 
@@ -52,7 +52,7 @@ const colEnds = [
   'col-end-8',
 ]
 
-export default function EventInstance({
+export default function Event({
   iid,
   label,
   colStart,
@@ -62,12 +62,11 @@ export default function EventInstance({
   tags,
   // color
   properties,
-}: EventInstanceProps) {
-  const { occurrences, setOccurrences } = useContext(CalendarContext)
+}: EventProps) {
+  const { entries: occurrences, setEntries: setOccurrences } =
+    useContext(CalendarContext)
 
-  const [deleteOccurrence, { loading }] = useMutation(
-    DELETE_EVENT_INSTANCE_OCCURRENCE
-  )
+  const [deleteOccurrence, { loading }] = useMutation(DELETE_EVENT_ENTRY)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
