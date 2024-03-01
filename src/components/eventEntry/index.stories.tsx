@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Event from './index'
-import { DELETE_EVENT_ENTRY } from '../../gql/operations/deleteEventEntry'
+import EventEntry from './index'
 
-const meta: Meta<typeof Event> = {
-  component: Event,
+const meta: Meta<typeof EventEntry> = {
+  component: EventEntry,
   parameters: {
     layout: 'centered',
     // apolloClient: {
@@ -26,7 +25,7 @@ const meta: Meta<typeof Event> = {
 }
 
 export default meta
-type Story = StoryObj<typeof Event>
+type Story = StoryObj<typeof EventEntry>
 
 export const SingleTag: Story = {
   args: {

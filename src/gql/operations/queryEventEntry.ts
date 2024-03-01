@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client'
-// import { gql } from '../codegen/gql'
+// import { gql } from '@apollo/client'
+import { gql } from '../codegen/gql'
 
 export const QUERY_EVENT_ENTRY = gql(`
 query QueryEventEntry($filter: EventFilter) {

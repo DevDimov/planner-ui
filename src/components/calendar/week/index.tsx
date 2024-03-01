@@ -1,7 +1,7 @@
 import format from 'date-fns/format'
-import Event from '../../eventInstance'
+import EventEntry from '../../eventEntry'
 import { getDayColorClass } from './utils/getDayColorClass'
-import { EventEntry } from '../../../gql/codegen/graphql'
+import { EventEntry as EventEntryType } from '../../../gql/codegen/graphql'
 import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
@@ -9,7 +9,7 @@ import { formatDay } from './utils/formatDay'
 
 export type CalendarWeekProps = {
   days: Date[]
-  entries: EventEntry[]
+  entries: EventEntryType[]
   week: string
 }
 
@@ -42,8 +42,7 @@ export default function CalendarWeek({
       <div className="col-span-full grid grid-cols-7">
         {entries &&
           entries.map((entry) => {
-            const { iid, event, startDateTime, endDateTime } =
-              entry
+            const { iid, event, startDateTime, endDateTime } = entry
 
             const { colStart, colEnd } = getEventColumns({
               weekdays: days,
@@ -51,7 +50,7 @@ export default function CalendarWeek({
             })
 
             return (
-              <Event
+              <EventEntry
                 key={iid}
                 iid={iid}
                 label={event.label}

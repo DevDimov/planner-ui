@@ -7,13 +7,17 @@ import { EventEntry } from '../../gql/codegen/graphql'
 import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
 import { useLazyQuery } from '@apollo/client'
 
+interface QueryEventEntryData {
+  queryEventEntry: EventEntry[]
+}
+
 export default function Calendar() {
   const weekStartsOn = 1
 
   const [month, setMonth] = useState(startOfMonth(new Date()))
   const [entries, setEntries] = useState<EventEntry[]>([])
 
-  const [queryEntries] = useLazyQuery(QUERY_EVENT_ENTRY)
+  const [queryEntries] = useLazyQuery<QueryEventEntryData>(QUERY_EVENT_ENTRY)
 
   const fetchOccurrences = useCallback(async () => {
     const { data, error } = await queryEntries()
@@ -23,8 +27,8 @@ export default function Calendar() {
     }
 
     if (data) {
-      console.log('Data is available')
-      if (data.queryEventEntry) {
+      if (data.queryEventEntry.length) {
+        console.log('Data is available')
         setEntries(data.queryEventEntry)
       }
     }

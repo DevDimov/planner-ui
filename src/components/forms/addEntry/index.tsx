@@ -15,9 +15,10 @@ import { CalendarContext } from '../../../context/calendar'
 import { EventEntry } from '../../../gql/codegen/graphql'
 import lodash from 'lodash'
 import { useContext, useEffect, useState } from 'react'
+import { DialogClose } from '../../ui/dialog'
 
 type AddEntryFormProps = {
-  onClose: () => void
+  onClose?: () => void
 }
 
 type EventOption = {
@@ -146,9 +147,11 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
         />
         <div className="mt-4 flex justify-between gap-3">
           {!loading ? <Button type="submit">Submit</Button> : <ButtonLoading />}
-          <Button type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </Button>
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Cancel
+            </Button>
+          </DialogClose>
         </div>
       </form>
     </Form>
