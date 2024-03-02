@@ -4,7 +4,7 @@ import {
   InputMaybe,
 } from '../../gql/codegen/graphql'
 import EventInstanceTag from '../tags/eventInstanceTag'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
@@ -15,6 +15,7 @@ import { CalendarContext } from '../../context/calendar'
 import { Button } from '../buttons'
 import { ButtonLoading } from '../ui/button/buttonLoading'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { EditEntryForm } from '../forms/editEntry'
 
 export type EventEntryProps = {
   iid: string
@@ -62,6 +63,8 @@ export default function EventEntry({
   // color
   properties,
 }: EventEntryProps) {
+  const [canEdit, setCanEdit] = useState(false)
+
   const { entries: occurrences, setEntries: setOccurrences } =
     useContext(CalendarContext)
 
@@ -73,12 +76,13 @@ export default function EventEntry({
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
 
-  // const handleOnMouseDown = (event: React.MouseEvent<HTMLElement>) => {
-  //   event.preventDefault()
-  //   if (event.nativeEvent.button === 2) {
-  //     console.log('Right click')
-  //   }
-  // }
+  const handleEnableEditing = () => {
+    setCanEdit(true)
+  }
+
+  const handleCancelEditing = () => {
+    setCanEdit(false)
+  }
 
   const handleDeleteEntry = async () => {
     try {
@@ -121,58 +125,62 @@ export default function EventEntry({
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="z-50 flex max-w-md flex-col gap-y-4 rounded-sm">
-            <div className="font-medium">{label}</div>
-            <HorizontalDivider />
-            <div className="flex flex-col gap-y-4">
-              <PropertyValuePair
-                label={'From'}
-                value={format(parseISO(startDateTime), 'eee, d LLL')}
-              />
-              <PropertyValuePair
-                label={'To'}
-                value={format(parseISO(endDateTime), 'eee, d LLL')}
-              />
-            </div>
-            {properties && properties.length > 0 && (
+          {canEdit ? (
+            <EditEntryForm
+              eventLabel={label}
+              handleCancelEditing={handleCancelEditing}
+              startDateTime={parseISO(startDateTime)}
+              endDateTime={parseISO(endDateTime)}
+            />
+          ) : (
+            <div className="z-50 flex flex-col gap-y-4 rounded-sm">
+              <div className="font-medium">{label}</div>
               <div className="flex flex-col gap-y-4">
-                <HorizontalDivider />
-                {properties.map((prop) => {
-                  // const { iid, label, value } = prop
-
-                  return (
-                    <PropertyValuePair
-                      key={prop?.iid}
-                      label={prop?.label || 'Unknown Label'}
-                      value={prop?.value || 'Unknown Value'}
-                    />
-                  )
-                })}
+                {/* <Label>From</Label> */}
+                <PropertyValuePair
+                  label={'From'}
+                  value={format(parseISO(startDateTime), 'eee, d LLL')}
+                />
+                {/* <Label>To</Label> */}
+                <PropertyValuePair
+                  label={'To'}
+                  value={format(parseISO(endDateTime), 'eee, d LLL')}
+                />
               </div>
-            )}
-            <div className="mt-4 flex justify-between gap-3">
-              <Button
-                key="edit-event-button"
-                title="Edit event entry"
-                // onClick={handleDeleteOccurrence}
-                onClick={() => undefined}
-              >
-                Edit
-              </Button>
-              {loading ? (
-                <ButtonLoading />
-              ) : (
-                <Button
-                  key="delete-event-button"
-                  variant="outline"
-                  title="Delete event entry"
-                  onClick={handleDeleteEntry}
-                >
-                  Delete
-                </Button>
+              {properties && properties.length > 0 && (
+                <div className="flex flex-col gap-y-4">
+                  <HorizontalDivider />
+                  {properties.map((prop) => {
+                    // const { iid, label, value } = prop
+
+                    return (
+                      <PropertyValuePair
+                        key={prop?.iid}
+                        label={prop?.label || 'Unknown Label'}
+                        value={prop?.value || 'Unknown Value'}
+                      />
+                    )
+                  })}
+                </div>
               )}
+              <div className="mt-4 flex justify-between gap-3">
+                <Button title="Edit event entry" onClick={handleEnableEditing}>
+                  Edit
+                </Button>
+                {loading ? (
+                  <ButtonLoading />
+                ) : (
+                  <Button
+                    variant="outline"
+                    title="Delete event entry"
+                    onClick={handleDeleteEntry}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </PopoverContent>
       </Popover>
     </div>
