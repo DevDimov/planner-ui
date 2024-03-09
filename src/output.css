@@ -751,6 +751,10 @@ body{
   margin-top: 0.5rem;
 }
 
+.mt-3{
+  margin-top: 0.75rem;
+}
+
 .mt-4{
   margin-top: 1rem;
 }
@@ -777,10 +781,6 @@ body{
 
 .contents{
   display: contents;
-}
-
-.hidden{
-  display: none;
 }
 
 .h-0{
@@ -876,8 +876,8 @@ body{
   width: min-content;
 }
 
-.w-40{
-  width: 10rem;
+.w-96{
+  width: 24rem;
 }
 
 .min-w-\[8rem\]{
@@ -890,10 +890,6 @@ body{
 
 .max-w-lg{
   max-width: 32rem;
-}
-
-.max-w-md{
-  max-width: 28rem;
 }
 
 .shrink-0{
@@ -993,6 +989,10 @@ body{
   gap: 1.25rem;
 }
 
+.gap-x-4{
+  column-gap: 1rem;
+}
+
 .gap-y-1{
   row-gap: 0.25rem;
 }
@@ -1001,8 +1001,12 @@ body{
   row-gap: 1rem;
 }
 
-.gap-y-1\.5{
-  row-gap: 0.375rem;
+.gap-y-3{
+  row-gap: 0.75rem;
+}
+
+.gap-x-2{
+  column-gap: 0.5rem;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]){
