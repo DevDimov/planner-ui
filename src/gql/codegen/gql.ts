@@ -22,9 +22,10 @@ const documents = {
     "\n  mutation DeleteEventProperty($filter: EventPropertyFilter!) {\n    deleteEventProperty(filter: $filter) {\n      numUids\n      eventProperty {\n        id\n        iid\n        label\n        value\n        event {\n          id\n          label\n        }\n      }\n    }\n  }\n": types.DeleteEventPropertyDocument,
     "\n  mutation DeleteTag($filter: TagFilter!) {\n    deleteTag(filter: $filter) {\n      numUids\n      tag {\n        id\n        iid\n        label\n      }\n    }\n  }\n": types.DeleteTagDocument,
     "\n  mutation DeleteUser($filter: UserFilter!) {\n    deleteUser(filter: $filter) {\n      numUids\n    }\n  }\n": types.DeleteUserDocument,
-    "\nquery QueryEvent {\n  queryEvent {\n    iid\n    id\n    label\n    entries {\n      iid\n      startDateTime\n      endDateTime\n    }\n    tags {\n      id\n      iid\n      label\n    }\n    properties {\n      id\n      iid\n      label\n      value\n    }\n    user {\n      email\n      iid\n    }\n  }\n}\n": types.QueryEventDocument,
+    "\n  query QueryEvent($filter: EventFilter) {\n    queryEvent(filter: $filter) {\n      iid\n      id\n      label\n      tags {\n        id\n        iid\n        label\n      }\n    }\n  }\n": types.QueryEventDocument,
     "\nquery QueryEventEntry($filter: EventFilter) {\n    queryEventEntry {\n      iid\n      startDateTime\n      endDateTime\n      event(filter: $filter) {\n        iid\n        id\n        label\n        tags {\n          iid\n          id\n          label\n        }\n        properties {\n          iid\n          id\n          label\n          value\n        }\n      }\n    }\n  }\n": types.QueryEventEntryDocument,
     "\n  query QueryEventProperty($filter: EventPropertyFilter) {\n    queryEventProperty(filter: $filter) {\n      iid\n      id\n      label\n      value\n      event {\n        iid\n        id\n        label\n      }\n    }\n  }\n": types.QueryEventPropertyDocument,
+    "\n  query QueryTag {\n    queryTag {\n      iid\n      id\n      label\n    }\n  }\n": types.QueryTagDocument,
     "\n  query QueryUser($filter: UserFilter) {\n    queryUser(filter: $filter) {\n      email\n      iid\n    }\n  }\n": types.QueryUserDocument,
     "\n  mutation UpdateEvent($input: UpdateEventInput!) {\n    updateEvent(input: $input) {\n      numUids\n      event {\n        id\n        iid\n        label\n      }\n    }\n  }\n": types.UpdateEventDocument,
     "\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n      }\n    }\n  }\n": types.UpdateEventEntryDocument,
@@ -85,7 +86,7 @@ export function gql(source: "\n  mutation DeleteUser($filter: UserFilter!) {\n  
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nquery QueryEvent {\n  queryEvent {\n    iid\n    id\n    label\n    entries {\n      iid\n      startDateTime\n      endDateTime\n    }\n    tags {\n      id\n      iid\n      label\n    }\n    properties {\n      id\n      iid\n      label\n      value\n    }\n    user {\n      email\n      iid\n    }\n  }\n}\n"): (typeof documents)["\nquery QueryEvent {\n  queryEvent {\n    iid\n    id\n    label\n    entries {\n      iid\n      startDateTime\n      endDateTime\n    }\n    tags {\n      id\n      iid\n      label\n    }\n    properties {\n      id\n      iid\n      label\n      value\n    }\n    user {\n      email\n      iid\n    }\n  }\n}\n"];
+export function gql(source: "\n  query QueryEvent($filter: EventFilter) {\n    queryEvent(filter: $filter) {\n      iid\n      id\n      label\n      tags {\n        id\n        iid\n        label\n      }\n    }\n  }\n"): (typeof documents)["\n  query QueryEvent($filter: EventFilter) {\n    queryEvent(filter: $filter) {\n      iid\n      id\n      label\n      tags {\n        id\n        iid\n        label\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -94,6 +95,10 @@ export function gql(source: "\nquery QueryEventEntry($filter: EventFilter) {\n  
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query QueryEventProperty($filter: EventPropertyFilter) {\n    queryEventProperty(filter: $filter) {\n      iid\n      id\n      label\n      value\n      event {\n        iid\n        id\n        label\n      }\n    }\n  }\n"): (typeof documents)["\n  query QueryEventProperty($filter: EventPropertyFilter) {\n    queryEventProperty(filter: $filter) {\n      iid\n      id\n      label\n      value\n      event {\n        iid\n        id\n        label\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query QueryTag {\n    queryTag {\n      iid\n      id\n      label\n    }\n  }\n"): (typeof documents)["\n  query QueryTag {\n    queryTag {\n      iid\n      id\n      label\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import EventInstanceTag from './index'
+import EventTag from './index'
 
-const meta: Meta<typeof EventInstanceTag> = {
-  component: EventInstanceTag,
+const meta: Meta<typeof EventTag> = {
+  component: EventTag,
   parameters: {
     layout: 'centered',
   },
 }
 
 export default meta
-type Story = StoryObj<typeof EventInstanceTag>
+type Story = StoryObj<typeof EventTag>
 
 export const Red: Story = {
   args: {

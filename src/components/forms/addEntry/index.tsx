@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { addEntryFormSchema } from '../../../schema/addEntry'
 import { z } from 'zod'
-
 import { Button } from '../../buttons'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../index'
 import { SelectEvent } from '../../select/selectEvent'
@@ -11,10 +10,10 @@ import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventEntry'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
-import { EventEntry } from '../../../gql/codegen/graphql'
-import lodash from 'lodash'
 import { useContext, useEffect, useState } from 'react'
 import { DialogClose } from '../../ui/dialog'
+import { QUERY_EVENT_ENTRY } from '../../../gql/operations/queryEventEntry'
+import { EventEntryData } from '../../../models/eventEntry'
 
 type AddEntryFormProps = {
   onClose?: () => void
@@ -25,10 +24,16 @@ type EventOption = {
   label: string
 }
 
+type AddEventEntryData = {
+  addEventEntry: {
+    eventEntry: EventEntryData[]
+  }
+}
+
 export function AddEntryForm({ onClose }: AddEntryFormProps) {
   const [eventOptions, setEventOptions] = useState<EventOption[]>([])
 
-  const { entries, setEntries } = useContext(CalendarContext)
+  const { events, entries, setEntries } = useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof addEntryFormSchema>>({
     resolver: zodResolver(addEntryFormSchema),
@@ -40,52 +45,56 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
   })
 
   useEffect(() => {
-    let uniqueEntries: EventEntry[] = []
-    if (entries) {
-      uniqueEntries = lodash.uniqBy(entries, (e) => {
-        return e.event.id
-      })
-    }
-
     let filteredEntries: EventOption[] = []
 
-    if (uniqueEntries) {
-      filteredEntries = uniqueEntries.map((entry) => {
-        const eventLabel = entry.event.label
-        const tags = entry.event.tags
+    if (events) {
+      filteredEntries = events.map((event) => {
+        const eventLabel = event.label
+        let tags = event.tags
           ?.map((tag) => {
-            return tag && tag.label
+            return tag.label
           })
           .toString()
 
+        tags = tags ? ''.concat('(', tags, ')') : ''
+
         return {
-          id: entry.event.iid,
+          id: event.iid,
           label: tags ? `${eventLabel} ${tags}` : eventLabel,
         }
       })
     }
 
     setEventOptions(filteredEntries)
-  }, [entries])
+  }, [events])
 
-  const [addEventEntry, { loading, error }] = useMutation(ADD_EVENT_ENTRY)
+  const [addEventEntry, { loading, error }] =
+    useMutation<AddEventEntryData>(ADD_EVENT_ENTRY)
 
-  if (error) console.log('error', error)
+  // if (error) console.log('error', error)
 
   async function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
+    console.log(values)
     const { eventId, startDateTime, endDateTime } = values
-    const { data } = await addEventEntry({
-      variables: {
-        input: {
-          startDateTime: startDateTime.toISOString(),
-          endDateTime: endDateTime.toISOString(),
-          event: { id: eventId },
+    try {
+      const { data } = await addEventEntry({
+        variables: {
+          input: {
+            startDateTime: startDateTime.toISOString(),
+            endDateTime: endDateTime.toISOString(),
+            event: { iid: eventId },
+          },
         },
-      },
-    })
+        // refetchQueries: [QUERY_EVENT_ENTRY, 'QueryEventEntry'],
+      })
 
-    if (data) {
-      setEntries([...entries, data?.addEventEntry?.eventEntry])
+      if (data) {
+        console.log(data)
+        form.reset()
+        setEntries([...entries, ...data.addEventEntry.eventEntry])
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

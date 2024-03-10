@@ -1,15 +1,15 @@
 import format from 'date-fns/format'
 import EventEntry from '../../eventEntry'
 import { getDayColorClass } from './utils/getDayColorClass'
-import { EventEntry as EventEntryType } from '../../../gql/codegen/graphql'
 import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../context/calendar'
 import { formatDay } from './utils/formatDay'
+import { EventEntryData } from '../../../models/eventEntry'
 
 export type CalendarWeekProps = {
   days: Date[]
-  entries: EventEntryType[]
+  entries: EventEntryData[]
   week: string
 }
 
@@ -28,13 +28,11 @@ export default function CalendarWeek({
           const colorClass = getDayColorClass(day, month)
 
           return (
-            <div>
-              <time dateTime={dateTime}>
-                <span className={`${colorClass} rounded p-1`}>
-                  {formatDay(day)}
-                </span>
-              </time>
-            </div>
+            <time dateTime={dateTime} key={dateTime}>
+              <span className={`${colorClass} rounded p-1`}>
+                {formatDay(day)}
+              </span>
+            </time>
           )
         })}
       </div>
@@ -53,6 +51,7 @@ export default function CalendarWeek({
               <EventEntry
                 key={iid}
                 iid={iid}
+                eventIid={event.iid}
                 label={event.label}
                 tags={event.tags || []}
                 startDateTime={startDateTime}

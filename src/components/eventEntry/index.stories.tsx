@@ -36,7 +36,6 @@ export const SingleTag: Story = {
         iid: 't1',
         label: 'Violet',
         id: '',
-        user: { email: '', iid: '' },
       },
     ],
     startDateTime: '2023-12-25',
@@ -81,9 +80,9 @@ export const MultipleTags: Story = {
   args: {
     label: 'Instance with multiple tags',
     tags: [
-      { label: 'Red', iid: 't1', id: '', user: { email: '', iid: '' } },
-      { label: 'Orange', iid: 't2', id: '', user: { email: '', iid: '' } },
-      { label: 'Yellow', iid: 't3', id: '', user: { email: '', iid: '' } },
+      { label: 'Red', iid: 't1', id: '' },
+      { label: 'Orange', iid: 't2', id: '' },
+      { label: 'Yellow', iid: 't3', id: '' },
     ],
     startDateTime: '2023-12-25',
     endDateTime: '2023-12-31',

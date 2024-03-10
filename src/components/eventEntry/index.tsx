@@ -1,5 +1,4 @@
-import { Tag as EventTagType } from '../../gql/codegen/graphql'
-import EventInstanceTag from '../tags/eventInstanceTag'
+import EventTag from '../tags/eventInstanceTag'
 import React, { useContext, useState } from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
 import format from 'date-fns/format'
@@ -15,15 +14,17 @@ import FormTitle from '../ui/form/formTitle'
 import { TypographyMuted } from '../typography/muted'
 import { EditEventPropertiesForm } from '../forms/editEntry/eventProperties'
 import { EventPropertyData } from '../../models/eventProperty'
+import { TagData } from '../../models/tag'
 
 export type EventEntryProps = {
   iid: string
+  eventIid: string
   label: string
   colStart: number
   colEnd: number
   startDateTime: string
   endDateTime: string
-  tags: EventTagType[]
+  tags: TagData[]
   properties?: EventPropertyData[]
 }
 
@@ -53,6 +54,7 @@ const colEnds = [
 
 export default function EventEntry({
   iid,
+  eventIid,
   label,
   colStart,
   colEnd,
@@ -113,20 +115,13 @@ export default function EventEntry({
       <Popover>
         <PopoverTrigger onClick={handleClick} className="w-full bg-white">
           <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
-            <div className="text-md text-left font-sans font-medium leading-4 text-black">
-              {label}
-            </div>
+            <div className="text-left leading-5">{label}</div>
             <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
-              {tags &&
-                tags.map((tag) => {
-                  return (
-                    <EventInstanceTag
-                      key={tag.iid}
-                      label={tag.label || 'Label'}
-                      color={'blue'}
-                    />
-                  )
-                })}
+              {tags.map((tag) => {
+                return (
+                  <EventTag key={tag.iid} label={tag.label} color={'blue'} />
+                )
+              })}
             </div>
           </div>
         </PopoverTrigger>
@@ -183,18 +178,17 @@ export default function EventEntry({
                   </Button>
                 )}
               </div>
-              {properties && properties.length > 0 && canEditProperties ? (
+              {canEditProperties ? (
                 <EditEventPropertiesForm
-                  eventIid={iid}
-                  properties={properties}
+                  entryIid={iid}
+                  eventIid={eventIid}
+                  properties={properties || []}
                   handleCancelEditing={handleCancelPropertyEditing}
                 />
               ) : (
                 <>
                   {properties &&
                     properties.map((prop) => {
-                      // const { iid, label, value } = prop
-
                       return (
                         <PropertyValuePair
                           key={prop.iid}

@@ -1,6 +1,6 @@
-import { Button } from '@mui/base/Button'
+import { Badge } from '../../ui/badge'
 
-export type EventInstanceTagProps = {
+export type EventTagProps = {
   label: string
   color: 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'indigo' | 'violet'
 }
@@ -15,15 +15,13 @@ const colors = {
   violet: 'bg-violet-500',
 }
 
-export default function EventInstanceTag({
-  label,
-  color,
-}: EventInstanceTagProps) {
+export default function EventTag({ label, color }: EventTagProps) {
   return (
-    <span
-      className={`${colors[color]} rounded-sm px-2 py-0.5 font-sans text-sm font-normal text-white`}
-    >
-      {label}
-    </span>
+    // <span
+    //   className={`${colors[color]} rounded-sm px-2 py-0.5 font-sans text-sm font-normal text-white`}
+    // >
+    //   {label}
+    // </span>
+    <Badge className={`${colors[color]}`}>{label}</Badge>
   )
 }

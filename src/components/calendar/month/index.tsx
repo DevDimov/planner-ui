@@ -2,16 +2,16 @@ import { getAllDaysInMonth } from '../utils/getAllDaysInMonth'
 import { groupDatesByWeek } from '../utils/groupDatesByWeek'
 import CalendarWeek from '../week'
 import WeekdayNames from '../weekdayNames'
-import { EventEntry } from '../../../gql/codegen/graphql'
 import { groupOccurrencesByWeek } from '../utils/groupOccurrencesByWeek'
+import { EventEntryData } from '../../../models/eventEntry'
 
 export type GroupedEntries = {
-  [id: string]: EventEntry[]
+  [id: string]: EventEntryData[]
 }
 
 export type CalendarMonthProps = {
   month: Date
-  entries: EventEntry[]
+  entries: EventEntryData[]
 }
 
 export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
@@ -21,16 +21,14 @@ export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
   return (
     <div>
       <WeekdayNames />
-      <div className="grid h-full border-2 border-blue-100 bg-blue-50 p-4">
+      <div className="grid h-full border-2 border-blue-100 bg-blue-50 p-4 rounded">
         {Object.entries(weeksGroup).map(([weekNumber, days]) => {
           return (
             <CalendarWeek
               key={weekNumber}
               week={weekNumber}
               days={days}
-              entries={
-                groupedEntries ? groupedEntries[weekNumber] : []
-              }
+              entries={groupedEntries ? groupedEntries[weekNumber] : []}
             />
           )
         })}

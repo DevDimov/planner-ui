@@ -1,9 +1,9 @@
 import { expect } from '@jest/globals'
 import { groupOccurrencesByWeek } from './index'
-import { EventEntry } from '../../../../gql/codegen/graphql'
+import { EventEntryData } from '../../../../models/eventEntry'
 
 test('groups two entries in one week', () => {
-  const data: EventEntry[] = [
+  const data: EventEntryData[] = [
     {
       iid: '',
       startDateTime: '2023-12-25T00:00:00Z',
@@ -44,7 +44,7 @@ test('groups two entries in one week', () => {
 })
 
 test('groups an array of 3 entries spanning 2 weeks', () => {
-  const data: EventEntry[] = [
+  const data: EventEntryData[] = [
     {
       // Week 53
       iid: '',
@@ -55,10 +55,6 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
         iid: '',
         label: 'Full Week Event',
         tags: [],
-        user: {
-          iid: '',
-          email: '',
-        },
       },
     },
     {
@@ -71,10 +67,6 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
         iid: '',
         label: '',
         tags: [],
-        user: {
-          iid: '',
-          email: '',
-        },
       },
     },
     {
@@ -87,10 +79,6 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
         iid: '',
         label: 'Jan Day Event',
         tags: [],
-        user: {
-          iid: '',
-          email: '',
-        },
       },
     },
   ]
@@ -107,7 +95,7 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
 })
 
 test('returns an empty object when argument is an empty array', () => {
-  const data: EventEntry[] = []
+  const data: EventEntryData[] = []
 
   const grouped = groupOccurrencesByWeek(data)
   const groups = Object.keys(grouped)

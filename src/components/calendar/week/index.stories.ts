@@ -44,16 +44,8 @@ export const SingleDayEvent: Story = {
               id: 'auth0|65538f46da9fa0033488f080.Work',
               iid: '0x1a5086a7dc',
               label: 'Work',
-              user: {
-                iid: 'u1',
-                email: 'vdim@example.com',
-              },
             },
           ],
-          user: {
-            email: 'vdim@example.com',
-            iid: 'u1',
-          },
         },
       },
     ],

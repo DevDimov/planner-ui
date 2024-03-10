@@ -13,7 +13,7 @@ type Story = StoryObj<typeof EditEventPropertiesForm>
 
 export const EventPropertiesForm: Story = {
   args: {
-    eventIid: 'Test',
+    entryIid: 'Test',
     handleCancelEditing: () => console.log('Close'),
     properties: [
       {

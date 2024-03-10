@@ -20,12 +20,10 @@ export const AuthorizedApolloProvider = ({ children }: any) => {
 
     const token = await getIdTokenClaims()
 
-    console.log(token)
-
     return {
       headers: {
         ...headers,
-        'X-Auth-Token': token ? token.__raw : '',
+        'Planner-Token': token ? token.__raw : '',
       },
     }
   })

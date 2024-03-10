@@ -19,28 +19,31 @@ import { ADD_EVENT } from '../../../gql/operations/addEvent'
 import { createEventFormSchema } from '../../../schema/createEvent'
 import { Input } from '../../ui/input/default'
 import { Checkbox } from '../../ui/checkbox'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
+import { EventData } from '../../../models/event'
 
 type CreateEventFormProps = {
   onClose: () => void
 }
 
+type AddEventData = {
+  addEvent: {
+    event: EventData[]
+  }
+}
+
 export function CreateEventForm({ onClose }: CreateEventFormProps) {
+  const { tags: allTags, events, setEvents } = useContext(CalendarContext)
+
   const [tags, setTags] = useState<{ id: string; label: string }[]>([])
 
   useEffect(() => {
-    setTags([
-      { id: 'id1', label: 'Day off' },
-      { id: 'id2', label: 'At school' },
-    ])
-  }, [])
-
-  // const [eventOptions, setEventOptions] = useState<
-  //   { id: string; label: string }[]
-  // >([])
-
-  // const { occurrences } = React.useContext(CalendarContext)
+    const currentTags = allTags.map((tag) => {
+      return { id: tag.id, label: tag.label }
+    })
+    setTags(currentTags)
+  }, [allTags])
 
   const form = useForm<z.infer<typeof createEventFormSchema>>({
     resolver: zodResolver(createEventFormSchema),
@@ -54,16 +57,35 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
 
   const inputNewTagRef = useRef<HTMLInputElement>(null)
 
-  const [addEventEntry, { loading, error, data }] = useMutation(ADD_EVENT)
+  const [addEvent, { loading, error }] = useMutation<AddEventData>(ADD_EVENT)
 
   if (error) console.log('error', error)
 
-  function onSubmit(values: z.infer<typeof createEventFormSchema>) {
+  async function onSubmit(values: z.infer<typeof createEventFormSchema>) {
     console.log(values)
-    // const { label, tags } = values
-    // addEventEntry({
-    //   // variables: { eventInstance: { id: eventId }, startDateTime, endDateTime },
-    // })
+    const { label, tags } = values
+    const tagsString = tags.map((tag) => tag.label).toString()
+    const userId = user?.sub || 'auth0|undefined'
+    const userPayload = { email: user?.email }
+    const eventId = ''.concat(userId, '|', label, '|', tagsString)
+    const tagsPayload = tags.map((tag) => {
+      return { ...tag, user: userPayload }
+    })
+
+    try {
+      const { data } = await addEvent({
+        variables: {
+          input: [{ id: eventId, label, user: userPayload, tags: tagsPayload }],
+        },
+      })
+
+      if (data) {
+        console.log(data)
+        setEvents([...events, ...data.addEvent.event])
+      }
+    } catch {
+      console.log(error)
+    }
   }
 
   const handleOnClickNewTag = () => {

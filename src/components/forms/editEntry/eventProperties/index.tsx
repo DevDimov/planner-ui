@@ -17,8 +17,10 @@ import { Input } from '../../../ui/input/default'
 import { useRef } from 'react'
 import { UPDATE_EVENT } from '../../../../gql/operations/updateEvent'
 import { EventPropertyData } from '../../../../models/eventProperty'
+import { useAuth0 } from '@auth0/auth0-react'
 
 type EditEventPropertiesFormProps = {
+  entryIid?: string
   eventIid: string
   handleCancelEditing: () => void
   properties: EventPropertyData[]
@@ -37,6 +39,8 @@ export function EditEventPropertiesForm({
     },
   })
 
+  const { user } = useAuth0()
+
   const { fields, remove, append } = useFieldArray({
     control: form.control,
     name: 'properties',
@@ -52,9 +56,6 @@ export function EditEventPropertiesForm({
       if (propLabel.length > 0 && propValue.length > 0) {
         const exists = fields.find((e) => e.label === propLabel)
         if (!exists) {
-          // const userId = user?.sub || 'auth0|undefined'
-          const userId = 'auth0|undefined'
-          const propId = ''.concat(userId, '|', propLabel)
           append({
             label: propLabel,
             value: propValue,
@@ -73,11 +74,12 @@ export function EditEventPropertiesForm({
   async function onSubmit(
     values: z.infer<typeof editEventPropertiesFormSchema>
   ) {
-    console.log(values)
+    // console.log(values)
     const { eventIid, properties } = values
+    const userId = user?.sub || 'auth0|undefined'
     const newProperties = properties.map((prop) => {
       return {
-        id: 'auth0' + eventIid + prop.label,
+        id: ''.concat(userId, '|', eventIid, '|', prop.label),
         label: prop.label,
         value: prop.value,
         event: {
@@ -85,13 +87,13 @@ export function EditEventPropertiesForm({
         },
       }
     })
+    console.log('New props', newProperties)
     const { data } = await updateEvent({
       variables: {
         input: {
           filter: {
             iid: [eventIid],
           },
-          remove: { properties: null },
           set: {
             properties: newProperties,
           },
@@ -113,7 +115,7 @@ export function EditEventPropertiesForm({
       >
         {fields.map((field, index) => {
           return (
-            <div className="flex flex-row gap-x-2">
+            <div className="flex flex-row gap-x-2" key={field.id}>
               <FormField
                 control={form.control}
                 name={`properties.${index}.label` as const}
