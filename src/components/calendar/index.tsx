@@ -6,9 +6,15 @@ import { CalendarContext } from '../../context/calendar'
 import { EventEntry } from '../../gql/codegen/graphql'
 import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
 import { useLazyQuery } from '@apollo/client'
+import { QUERY_TAG } from '../../gql/operations/queryTag'
+import { TagData } from '../../models/tag'
 
 interface QueryEventEntryData {
   queryEventEntry: EventEntry[]
+}
+
+interface QueryTagData {
+  queryTag: TagData[]
 }
 
 export default function Calendar() {
@@ -16,14 +22,16 @@ export default function Calendar() {
 
   const [month, setMonth] = useState(startOfMonth(new Date()))
   const [entries, setEntries] = useState<EventEntry[]>([])
+  const [tags, setTags] = useState<TagData[]>([])
 
   const [queryEntries] = useLazyQuery<QueryEventEntryData>(QUERY_EVENT_ENTRY)
+  const [queryTags] = useLazyQuery<QueryTagData>(QUERY_TAG)
 
-  const fetchOccurrences = useCallback(async () => {
+  const fetchEntries = useCallback(async () => {
     const { data, error } = await queryEntries()
 
     if (error) {
-      return console.log('There was an error', error)
+      return console.log('There was an error fetching entries', error)
     }
 
     if (data) {
@@ -34,9 +42,28 @@ export default function Calendar() {
     }
   }, [queryEntries])
 
+  const fetchTags = useCallback(async () => {
+    const { data, error } = await queryTags()
+
+    if (error) {
+      return console.log('There was an error fetching tags', error)
+    }
+
+    if (data) {
+      if (data.queryTag.length) {
+        console.log('Tags fetched')
+        setTags(data.queryTag)
+      }
+    }
+  }, [queryTags])
+
   useEffect(() => {
-    fetchOccurrences().catch(console.error)
-  }, [fetchOccurrences])
+    fetchEntries().catch(console.error)
+  }, [fetchEntries])
+
+  useEffect(() => {
+    fetchTags().catch(console.error)
+  }, [fetchTags])
 
   return (
     <div>
@@ -46,6 +73,8 @@ export default function Calendar() {
           weekStartsOn,
           entries: entries,
           setEntries: setEntries,
+          tags: tags,
+          setTags: setTags,
         }}
       >
         <CalendarControls month={month} setMonth={setMonth} />

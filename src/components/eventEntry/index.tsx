@@ -1,9 +1,4 @@
-import {
-  Tag as EventTagType,
-  EventPropertyRef,
-  InputMaybe,
-  EventProperty,
-} from '../../gql/codegen/graphql'
+import { Tag as EventTagType } from '../../gql/codegen/graphql'
 import EventInstanceTag from '../tags/eventInstanceTag'
 import React, { useContext, useState } from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
@@ -14,13 +9,12 @@ import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { DELETE_EVENT_ENTRY } from '../../gql/operations/deleteEventEntry'
 import { CalendarContext } from '../../context/calendar'
 import { Button } from '../buttons'
-import { ButtonLoading } from '../ui/button/buttonLoading'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { EditEntryDurationForm } from '../forms/editEntry/duration'
-import { Label } from '@radix-ui/react-label'
 import FormTitle from '../ui/form/formTitle'
 import { TypographyMuted } from '../typography/muted'
 import { EditEventPropertiesForm } from '../forms/editEntry/eventProperties'
+import { EventPropertyData } from '../../models/eventProperty'
 
 export type EventEntryProps = {
   iid: string
@@ -30,7 +24,7 @@ export type EventEntryProps = {
   startDateTime: string
   endDateTime: string
   tags: EventTagType[]
-  properties?: EventProperty[]
+  properties?: EventPropertyData[]
 }
 
 const colStarts = [

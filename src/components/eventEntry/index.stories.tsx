@@ -46,6 +46,7 @@ export const SingleTag: Story = {
         iid: 'p1',
         label: 'Event type',
         value: 'Student',
+        id: '',
       },
     ],
   },

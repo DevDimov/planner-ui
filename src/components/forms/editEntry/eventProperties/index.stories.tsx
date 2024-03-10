@@ -21,15 +21,6 @@ export const EventPropertiesForm: Story = {
         id: 'id1',
         label: 'label1',
         value: 'value1',
-        event: {
-          id: 'event1',
-          iid: '',
-          label: '',
-          user: {
-            email: '',
-            iid: '',
-          },
-        },
       },
     ],
   },

@@ -10,31 +10,30 @@ import {
   FormItem,
   FormMessage,
 } from '../../index'
-import { SingleDateInput } from '../../../input/singleDateInput'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../../ui/button/buttonLoading'
 import { editEventPropertiesFormSchema } from '../../../../schema/editEventProperties'
-import { UPDATE_EVENT_PROPERTY } from '../../../../gql/operations/updateEventProperty'
-import { EventProperty } from '../../../../gql/codegen/graphql'
 import { Input } from '../../../ui/input/default'
 import { useRef } from 'react'
+import { UPDATE_EVENT } from '../../../../gql/operations/updateEvent'
+import { EventPropertyData } from '../../../../models/eventProperty'
 
 type EditEventPropertiesFormProps = {
   eventIid: string
   handleCancelEditing: () => void
-  properties: EventProperty[]
+  properties: EventPropertyData[]
 }
 
 export function EditEventPropertiesForm({
   eventIid,
   handleCancelEditing,
-  properties: test,
+  properties: eventPropertyData,
 }: EditEventPropertiesFormProps) {
   const form = useForm<z.infer<typeof editEventPropertiesFormSchema>>({
     resolver: zodResolver(editEventPropertiesFormSchema),
     defaultValues: {
       eventIid: eventIid,
-      properties: test,
+      properties: eventPropertyData,
     },
   })
 
@@ -55,14 +54,7 @@ export function EditEventPropertiesForm({
         if (!exists) {
           // const userId = user?.sub || 'auth0|undefined'
           const userId = 'auth0|undefined'
-          const tagId = ''.concat(userId, '|', propLabel)
-          // setTags([
-          //   ...tags,
-          //   {
-          //     id: tagId,
-          //     label: propLabel,
-          //   },
-          // ])
+          const propId = ''.concat(userId, '|', propLabel)
           append({
             label: propLabel,
             value: propValue,
@@ -74,9 +66,7 @@ export function EditEventPropertiesForm({
     }
   }
 
-  const [updateEventProperties, { loading, error }] = useMutation(
-    UPDATE_EVENT_PROPERTY
-  )
+  const [updateEvent, { loading, error }] = useMutation(UPDATE_EVENT)
 
   if (error) console.log('error', error)
 
@@ -84,24 +74,35 @@ export function EditEventPropertiesForm({
     values: z.infer<typeof editEventPropertiesFormSchema>
   ) {
     console.log(values)
-    // const { eventIid, properties } = values
-    // const { data } = await updateEventProperties({
-    //   variables: {
-    //     input: {
-    //       filter: {
-    //         iid: [eventIid],
-    //       },
-    //       set: {
-    //         // properties: properties,
-    //       },
-    //     },
-    //   },
-    // })
+    const { eventIid, properties } = values
+    const newProperties = properties.map((prop) => {
+      return {
+        id: 'auth0' + eventIid + prop.label,
+        label: prop.label,
+        value: prop.value,
+        event: {
+          iid: eventIid,
+        },
+      }
+    })
+    const { data } = await updateEvent({
+      variables: {
+        input: {
+          filter: {
+            iid: [eventIid],
+          },
+          remove: { properties: null },
+          set: {
+            properties: newProperties,
+          },
+        },
+      },
+    })
 
-    // if (data) {
-    //   // setEntries([...entries, data?.addEventEntry?.eventEntry])
-    //   handleCancelEditing()
-    // }
+    if (data) {
+      console.log('Event properties updated', data)
+      handleCancelEditing()
+    }
   }
 
   return (

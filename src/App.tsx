@@ -3,7 +3,7 @@ import LoginButton from './authentication/login'
 import LogoutButton from './authentication/logout'
 import Calendar from './components/calendar/index'
 import { useState, useEffect } from 'react'
-import { EventInstanceOccurrence } from './gql/codegen/graphql'
+import { EventEntry } from './gql/codegen/graphql'
 import { mockQueryEventEntry } from './mockData/queryEventEntry'
 
 function App() {

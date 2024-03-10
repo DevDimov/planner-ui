@@ -20,6 +20,8 @@ export const SunToSat: Story = {
         weekStartsOn: 0,
         entries: [],
         setEntries: () => undefined,
+        tags: [],
+        setTags: () => {},
       }}
     >
       <Story />

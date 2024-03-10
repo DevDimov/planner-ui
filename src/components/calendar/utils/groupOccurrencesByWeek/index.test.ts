@@ -1,43 +1,35 @@
 import { expect } from '@jest/globals'
 import { groupOccurrencesByWeek } from './index'
-import { EventInstanceOccurrence } from '../../../../gql/codegen/graphql'
+import { EventEntry } from '../../../../gql/codegen/graphql'
 
-test('groups two occurrences in one week', () => {
-  const data = [
+test('groups two entries in one week', () => {
+  const data: EventEntry[] = [
     {
       iid: '',
       startDateTime: '2023-12-25T00:00:00Z',
       endDateTime: '2023-12-31T00:00:00Z',
-      eventInstance: {
-        event: {
-          id: '',
-          iid: '',
-          label: '',
-          user: {
-            iid: '',
-            email: '',
-          },
-        },
+      event: {
         id: '',
         iid: '',
+        label: '',
+        user: {
+          iid: '',
+          email: '',
+        },
       },
     },
     {
       iid: '',
       startDateTime: '2023-12-25T00:00:00Z',
       endDateTime: '2023-12-25T00:00:00Z',
-      eventInstance: {
-        event: {
-          id: '',
-          iid: '',
-          label: '',
-          user: {
-            iid: '',
-            email: '',
-          },
-        },
+      event: {
         id: '',
         iid: '',
+        label: '',
+        user: {
+          iid: '',
+          email: '',
+        },
       },
     },
   ]
@@ -51,69 +43,54 @@ test('groups two occurrences in one week', () => {
   expect(grouped['53']).toHaveLength(2)
 })
 
-test('groups an array of 3 occurrences spanning 2 weeks', () => {
-  const data = [
+test('groups an array of 3 entries spanning 2 weeks', () => {
+  const data: EventEntry[] = [
     {
       // Week 53
       iid: '',
-      label: 'Full Week Event',
       startDateTime: '2023-12-25T00:00:00.000Z',
       endDateTime: '2023-12-31T00:00:00.000Z',
-      tags: [{ label: 'Yellow', color: 'yellow' }],
-      eventInstance: {
-        event: {
-          id: '',
-          iid: '',
-          label: '',
-          user: {
-            iid: '',
-            email: '',
-          },
-        },
+      event: {
         id: '',
         iid: '',
+        label: 'Full Week Event',
+        tags: [],
+        user: {
+          iid: '',
+          email: '',
+        },
       },
     },
     {
       // Week 53
       iid: '',
-      label: 'Single Day Event',
       startDateTime: '2023-12-25T00:00:00.000Z',
       endDateTime: '2023-12-25T00:00:00.000Z',
-      tags: [{ label: 'Yellow', color: 'yellow' }],
-      eventInstance: {
-        event: {
-          id: '',
-          iid: '',
-          label: '',
-          user: {
-            iid: '',
-            email: '',
-          },
-        },
-        id: '',
+      event: {
+        id: 'Single Day Event',
         iid: '',
+        label: '',
+        tags: [],
+        user: {
+          iid: '',
+          email: '',
+        },
       },
     },
     {
       // Week 1
       iid: '',
-      label: 'Jan Day Event',
       startDateTime: '2024-01-01T00:00:00.000Z',
       endDateTime: '2024-01-01T00:00:00.000Z',
-      tags: [{ label: 'Yellow', color: 'yellow' }],
-      eventInstance: {
-        event: {
-          id: '',
-          iid: '',
-          label: '',
-          user: {
-            iid: '',
-            email: '',
-          },
-        },
+      event: {
         id: '',
         iid: '',
+        label: 'Jan Day Event',
+        tags: [],
+        user: {
+          iid: '',
+          email: '',
+        },
       },
     },
   ]
@@ -130,7 +107,7 @@ test('groups an array of 3 occurrences spanning 2 weeks', () => {
 })
 
 test('returns an empty object when argument is an empty array', () => {
-  const data: EventInstanceOccurrence[] = []
+  const data: EventEntry[] = []
 
   const grouped = groupOccurrencesByWeek(data)
   const groups = Object.keys(grouped)
