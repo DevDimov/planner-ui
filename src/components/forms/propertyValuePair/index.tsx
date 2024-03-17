@@ -1,3 +1,6 @@
+import { TypographyMuted } from '../../typography/muted'
+import { TypographySmall } from '../../typography/small'
+
 type PropertyValuePairProps = {
   label: string
   value: string
@@ -8,9 +11,9 @@ export default function PropertyValuePair({
   value,
 }: PropertyValuePairProps) {
   return (
-    <div className="flex flex-col">
-      <label>{label}</label>
-      <span className="font-medium">{value}</span>
+    <div className="flex flex-col gap-y-1">
+      <TypographySmall>{label}</TypographySmall>
+      <TypographyMuted>{value}</TypographyMuted>
     </div>
   )
 }

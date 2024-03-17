@@ -15,6 +15,12 @@ import { TypographyMuted } from '../typography/muted'
 import { EditEventPropertiesForm } from '../forms/editEntry/eventProperties'
 import { EventPropertyData } from '../../models/eventProperty'
 import { TagData } from '../../models/tag'
+import { TypographySmall } from '../typography/small'
+import { TypographyLead } from '../typography/lead'
+import { FormDescription } from '../forms'
+import { TypographyH4 } from '../typography/h4'
+import { TypographyLarge } from '../typography/large'
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 
 export type EventEntryProps = {
   iid: string
@@ -112,8 +118,8 @@ export default function EventEntry({
 
   return (
     <div className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}>
-      <Popover>
-        <PopoverTrigger onClick={handleClick} className="w-full bg-white">
+      <Dialog modal={false}>
+        <DialogTrigger onClick={handleClick} className="w-full bg-white">
           <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
             <div className="text-left leading-5">{label}</div>
             <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
@@ -124,93 +130,98 @@ export default function EventEntry({
               })}
             </div>
           </div>
-        </PopoverTrigger>
-        <PopoverContent>
+        </DialogTrigger>
+        <DialogContent className="max-h-[90%] overflow-y-auto">
           <div className="z-50 flex flex-col gap-y-4 rounded-sm">
-            <FormTitle>{label}</FormTitle>
-            <div className="flex flex-col gap-y-4">
-              <div className="flex items-center justify-between gap-x-4">
-                <TypographyMuted>Duration</TypographyMuted>
-                {!canEditDuration && (
-                  <Button
-                    title="Edit event entry duration"
-                    size="sm"
-                    variant="outline"
-                    onClick={handleEnableDurationEditing}
-                  >
-                    Edit
-                  </Button>
+            <TypographyH4>{label}</TypographyH4>
+            {/* <HorizontalDivider /> */}
+            {/* <div className="flex flex-row gap-x-16"> */}
+            <div className="mt-2 flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4">
+                <div className="flex items-center justify-between gap-x-4">
+                  <TypographyMuted>Duration</TypographyMuted>
+                  {!canEditDuration && (
+                    <Button
+                      title="Edit event entry duration"
+                      size="sm"
+                      variant="outline"
+                      onClick={handleEnableDurationEditing}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </div>
+                {canEditDuration ? (
+                  <EditEntryDurationForm
+                    entryIid={iid}
+                    startDateTime={parseISO(startDateTime)}
+                    endDateTime={parseISO(endDateTime)}
+                    handleCancelEditing={handleCancelDurationEditing}
+                  />
+                ) : (
+                  <>
+                    <PropertyValuePair
+                      label={'From'}
+                      value={format(parseISO(startDateTime), 'eee, d LLL')}
+                    />
+                    <PropertyValuePair
+                      label={'To'}
+                      value={format(parseISO(endDateTime), 'eee, d LLL')}
+                    />
+                  </>
                 )}
               </div>
-              {canEditDuration ? (
-                <EditEntryDurationForm
-                  entryIid={iid}
-                  startDateTime={parseISO(startDateTime)}
-                  endDateTime={parseISO(endDateTime)}
-                  handleCancelEditing={handleCancelDurationEditing}
-                />
-              ) : (
-                <>
-                  <PropertyValuePair
-                    label={'From'}
-                    value={format(parseISO(startDateTime), 'eee, d LLL')}
-                  />
-                  <PropertyValuePair
-                    label={'To'}
-                    value={format(parseISO(endDateTime), 'eee, d LLL')}
-                  />
-                </>
-              )}
-            </div>
-            <div className="flex flex-col gap-y-4">
-              <HorizontalDivider />
-              <div className="flex items-center justify-between gap-x-4">
-                <TypographyMuted>Event properties</TypographyMuted>
+              <div className="flex flex-col gap-y-4">
+                <HorizontalDivider />
+                <div className="flex items-center justify-between gap-x-4">
+                  <TypographyMuted>Event Properties</TypographyMuted>
 
-                {!canEditProperties && (
-                  <Button
-                    title="Edit event properties"
-                    size="sm"
-                    variant="outline"
-                    onClick={handleEnablePropertyEditing}
-                  >
-                    Edit
-                  </Button>
+                  {!canEditProperties && (
+                    <Button
+                      title="Edit event properties"
+                      size="sm"
+                      variant="outline"
+                      onClick={handleEnablePropertyEditing}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </div>
+                {canEditProperties ? (
+                  <EditEventPropertiesForm
+                    entryIid={iid}
+                    eventIid={eventIid}
+                    properties={properties || []}
+                    handleCancelEditing={handleCancelPropertyEditing}
+                  />
+                ) : (
+                  <>
+                    {properties &&
+                      properties.map((prop) => {
+                        return (
+                          <PropertyValuePair
+                            key={prop.iid}
+                            label={prop.label}
+                            value={prop.value}
+                          />
+                        )
+                      })}
+                  </>
                 )}
               </div>
-              {canEditProperties ? (
-                <EditEventPropertiesForm
-                  entryIid={iid}
-                  eventIid={eventIid}
-                  properties={properties || []}
-                  handleCancelEditing={handleCancelPropertyEditing}
-                />
-              ) : (
-                <>
-                  {properties &&
-                    properties.map((prop) => {
-                      return (
-                        <PropertyValuePair
-                          key={prop.iid}
-                          label={prop.label}
-                          value={prop.value}
-                        />
-                      )
-                    })}
-                </>
-              )}
+              {/* <HorizontalDivider /> */}
             </div>
-            <HorizontalDivider />
             <Button
               variant="outline"
               title="Delete event entry"
               onClick={handleDeleteEntry}
+              className="mt-4 w-fit"
             >
               Delete
             </Button>
           </div>
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

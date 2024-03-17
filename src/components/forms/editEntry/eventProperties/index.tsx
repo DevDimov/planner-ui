@@ -18,6 +18,9 @@ import { useRef } from 'react'
 import { UPDATE_EVENT } from '../../../../gql/operations/updateEvent'
 import { EventPropertyData } from '../../../../models/eventProperty'
 import { useAuth0 } from '@auth0/auth0-react'
+import { TypographyMuted } from '../../../typography/muted'
+import { DELETE_EVENT_PROPERTY } from '../../../../gql/operations/deleteEventProperty'
+import { AddEventPropertyForm } from './addEventProperty'
 
 type EditEventPropertiesFormProps = {
   entryIid?: string
@@ -46,28 +49,25 @@ export function EditEventPropertiesForm({
     name: 'properties',
   })
 
-  const inputNewPropertyLabelRef = useRef<HTMLInputElement>(null)
-  const inputNewPropertyValueRef = useRef<HTMLInputElement>(null)
+  const [updateEvent, { loading, error }] = useMutation(UPDATE_EVENT)
+  const [
+    deleteEventProperty,
+    { loading: loadingDeleteProp, error: errorDeleteProp },
+  ] = useMutation(DELETE_EVENT_PROPERTY)
 
-  const handleOnClickNewProperty = () => {
-    if (inputNewPropertyLabelRef.current && inputNewPropertyValueRef.current) {
-      let propLabel = inputNewPropertyLabelRef.current.value.trim()
-      let propValue = inputNewPropertyValueRef.current.value.trim()
-      if (propLabel.length > 0 && propValue.length > 0) {
-        const exists = fields.find((e) => e.label === propLabel)
-        if (!exists) {
-          append({
-            label: propLabel,
-            value: propValue,
-          })
-          inputNewPropertyLabelRef.current.value = ''
-          inputNewPropertyValueRef.current.value = ''
-        }
+  const handleDeleteEventProperty = async (label: string) => {
+    const target = eventPropertyData.find((prop) => prop.label === label)
+
+    if (target) {
+      const { data } = await deleteEventProperty({
+        variables: { filter: { iid: [target.iid] } },
+      })
+
+      if (data) {
+        console.log(data)
       }
     }
   }
-
-  const [updateEvent, { loading, error }] = useMutation(UPDATE_EVENT)
 
   if (error) console.log('error', error)
 
@@ -108,81 +108,85 @@ export function EditEventPropertiesForm({
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-4"
-      >
-        {fields.map((field, index) => {
-          return (
-            <div className="flex flex-row gap-x-2" key={field.id}>
-              <FormField
-                control={form.control}
-                name={`properties.${index}.label` as const}
-                render={() => (
-                  <FormItem className="flex flex-col">
-                    <FormControl>
-                      <Input
-                        key={field.id + 'propLabel'}
-                        placeholder="Enter label"
-                        {...form.register(`properties.${index}.label` as const)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex w-full flex-col gap-2"
+          name="edit_properties"
+        >
+          {fields.map((field, index) => {
+            return (
+              <div className="flex flex-row gap-x-2" key={field.id}>
+                <FormField
+                  control={form.control}
+                  name={`properties.${index}.label` as const}
+                  render={() => (
+                    <FormItem className="flex flex-col">
+                      <FormControl>
+                        <Input
+                          key={field.id + 'propLabel'}
+                          placeholder="Enter label"
+                          {...form.register(
+                            `properties.${index}.label` as const
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`properties.${index}.value` as const}
+                  render={() => (
+                    <FormItem className="flex flex-col">
+                      <FormControl>
+                        <Input
+                          key={field.id + 'propValue'}
+                          placeholder="Enter value"
+                          {...form.register(
+                            `properties.${index}.value` as const
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {loadingDeleteProp ? (
+                  <ButtonLoading />
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={() => handleDeleteEventProperty(field.label)}
+                  >
+                    Remove
+                  </Button>
                 )}
-              />
-              <FormField
-                control={form.control}
-                name={`properties.${index}.value` as const}
-                render={() => (
-                  <FormItem className="flex flex-col">
-                    <FormControl>
-                      <Input
-                        key={field.id + 'propValue'}
-                        placeholder="Enter value"
-                        {...form.register(`properties.${index}.value` as const)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button variant="outline" onClick={() => remove(index)}>
-                Remove
+              </div>
+            )
+          })}
+          {/* <AddEventPropertyForm eventIid={eventIid} /> */}
+          <div className="mt-1 flex justify-between">
+            {loading ? (
+              <ButtonLoading />
+            ) : (
+              <Button type="submit" variant="secondary">
+                Update all
               </Button>
-            </div>
-          )
-        })}
-
-        <FormDescription>New property</FormDescription>
-        <div className="flex flex-row gap-3">
-          <div>
-            <Input placeholder="Enter label" ref={inputNewPropertyLabelRef} />
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancelEditing}
+            >
+              Cancel
+            </Button>
           </div>
-          <div>
-            <Input placeholder="Enter value" ref={inputNewPropertyValueRef} />
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-min"
-            onClick={handleOnClickNewProperty}
-          >
-            Add
-          </Button>
-        </div>
-        <div className="mt-3 flex justify-between gap-3">
-          {loading ? <ButtonLoading /> : <Button type="submit">Update</Button>}
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={handleCancelEditing}
-          >
-            Cancel
-          </Button>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <AddEventPropertyForm eventIid={eventIid} />
+    </>
   )
 }

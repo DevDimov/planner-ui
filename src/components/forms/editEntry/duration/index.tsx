@@ -8,6 +8,7 @@ import { SingleDateInput } from '../../../input/singleDateInput'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../../ui/button/buttonLoading'
 import { UPDATE_EVENT_ENTRY } from '../../../../gql/operations/updateEventEntry'
+import { TypographySmall } from '../../../typography/small'
 
 type EditEntryDurationFormProps = {
   entryIid: string
@@ -69,7 +70,9 @@ export function EditEntryDurationForm({
           name="startDateTime"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>From</FormLabel>
+              <FormLabel>
+                <TypographySmall>From</TypographySmall>
+              </FormLabel>
               <SingleDateInput value={field.value} onChange={field.onChange} />
               <FormMessage />
             </FormItem>
@@ -80,7 +83,9 @@ export function EditEntryDurationForm({
           name="endDateTime"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>To</FormLabel>
+              <FormLabel>
+                <TypographySmall>To</TypographySmall>
+              </FormLabel>
               <SingleDateInput value={field.value} onChange={field.onChange} />
               <FormMessage />
             </FormItem>
