@@ -10,6 +10,9 @@ import { TagData } from '../../models/tag'
 import { EventEntryData } from '../../models/eventEntry'
 import { QUERY_EVENT } from '../../gql/operations/queryEvent'
 import { EventData } from '../../models/event'
+import { removeEventProperty } from './utils/removeEventProperty'
+import { EventPropertyData } from '../../models/eventProperty'
+import { addEventProperty } from './utils/addEventProperty'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -80,6 +83,17 @@ export default function Calendar() {
     }
   }, [queryTags])
 
+  const handleRemoveEventProperty = (eventIid: string, propertyIid: string) => {
+    setEntries(removeEventProperty(entries, eventIid, propertyIid))
+  }
+
+  const handleAddEventProperty = (
+    eventIid: string,
+    property: EventPropertyData
+  ) => {
+    setEntries(addEventProperty(entries, eventIid, property))
+  }
+
   useEffect(() => {
     fetchEvents().catch(console.error)
   }, [fetchEvents])
@@ -99,11 +113,14 @@ export default function Calendar() {
           month,
           weekStartsOn,
           events: events,
-          setEvents: setEvents,
           entries: entries,
-          setEntries: setEntries,
           tags: tags,
+          setEvents: setEvents,
+          setEntries: setEntries,
           setTags: setTags,
+          addEventProperty: handleAddEventProperty,
+          // removeEntry: handleRemoveEntry,
+          removeEventProperty: handleRemoveEventProperty,
         }}
       >
         <CalendarControls month={month} setMonth={setMonth} />

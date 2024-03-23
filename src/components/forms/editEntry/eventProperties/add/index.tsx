@@ -16,9 +16,18 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { TypographyMuted } from '../../../../typography/muted'
 import { addEventPropertySchema } from '../../../../../schema/addEventProperty'
 import { ADD_EVENT_PROPERTY } from '../../../../../gql/operations/addEventProperty'
+import { CalendarContext } from '../../../../../context/calendar'
+import { useContext } from 'react'
+import { EventPropertyData } from '../../../../../models/eventProperty'
 
 type AddEventPropertyFormProps = {
   eventIid: string
+}
+
+type AddEventPropertyData = {
+  addEventProperty: {
+    eventProperty: EventPropertyData[]
+  }
 }
 
 export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
@@ -31,8 +40,10 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
   })
 
   const { user } = useAuth0()
+  const { addEventProperty } = useContext(CalendarContext)
 
-  const [addEventProperty, { loading, error }] = useMutation(ADD_EVENT_PROPERTY)
+  const [addEventPropertyMutation, { loading, error }] =
+    useMutation<AddEventPropertyData>(ADD_EVENT_PROPERTY)
 
   if (error) console.log('error', error)
 
@@ -40,7 +51,14 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
     console.log(values)
     const { label, value } = values
     const userId = user?.sub || 'auth0|undefined'
-    const newProperty = {}
+    const newProperty = {
+      id: ''.concat(userId, '|', eventIid, '|', label),
+      label: label,
+      value: value,
+      event: {
+        iid: eventIid,
+      },
+    }
     // const newProperty = properties.map((prop) => {
     //   return {
     //     id: ''.concat(userId, '|', eventIid, '|', prop.label),
@@ -51,15 +69,18 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
     //     },
     //   }
     // })
-    console.log('New props', newProperty)
-    const { data } = await addEventProperty({
-      // variables: {
-      //   input: newProperty,
-      // },
+    // console.log('New props', newProperty)
+    const { data } = await addEventPropertyMutation({
+      variables: {
+        input: newProperty,
+      },
     })
 
     if (data) {
       console.log('Event property added', data)
+      const newProperty = data.addEventProperty.eventProperty[0]
+      addEventProperty(eventIid, newProperty)
+      form.reset()
     }
   }
 
@@ -78,11 +99,7 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormControl>
-                  <Input
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="Enter label"
-                  />
+                  <Input placeholder="Enter label" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import WeekdayNames from './index'
 import { CalendarContext } from '../../../context/calendar'
+import { defaultValue } from '../../../context/calendar/index'
 
 const meta: Meta<typeof WeekdayNames> = {
   title: 'Calendar/WeekdayNames',
@@ -14,18 +15,7 @@ export const MonToSun: Story = {}
 
 export const SunToSat: Story = {
   decorators: (Story) => (
-    <CalendarContext.Provider
-      value={{
-        month: new Date(),
-        weekStartsOn: 0,
-        events: [],
-        setEvents: () => undefined,
-        entries: [],
-        setEntries: () => undefined,
-        tags: [],
-        setTags: () => {},
-      }}
-    >
+    <CalendarContext.Provider value={defaultValue}>
       <Story />
     </CalendarContext.Provider>
   ),

@@ -72,19 +72,19 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
       return { ...tag, user: userPayload }
     })
 
-    try {
-      const { data } = await addEvent({
-        variables: {
-          input: [{ id: eventId, label, user: userPayload, tags: tagsPayload }],
-        },
-      })
+    const { data } = await addEvent({
+      variables: {
+        input: [{ id: eventId, label, user: userPayload, tags: tagsPayload }],
+      },
+    })
 
-      if (data) {
+    if (data) {
+      try {
         console.log(data)
         setEvents([...events, ...data.addEvent.event])
+      } catch {
+        console.log(error)
       }
-    } catch {
-      console.log(error)
     }
   }
 

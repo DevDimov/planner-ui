@@ -1,12 +1,13 @@
 import { ReloadIcon } from '@radix-ui/react-icons'
 
 import { Button } from '../../buttons'
+import { ReactNode } from 'react'
 
-export function ButtonLoading() {
+export function ButtonLoading({ label }: { label?: string }) {
   return (
     <Button disabled>
       <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-      Please wait
+      {label || 'Please wait'}
     </Button>
   )
 }

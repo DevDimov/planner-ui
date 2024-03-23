@@ -8,19 +8,14 @@ import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { DELETE_EVENT_ENTRY } from '../../gql/operations/deleteEventEntry'
 import { CalendarContext } from '../../context/calendar'
 import { Button } from '../buttons'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { EditEntryDurationForm } from '../forms/editEntry/duration'
-import FormTitle from '../ui/form/formTitle'
 import { TypographyMuted } from '../typography/muted'
-import { EditEventPropertiesForm } from '../forms/editEntry/eventProperties'
 import { EventPropertyData } from '../../models/eventProperty'
 import { TagData } from '../../models/tag'
-import { TypographySmall } from '../typography/small'
-import { TypographyLead } from '../typography/lead'
-import { FormDescription } from '../forms'
 import { TypographyH4 } from '../typography/h4'
-import { TypographyLarge } from '../typography/large'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
+import { EditEventPropertyForm } from '../forms/editEntry/eventProperties/edit'
+import { AddEventPropertyForm } from '../forms/editEntry/eventProperties/add'
 
 export type EventEntryProps = {
   iid: string
@@ -117,40 +112,53 @@ export default function EventEntry({
   }
 
   return (
-    <div className={`bg-white ${colStarts[colStart]} ${colEnds[colEnd]}`}>
+    <div className={`${colStarts[colStart]} ${colEnds[colEnd]}`}>
       <Dialog modal={false}>
         <DialogTrigger onClick={handleClick} className="w-full bg-white">
           <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
             <div className="text-left leading-5">{label}</div>
-            <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
-              {tags.map((tag) => {
-                return (
-                  <EventTag key={tag.iid} label={tag.label} color={'blue'} />
-                )
-              })}
-            </div>
+            {tags && tags.length > 0 && (
+              <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
+                {tags.map((tag) => {
+                  return (
+                    <EventTag key={tag.iid} label={tag.label} color={'blue'} />
+                  )
+                })}
+              </div>
+            )}
           </div>
         </DialogTrigger>
         <DialogContent className="max-h-[90%] overflow-y-auto">
           <div className="z-50 flex flex-col gap-y-4 rounded-sm">
             <TypographyH4>{label}</TypographyH4>
-            {/* <HorizontalDivider /> */}
-            {/* <div className="flex flex-row gap-x-16"> */}
+
             <div className="mt-2 flex flex-col gap-y-4">
               <div className="flex flex-col gap-y-4">
                 <div className="flex items-center justify-between gap-x-4">
                   <TypographyMuted>Duration</TypographyMuted>
-                  {!canEditDuration && (
+
+                  {!canEditDuration ? (
                     <Button
                       title="Edit event entry duration"
                       size="sm"
-                      variant="outline"
+                      variant="ghost"
+                      onClick={handleEnableDurationEditing}
+                      className="text-muted-foreground"
+                    >
+                      Edit
+                    </Button>
+                  ) : (
+                    <Button
+                      title="Finish editing event entry duration"
+                      size="sm"
+                      variant="ghost"
                       onClick={handleEnableDurationEditing}
                     >
                       Edit
                     </Button>
                   )}
                 </div>
+
                 {canEditDuration ? (
                   <EditEntryDurationForm
                     entryIid={iid}
@@ -161,39 +169,61 @@ export default function EventEntry({
                 ) : (
                   <>
                     <PropertyValuePair
+                      key={'From' + startDateTime.toString()}
                       label={'From'}
                       value={format(parseISO(startDateTime), 'eee, d LLL')}
                     />
                     <PropertyValuePair
+                      key={'To:' + endDateTime.toString()}
                       label={'To'}
                       value={format(parseISO(endDateTime), 'eee, d LLL')}
                     />
                   </>
                 )}
               </div>
+
               <div className="flex flex-col gap-y-4">
                 <HorizontalDivider />
                 <div className="flex items-center justify-between gap-x-4">
                   <TypographyMuted>Event Properties</TypographyMuted>
 
-                  {!canEditProperties && (
+                  {!canEditProperties ? (
                     <Button
                       title="Edit event properties"
                       size="sm"
-                      variant="outline"
+                      variant="ghost"
                       onClick={handleEnablePropertyEditing}
+                      className="text-muted-foreground"
                     >
                       Edit
                     </Button>
+                  ) : (
+                    <Button
+                      title="Finish editing event properties"
+                      size="sm"
+                      variant="ghost"
+                      onClick={handleCancelPropertyEditing}
+                    >
+                      Done
+                    </Button>
                   )}
                 </div>
+
                 {canEditProperties ? (
-                  <EditEventPropertiesForm
-                    entryIid={iid}
-                    eventIid={eventIid}
-                    properties={properties || []}
-                    handleCancelEditing={handleCancelPropertyEditing}
-                  />
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
+                      {properties?.map((prop) => (
+                        <EditEventPropertyForm
+                          key={prop.iid}
+                          eventIid={eventIid}
+                          property={prop}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <AddEventPropertyForm eventIid={eventIid} />
+                    </div>
+                  </div>
                 ) : (
                   <>
                     {properties &&
@@ -209,16 +239,20 @@ export default function EventEntry({
                   </>
                 )}
               </div>
-              {/* <HorizontalDivider /> */}
+
+              <div className="flex flex-col items-center gap-y-4">
+                <HorizontalDivider />
+                <Button
+                  variant="ghost"
+                  title="Delete event entry"
+                  onClick={handleDeleteEntry}
+                  className="w-fit text-muted-foreground"
+                  size="sm"
+                >
+                  Delete entry
+                </Button>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              title="Delete event entry"
-              onClick={handleDeleteEntry}
-              className="mt-4 w-fit"
-            >
-              Delete
-            </Button>
           </div>
         </DialogContent>
       </Dialog>

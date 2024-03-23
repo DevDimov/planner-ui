@@ -1,26 +1,25 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Button } from '../../../buttons'
+import { Button } from '../../../../buttons'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
-} from '../../index'
+} from '../../../index'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
-import { ButtonLoading } from '../../../ui/button/buttonLoading'
-import { editEventPropertiesFormSchema } from '../../../../schema/editEventProperties'
-import { Input } from '../../../ui/input/default'
-import { useRef } from 'react'
-import { UPDATE_EVENT } from '../../../../gql/operations/updateEvent'
-import { EventPropertyData } from '../../../../models/eventProperty'
+import { ButtonLoading } from '../../../../ui/button/buttonLoading'
+import { editEventPropertiesFormSchema } from '../../../../../schema/editEventProperties'
+import { Input } from '../../../../ui/input/default'
+import { useContext, useEffect, useMemo, useRef } from 'react'
+import { UPDATE_EVENT } from '../../../../../gql/operations/updateEvent'
+import { EventPropertyData } from '../../../../../models/eventProperty'
 import { useAuth0 } from '@auth0/auth0-react'
-import { TypographyMuted } from '../../../typography/muted'
-import { DELETE_EVENT_PROPERTY } from '../../../../gql/operations/deleteEventProperty'
-import { AddEventPropertyForm } from './addEventProperty'
+import { DELETE_EVENT_PROPERTY } from '../../../../../gql/operations/deleteEventProperty'
+import { AddEventPropertyForm } from '../add'
+import { CalendarContext } from '../../../../../context/calendar'
 
 type EditEventPropertiesFormProps = {
   entryIid?: string
@@ -34,38 +33,39 @@ export function EditEventPropertiesForm({
   handleCancelEditing,
   properties: eventPropertyData,
 }: EditEventPropertiesFormProps) {
-  const form = useForm<z.infer<typeof editEventPropertiesFormSchema>>({
-    resolver: zodResolver(editEventPropertiesFormSchema),
-    defaultValues: {
+  const { user } = useAuth0()
+  const { removeEventProperty } = useContext(CalendarContext)
+  const beingRemoved = useRef<string[]>([])
+
+  const formDefaultValues = useMemo(
+    () => ({
       eventIid: eventIid,
       properties: eventPropertyData,
-    },
+    }),
+    [eventIid, eventPropertyData]
+  )
+
+  const form = useForm<z.infer<typeof editEventPropertiesFormSchema>>({
+    resolver: zodResolver(editEventPropertiesFormSchema),
+    defaultValues: formDefaultValues,
   })
 
-  const { user } = useAuth0()
+  const [updateEventMutation, { loading, error }] = useMutation(UPDATE_EVENT)
 
-  const { fields, remove, append } = useFieldArray({
-    control: form.control,
-    name: 'properties',
-  })
+  const [deleteEventPropertyMutation, { loading: loadingDeleteProp }] =
+    useMutation(DELETE_EVENT_PROPERTY)
 
-  const [updateEvent, { loading, error }] = useMutation(UPDATE_EVENT)
-  const [
-    deleteEventProperty,
-    { loading: loadingDeleteProp, error: errorDeleteProp },
-  ] = useMutation(DELETE_EVENT_PROPERTY)
+  const handleDeleteEventProperty = async (iid: string) => {
+    beingRemoved.current.push(iid)
 
-  const handleDeleteEventProperty = async (label: string) => {
-    const target = eventPropertyData.find((prop) => prop.label === label)
+    const { data } = await deleteEventPropertyMutation({
+      variables: { filter: { iid: [iid] } },
+    })
 
-    if (target) {
-      const { data } = await deleteEventProperty({
-        variables: { filter: { iid: [target.iid] } },
-      })
-
-      if (data) {
-        console.log(data)
-      }
+    if (data) {
+      console.log(data)
+      removeEventProperty(eventIid, iid)
+      beingRemoved.current.filter((currentIid) => currentIid !== iid)
     }
   }
 
@@ -88,7 +88,7 @@ export function EditEventPropertiesForm({
       }
     })
     console.log('New props', newProperties)
-    const { data } = await updateEvent({
+    const { data } = await updateEventMutation({
       variables: {
         input: {
           filter: {
@@ -107,29 +107,31 @@ export function EditEventPropertiesForm({
     }
   }
 
+  useEffect(() => {
+    form.reset({ ...formDefaultValues, properties: eventPropertyData })
+  }, [form, formDefaultValues, eventPropertyData])
+
   return (
     <>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex w-full flex-col gap-2"
-          name="edit_properties"
         >
-          {fields.map((field, index) => {
+          {eventPropertyData.map((prop, index) => {
             return (
-              <div className="flex flex-row gap-x-2" key={field.id}>
+              <div className="flex flex-row gap-x-2" key={prop.iid}>
                 <FormField
                   control={form.control}
-                  name={`properties.${index}.label` as const}
-                  render={() => (
+                  name={`properties.${index}.label`}
+                  render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormControl>
                         <Input
-                          key={field.id + 'propLabel'}
+                          key={prop.iid + 'propLabel'}
                           placeholder="Enter label"
-                          {...form.register(
-                            `properties.${index}.label` as const
-                          )}
+                          value={field.value || 'Label'}
+                          onChange={field.onChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -138,28 +140,31 @@ export function EditEventPropertiesForm({
                 />
                 <FormField
                   control={form.control}
-                  name={`properties.${index}.value` as const}
-                  render={() => (
+                  name={`properties.${index}.value`}
+                  render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormControl>
                         <Input
-                          key={field.id + 'propValue'}
+                          key={prop.iid + 'propValue'}
                           placeholder="Enter value"
-                          {...form.register(
-                            `properties.${index}.value` as const
-                          )}
+                          value={field.value || "Value"}
+                          onChange={field.onChange}
+                          
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {loadingDeleteProp ? (
-                  <ButtonLoading />
+                {loadingDeleteProp &&
+                beingRemoved.current.includes(prop.iid) ? (
+                  <ButtonLoading label="Remove" />
                 ) : (
                   <Button
+                    type="button"
                     variant="outline"
-                    onClick={() => handleDeleteEventProperty(field.label)}
+                    title="Remove property"
+                    onClick={() => handleDeleteEventProperty(prop.iid)}
                   >
                     Remove
                   </Button>
@@ -167,7 +172,7 @@ export function EditEventPropertiesForm({
               </div>
             )
           })}
-          {/* <AddEventPropertyForm eventIid={eventIid} /> */}
+
           <div className="mt-1 flex justify-between">
             {loading ? (
               <ButtonLoading />
@@ -178,10 +183,11 @@ export function EditEventPropertiesForm({
             )}
             <Button
               type="button"
+              title="Finish editing properties"
               variant="outline"
               onClick={handleCancelEditing}
             >
-              Cancel
+              Done
             </Button>
           </div>
         </form>
