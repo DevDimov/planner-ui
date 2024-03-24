@@ -6,6 +6,8 @@ export const UPDATE_EVENT_ENTRY = gql(`
       numUids
       eventEntry {
         iid
+        startDateTime
+        endDateTime
       }
     }
   }

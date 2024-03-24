@@ -28,7 +28,7 @@ const documents = {
     "\n  query QueryTag {\n    queryTag {\n      iid\n      id\n      label\n    }\n  }\n": types.QueryTagDocument,
     "\n  query QueryUser($filter: UserFilter) {\n    queryUser(filter: $filter) {\n      email\n      iid\n    }\n  }\n": types.QueryUserDocument,
     "\n  mutation UpdateEvent($input: UpdateEventInput!) {\n    updateEvent(input: $input) {\n      numUids\n      event {\n        id\n        iid\n        label\n      }\n    }\n  }\n": types.UpdateEventDocument,
-    "\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n      }\n    }\n  }\n": types.UpdateEventEntryDocument,
+    "\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n        startDateTime\n        endDateTime\n      }\n    }\n  }\n": types.UpdateEventEntryDocument,
     "\n  mutation UpdateEventProperty($input: UpdateEventPropertyInput!) {\n    updateEventProperty(input: $input) {\n      numUids\n      eventProperty {\n        iid\n        id\n        label\n        value\n        event {\n          iid\n          id\n          label\n        }\n      }\n    }\n  }\n": types.UpdateEventPropertyDocument,
     "\n  mutation Mutation($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      numUids\n    }\n  }\n": types.MutationDocument,
 };
@@ -110,7 +110,7 @@ export function gql(source: "\n  mutation UpdateEvent($input: UpdateEventInput!)
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n      }\n    }\n  }\n"];
+export function gql(source: "\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n        startDateTime\n        endDateTime\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateEventEntry($input: UpdateEventEntryInput!) {\n    updateEventEntry(input: $input) {\n      numUids\n      eventEntry {\n        iid\n        startDateTime\n        endDateTime\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -6,3 +6,9 @@ export interface EventEntryData {
   endDateTime: string
   event: EventData
 }
+
+export interface UpdateEventEntryData {
+  iid: string
+  startDateTime: string
+  endDateTime: string
+}

@@ -7,13 +7,14 @@ import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
 import { useLazyQuery } from '@apollo/client'
 import { QUERY_TAG } from '../../gql/operations/queryTag'
 import { TagData } from '../../models/tag'
-import { EventEntryData } from '../../models/eventEntry'
+import { EventEntryData, UpdateEventEntryData } from '../../models/eventEntry'
 import { QUERY_EVENT } from '../../gql/operations/queryEvent'
 import { EventData } from '../../models/event'
 import { removeEventProperty } from './utils/removeEventProperty'
 import { EventPropertyData } from '../../models/eventProperty'
 import { addEventProperty } from './utils/addEventProperty'
 import { updateEventProperty } from './utils/updateEventProperty'
+import { updateEventEntry } from './utils/updateEventEntry'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -88,6 +89,10 @@ export default function Calendar() {
     setEntries(removeEventProperty(entries, eventIid, propertyIid))
   }
 
+  const handleUpdateEventEntry = (eventEntry: UpdateEventEntryData) => {
+    setEntries(updateEventEntry(entries, eventEntry))
+  }
+
   const handleUpdateEventProperty = (
     eventIid: string,
     property: EventPropertyData
@@ -128,8 +133,9 @@ export default function Calendar() {
           setTags: setTags,
           addEventProperty: handleAddEventProperty,
           // removeEntry: handleRemoveEntry,
-          removeEventProperty: handleRemoveEventProperty,
+          updateEventEntry: handleUpdateEventEntry,
           updateEventProperty: handleUpdateEventProperty,
+          removeEventProperty: handleRemoveEventProperty,
         }}
       >
         <CalendarControls month={month} setMonth={setMonth} />

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext } from 'react'
 import { TagData } from '../../models/tag'
-import { EventEntryData } from '../../models/eventEntry'
+import { EventEntryData, UpdateEventEntryData } from '../../models/eventEntry'
 import { EventData } from '../../models/event'
 import { EventPropertyData } from '../../models/eventProperty'
 
@@ -13,8 +13,9 @@ export const defaultValue: {
   setEntries: Dispatch<SetStateAction<EventEntryData[]>>
   tags: TagData[]
   setTags: Dispatch<SetStateAction<TagData[]>>
-  removeEventProperty: (eventIid: string, propertyIid: string) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
+  removeEventProperty: (eventIid: string, propertyIid: string) => void
+  updateEventEntry: (eventEntry: UpdateEventEntryData) => void
   updateEventProperty: (eventIid: string, property: EventPropertyData) => void
 } = {
   month: new Date(),
@@ -27,6 +28,7 @@ export const defaultValue: {
   setTags: () => {},
   removeEventProperty: () => {},
   addEventProperty: () => {},
+  updateEventEntry: () => {},
   updateEventProperty: () => {},
 }
 

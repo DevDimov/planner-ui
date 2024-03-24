@@ -9,6 +9,8 @@ import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../../ui/button/buttonLoading'
 import { UPDATE_EVENT_ENTRY } from '../../../../gql/operations/updateEventEntry'
 import { TypographySmall } from '../../../typography/small'
+import { useContext } from 'react'
+import { CalendarContext } from '../../../../context/calendar'
 
 type EditEntryDurationFormProps = {
   entryIid: string
@@ -23,23 +25,24 @@ export function EditEntryDurationForm({
   startDateTime,
   endDateTime,
 }: EditEntryDurationFormProps) {
+  const { updateEventEntry } = useContext(CalendarContext)
+
   const form = useForm<z.infer<typeof editEntryDurationFormSchema>>({
     resolver: zodResolver(editEntryDurationFormSchema),
     defaultValues: {
-      entryIid: entryIid,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
     },
   })
 
-  const [updateEventEntry, { loading, error }] = useMutation(UPDATE_EVENT_ENTRY)
+  const [updateEventEntryMutation, { loading, error }] =
+    useMutation(UPDATE_EVENT_ENTRY)
 
-  if (error) console.log('error', error)
+  if (error) console.log('Error updating entry duration', error)
 
   async function onSubmit(values: z.infer<typeof editEntryDurationFormSchema>) {
-    console.log(values)
-    const { entryIid, startDateTime, endDateTime } = values
-    const { data } = await updateEventEntry({
+    const { startDateTime, endDateTime } = values
+    const { data } = await updateEventEntryMutation({
       variables: {
         input: {
           filter: {
@@ -54,8 +57,11 @@ export function EditEntryDurationForm({
     })
 
     if (data) {
-      // setEntries([...entries, data?.addEventEntry?.eventEntry])
-      handleCancelEditing()
+      const response = data.updateEventEntry?.eventEntry?.[0]
+      if (response) {
+        updateEventEntry(response)
+        handleCancelEditing()
+      }
     }
   }
 
