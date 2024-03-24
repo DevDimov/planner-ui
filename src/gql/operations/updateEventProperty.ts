@@ -5,10 +5,12 @@ export const UPDATE_EVENT_PROPERTY = gql(`
     updateEventProperty(input: $input) {
       numUids
       eventProperty {
+        iid
         id
         label
         value
         event {
+          iid
           id
           label
         }

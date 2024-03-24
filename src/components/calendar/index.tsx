@@ -13,6 +13,7 @@ import { EventData } from '../../models/event'
 import { removeEventProperty } from './utils/removeEventProperty'
 import { EventPropertyData } from '../../models/eventProperty'
 import { addEventProperty } from './utils/addEventProperty'
+import { updateEventProperty } from './utils/updateEventProperty'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -87,6 +88,13 @@ export default function Calendar() {
     setEntries(removeEventProperty(entries, eventIid, propertyIid))
   }
 
+  const handleUpdateEventProperty = (
+    eventIid: string,
+    property: EventPropertyData
+  ) => {
+    setEntries(updateEventProperty(entries, eventIid, property))
+  }
+
   const handleAddEventProperty = (
     eventIid: string,
     property: EventPropertyData
@@ -121,6 +129,7 @@ export default function Calendar() {
           addEventProperty: handleAddEventProperty,
           // removeEntry: handleRemoveEntry,
           removeEventProperty: handleRemoveEventProperty,
+          updateEventProperty: handleUpdateEventProperty,
         }}
       >
         <CalendarControls month={month} setMonth={setMonth} />

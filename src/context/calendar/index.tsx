@@ -15,6 +15,7 @@ export const defaultValue: {
   setTags: Dispatch<SetStateAction<TagData[]>>
   removeEventProperty: (eventIid: string, propertyIid: string) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
+  updateEventProperty: (eventIid: string, property: EventPropertyData) => void
 } = {
   month: new Date(),
   weekStartsOn: 1,
@@ -26,6 +27,7 @@ export const defaultValue: {
   setTags: () => {},
   removeEventProperty: () => {},
   addEventProperty: () => {},
+  updateEventProperty: () => {},
 }
 
 export const CalendarContext = createContext(defaultValue)

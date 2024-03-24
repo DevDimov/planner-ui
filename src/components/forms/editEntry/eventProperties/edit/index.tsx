@@ -11,9 +11,8 @@ import {
 } from '../../../index'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../../../ui/button/buttonLoading'
-import { editEventPropertiesFormSchema } from '../../../../../schema/editEventProperties'
 import { Input } from '../../../../ui/input/default'
-import { useContext, useMemo, useRef } from 'react'
+import { useContext } from 'react'
 import { EventPropertyData } from '../../../../../models/eventProperty'
 import { DELETE_EVENT_PROPERTY } from '../../../../../gql/operations/deleteEventProperty'
 import { CalendarContext } from '../../../../../context/calendar'
@@ -31,16 +30,18 @@ export function EditEventPropertyForm({
   eventIid,
   property,
 }: EditEventPropertyFormProps) {
-  const { removeEventProperty } = useContext(CalendarContext)
+  const { updateEventProperty, removeEventProperty } =
+    useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof editEventPropertyFormSchema>>({
     resolver: zodResolver(editEventPropertyFormSchema),
     defaultValues: property,
   })
 
-  const [updateEventMutation, { loading: loadingUpdateProp }] = useMutation(
-    UPDATE_EVENT_PROPERTY
-  )
+  const [
+    updateEventPropertyMutation,
+    { loading: loadingUpdateProp, error: errorUpdateProp },
+  ] = useMutation(UPDATE_EVENT_PROPERTY)
 
   const [deleteEventPropertyMutation, { loading: loadingDeleteProp }] =
     useMutation(DELETE_EVENT_PROPERTY)
@@ -59,16 +60,17 @@ export function EditEventPropertyForm({
   }
 
   // if (error) console.log('error', error)
+  if (errorUpdateProp) console.log('error updating prop', errorUpdateProp)
 
   async function onSubmit(values: z.infer<typeof editEventPropertyFormSchema>) {
-    console.log(values)
+    const iid = property.iid
     const { label, value } = values
 
-    const { data } = await updateEventMutation({
+    const { data } = await updateEventPropertyMutation({
       variables: {
         input: {
           filter: {
-            iid: [eventIid],
+            iid: [iid],
           },
           set: {
             label,
@@ -79,7 +81,19 @@ export function EditEventPropertyForm({
     })
 
     if (data) {
-      console.log('Event property updated', data)
+      const response = data?.updateEventProperty?.eventProperty?.[0]
+
+      if (response) {
+        const { iid, id, label, value } = response
+        const newProperty = {
+          iid,
+          id,
+          label,
+          value,
+        }
+        console.log('Event property updated', response)
+        updateEventProperty(eventIid, newProperty)
+      }
     }
   }
 
