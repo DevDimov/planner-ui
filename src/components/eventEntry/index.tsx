@@ -148,14 +148,24 @@ export default function EventEntry({
                       Edit
                     </Button>
                   ) : (
-                    <Button
-                      title="Finish editing event entry duration"
-                      size="sm"
-                      variant="ghost"
-                      onClick={handleEnableDurationEditing}
-                    >
-                      Edit
-                    </Button>
+                    <div>
+                      {/* <Button
+                        title="Cancel editing event entry duration"
+                        size="sm"
+                        variant="outline"
+                        onClick={handleCancelDurationEditing}
+                      >
+                        Submit
+                      </Button> */}
+                      <Button
+                        title="Cancel editing event entry duration"
+                        size="sm"
+                        variant="ghost"
+                        onClick={handleCancelDurationEditing}
+                      >
+                        Done
+                      </Button>
+                    </div>
                   )}
                 </div>
 

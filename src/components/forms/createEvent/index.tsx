@@ -22,10 +22,8 @@ import { Checkbox } from '../../ui/checkbox'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { EventData } from '../../../models/event'
-
-type CreateEventFormProps = {
-  onClose: () => void
-}
+import { TypographySmall } from '../../typography/small'
+import { DialogClose } from '@radix-ui/react-dialog'
 
 type AddEventData = {
   addEvent: {
@@ -33,8 +31,9 @@ type AddEventData = {
   }
 }
 
-export function CreateEventForm({ onClose }: CreateEventFormProps) {
-  const { tags: allTags, events, setEvents } = useContext(CalendarContext)
+export function CreateEventForm() {
+  const { tags: allTags, addEvent } = useContext(CalendarContext)
+  const newlyAddedTags = useRef<string[]>([])
 
   const [tags, setTags] = useState<{ id: string; label: string }[]>([])
 
@@ -57,12 +56,12 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
 
   const inputNewTagRef = useRef<HTMLInputElement>(null)
 
-  const [addEvent, { loading, error }] = useMutation<AddEventData>(ADD_EVENT)
+  const [addEventMutation, { loading, error }] =
+    useMutation<AddEventData>(ADD_EVENT)
 
   if (error) console.log('error', error)
 
   async function onSubmit(values: z.infer<typeof createEventFormSchema>) {
-    console.log(values)
     const { label, tags } = values
     const tagsString = tags.map((tag) => tag.label).toString()
     const userId = user?.sub || 'auth0|undefined'
@@ -72,20 +71,21 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
       return { ...tag, user: userPayload }
     })
 
-    const { data } = await addEvent({
+    addEventMutation({
       variables: {
         input: [{ id: eventId, label, user: userPayload, tags: tagsPayload }],
       },
     })
-
-    if (data) {
-      try {
-        console.log(data)
-        setEvents([...events, ...data.addEvent.event])
-      } catch {
+      .then((response) => {
+        const newEvent = response.data?.addEvent?.event?.[0]
+        console.log(newEvent)
+        if (newEvent) {
+          addEvent(newEvent)
+        }
+      })
+      .catch((error) => {
         console.log(error)
-      }
-    }
+      })
   }
 
   const handleOnClickNewTag = () => {
@@ -105,6 +105,8 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
             },
           ])
 
+          newlyAddedTags.current.push(tagId)
+
           inputNewTagRef.current.value = ''
         }
       }
@@ -122,7 +124,9 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
           name="label"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Label</FormLabel>
+              <FormLabel>
+                <TypographySmall>Label</TypographySmall>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Enter event label" {...field} />
               </FormControl>
@@ -135,10 +139,14 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
           name="tags"
           render={() => (
             <FormItem className="flex flex-col">
-              <FormLabel>Tags</FormLabel>
-              <FormDescription>
-                Choose an existing tag or create a new one
-              </FormDescription>
+              <FormLabel>
+                <TypographySmall>Tags</TypographySmall>
+              </FormLabel>
+              {tags.length > 0 && (
+                <FormDescription>
+                  Choose an existing tag or add new one
+                </FormDescription>
+              )}
               {tags.map((item) => (
                 <FormField
                   key={item.id}
@@ -152,9 +160,10 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
                       >
                         <FormControl>
                           <Checkbox
-                            // checked={field.value?.includes(item)}
                             checked={
-                              !!field.value?.find((v) => v.id === item.id)
+                              field.value?.find((v) => v.id === item.id)
+                                ? true
+                                : false
                             }
                             onCheckedChange={(checked) => {
                               return checked
@@ -185,7 +194,7 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
                   className="w-min"
                   onClick={handleOnClickNewTag}
                 >
-                  Create tag
+                  Add
                 </Button>
               </div>
             </FormItem>
@@ -193,9 +202,11 @@ export function CreateEventForm({ onClose }: CreateEventFormProps) {
         />
         <div className="mt-4 flex justify-between gap-3">
           {!loading ? <Button type="submit">Submit</Button> : <ButtonLoading />}
-          <Button type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </Button>
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Cancel
+            </Button>
+          </DialogClose>
         </div>
       </form>
     </Form>

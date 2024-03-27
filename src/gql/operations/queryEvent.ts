@@ -11,36 +11,12 @@ export const QUERY_EVENT = gql(`
         iid
         label
       }
+      properties {
+        id
+        iid
+        label
+        value
+      }
     }
   }
 `)
-
-// export const QUERY_ALL_EVENTS = gql(`
-// query QueryEvent {
-//   queryEvent {
-//     iid
-//     id
-//     label
-//     entries {
-//       iid
-//       startDateTime
-//       endDateTime
-//     }
-//     tags {
-//       id
-//       iid
-//       label
-//     }
-//     properties {
-//       id
-//       iid
-//       label
-//       value
-//     }
-//     user {
-//       email
-//       iid
-//     }
-//   }
-// }
-// `)

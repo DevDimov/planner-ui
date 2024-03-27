@@ -14,6 +14,7 @@ import { useContext, useEffect, useState } from 'react'
 import { DialogClose } from '../../ui/dialog'
 import { QUERY_EVENT_ENTRY } from '../../../gql/operations/queryEventEntry'
 import { EventEntryData } from '../../../models/eventEntry'
+import { TypographySmall } from '../../typography/small'
 
 type AddEntryFormProps = {
   onClose?: () => void
@@ -109,15 +110,13 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
           name="eventId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Event</FormLabel>
+              <FormLabel>
+                <TypographySmall>Event</TypographySmall>
+              </FormLabel>
               <SelectEvent
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 options={eventOptions}
-                // options={[
-                //   { id: 'student1', label: 'Student1 Label' },
-                //   { id: 'student2', label: 'Student2 Label' },
-                // ]}
               />
               <FormMessage />
             </FormItem>
@@ -128,7 +127,9 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
           name="startDateTime"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>From</FormLabel>
+              <FormLabel>
+                <TypographySmall>From</TypographySmall>
+              </FormLabel>
               <SingleDateInput
                 value={field.value}
                 onChange={field.onChange}
@@ -143,7 +144,9 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
           name="endDateTime"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>To</FormLabel>
+              <FormLabel>
+                <TypographySmall>To</TypographySmall>
+              </FormLabel>
               <SingleDateInput
                 value={field.value}
                 onChange={field.onChange}

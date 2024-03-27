@@ -124,7 +124,7 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
           {loading ? (
             <ButtonLoading />
           ) : (
-            <Button type="submit" variant="secondary" className="w-min">
+            <Button type="submit" variant="default" className="w-min">
               Create
             </Button>
           )}

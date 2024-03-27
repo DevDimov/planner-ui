@@ -11,7 +11,7 @@ export default function PropertyValuePair({
   value,
 }: PropertyValuePairProps) {
   return (
-    <div className="flex flex-col gap-y-1">
+    <div className="flex flex-col gap-y-1.5">
       <TypographySmall>{label}</TypographySmall>
       <TypographyMuted>{value}</TypographyMuted>
     </div>

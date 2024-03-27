@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '..'
 import {
   Dialog,
@@ -11,16 +10,10 @@ import {
 import { CreateEventForm } from '../../forms/createEvent'
 
 export default function CreateEventButton() {
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
   return (
-    <Dialog open={open}>
+    <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={handleOpen}>
-          Create event
-        </Button>
+        <Button variant="outline">Create event</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -29,7 +22,7 @@ export default function CreateEventButton() {
             Create a new event with unique tags
           </DialogDescription>
         </DialogHeader>
-        <CreateEventForm onClose={handleClose} />
+        <CreateEventForm />
       </DialogContent>
     </Dialog>
   )

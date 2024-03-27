@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import CalendarControls from './controls'
 import CalendarMonth from './month'
 import startOfMonth from 'date-fns/startOfMonth'
@@ -15,6 +15,8 @@ import { EventPropertyData } from '../../models/eventProperty'
 import { addEventProperty } from './utils/addEventProperty'
 import { updateEventProperty } from './utils/updateEventProperty'
 import { updateEventEntry } from './utils/updateEventEntry'
+import { addEvent } from './utils/addEvent'
+import { getTags } from './utils/getTags'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -34,11 +36,11 @@ export default function Calendar() {
   const [month, setMonth] = useState(startOfMonth(new Date()))
   const [events, setEvents] = useState<EventData[]>([])
   const [entries, setEntries] = useState<EventEntryData[]>([])
-  const [tags, setTags] = useState<TagData[]>([])
+  // const [tags, setTags] = useState<TagData[]>([])
 
   const [queryEvents] = useLazyQuery<QueryEventData>(QUERY_EVENT)
   const [queryEntries] = useLazyQuery<QueryEventEntryData>(QUERY_EVENT_ENTRY)
-  const [queryTags] = useLazyQuery<QueryTagData>(QUERY_TAG)
+  // const [queryTags] = useLazyQuery<QueryTagData>(QUERY_TAG)
 
   const fetchEvents = useCallback(async () => {
     const { data, error } = await queryEvents()
@@ -70,20 +72,26 @@ export default function Calendar() {
     }
   }, [queryEntries])
 
-  const fetchTags = useCallback(async () => {
-    const { data, error } = await queryTags()
+  // const fetchTags = useCallback(async () => {
+  //   const { data, error } = await queryTags()
 
-    if (error) {
-      return console.log('Error fetching tags', error)
-    }
+  //   if (error) {
+  //     return console.log('Error fetching tags', error)
+  //   }
 
-    if (data) {
-      if (data.queryTag.length) {
-        console.log('Fetch tags', data.queryTag)
-        setTags(data.queryTag)
-      }
-    }
-  }, [queryTags])
+  //   if (data) {
+  //     if (data.queryTag.length) {
+  //       console.log('Fetch tags', data.queryTag)
+  //       setTags(data.queryTag)
+  //     }
+  //   }
+  // }, [queryTags])
+
+  const tags = useMemo(() => getTags(events), [events]);
+
+  const handleAddEvent = (event: EventData) => {
+    setEvents(addEvent(events, event))
+  }
 
   const handleRemoveEventProperty = (eventIid: string, propertyIid: string) => {
     setEntries(removeEventProperty(entries, eventIid, propertyIid))
@@ -115,9 +123,9 @@ export default function Calendar() {
     fetchEntries().catch(console.error)
   }, [fetchEntries])
 
-  useEffect(() => {
-    fetchTags().catch(console.error)
-  }, [fetchTags])
+  // useEffect(() => {
+  //   fetchTags().catch(console.error)
+  // }, [fetchTags])
 
   return (
     <div>
@@ -130,7 +138,8 @@ export default function Calendar() {
           tags: tags,
           setEvents: setEvents,
           setEntries: setEntries,
-          setTags: setTags,
+          // setTags: setTags,
+          addEvent: handleAddEvent,
           addEventProperty: handleAddEventProperty,
           // removeEntry: handleRemoveEntry,
           updateEventEntry: handleUpdateEventEntry,

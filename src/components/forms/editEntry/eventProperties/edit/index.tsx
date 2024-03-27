@@ -136,8 +136,8 @@ export function EditEventPropertyForm({
           {loadingUpdateProp ? (
             <ButtonLoading label="Update" />
           ) : (
-            <Button type="submit" variant="outline" className="px-1.5 py-1">
-              <CheckIcon className="h-full w-full" />
+            <Button type="submit" variant="ghost" size="icon">
+              <CheckIcon className="h-6 w-6" />
             </Button>
           )}
           {loadingDeleteProp ? (
@@ -145,12 +145,13 @@ export function EditEventPropertyForm({
           ) : (
             <Button
               type="button"
-              variant="outline"
+              size="icon"
+              variant="ghost"
               title="Remove property"
               onClick={handleDeleteEventProperty}
-              className="px-2 py-1.5"
+              className="hover:text-destructive"
             >
-              <TrashIcon className="h-full w-full" />
+              <TrashIcon className="h-5 w-5" />
             </Button>
           )}
         </div>

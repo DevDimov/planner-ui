@@ -19,14 +19,6 @@ export const ADD_EVENT = gql(`
           label
           value
         }
-        entries {
-          iid
-          startDateTime
-          endDateTime
-        }
-        user {
-          email
-        }
       }
     }
   }

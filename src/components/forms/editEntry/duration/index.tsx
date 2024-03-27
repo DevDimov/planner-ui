@@ -98,14 +98,14 @@ export function EditEntryDurationForm({
           )}
         />
         <div className="mt-3 flex justify-between gap-3">
-          {loading ? <ButtonLoading /> : <Button type="submit">Submit</Button>}
-          <Button
+          {loading ? <ButtonLoading /> : <Button type="submit">Update</Button>}
+          {/* <Button
             type="button"
             variant="secondary"
             onClick={handleCancelEditing}
           >
             Cancel
-          </Button>
+          </Button> */}
         </div>
       </form>
     </Form>
