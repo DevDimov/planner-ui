@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import Calendar from '../components/calendar'
+import CalendarX from '../components/calendar'
 
-const meta: Meta<typeof Calendar> = {
-  component: Calendar,
+const meta: Meta<typeof CalendarX> = {
+  component: CalendarX,
 }
 
 export default meta
-type Story = StoryObj<typeof Calendar>
+type Story = StoryObj<typeof CalendarX>
 
 export const Test: Story = {
   // args: {
