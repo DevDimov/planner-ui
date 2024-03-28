@@ -1,22 +1,20 @@
-import { EventEntryData } from '../../../../models/eventEntry'
+import { EventData } from '../../../../models/event'
 
 export const removeEventProperty = (
-  entries: EventEntryData[],
+  events: EventData[],
   eventIid: string,
   propertyIid: string
 ) => {
-  const result = entries.map((entry) => {
-    if (entry.event.iid === eventIid) {
-      const newProperties = entry.event.properties?.filter(
+  const result = events.map((event) => {
+    if (event.iid === eventIid) {
+      const newProperties = event.properties?.filter(
         (prop) => prop.iid !== propertyIid
       )
 
-      const newEvent = { ...entry.event, properties: newProperties }
-
-      return { ...entry, event: newEvent }
+      return { ...event, properties: newProperties }
     }
 
-    return entry
+    return event
   })
 
   return result

@@ -9,13 +9,8 @@ test('groups two entries in one week', () => {
       startDateTime: '2023-12-25T00:00:00Z',
       endDateTime: '2023-12-31T00:00:00Z',
       event: {
-        id: '',
         iid: '',
         label: '',
-        user: {
-          iid: '',
-          email: '',
-        },
       },
     },
     {
@@ -23,13 +18,8 @@ test('groups two entries in one week', () => {
       startDateTime: '2023-12-25T00:00:00Z',
       endDateTime: '2023-12-25T00:00:00Z',
       event: {
-        id: '',
         iid: '',
         label: '',
-        user: {
-          iid: '',
-          email: '',
-        },
       },
     },
   ]
@@ -51,10 +41,8 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
       startDateTime: '2023-12-25T00:00:00.000Z',
       endDateTime: '2023-12-31T00:00:00.000Z',
       event: {
-        id: '',
         iid: '',
         label: 'Full Week Event',
-        tags: [],
       },
     },
     {
@@ -63,10 +51,8 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
       startDateTime: '2023-12-25T00:00:00.000Z',
       endDateTime: '2023-12-25T00:00:00.000Z',
       event: {
-        id: 'Single Day Event',
         iid: '',
         label: '',
-        tags: [],
       },
     },
     {
@@ -75,10 +61,8 @@ test('groups an array of 3 entries spanning 2 weeks', () => {
       startDateTime: '2024-01-01T00:00:00.000Z',
       endDateTime: '2024-01-01T00:00:00.000Z',
       event: {
-        id: '',
         iid: '',
         label: 'Jan Day Event',
-        tags: [],
       },
     },
   ]

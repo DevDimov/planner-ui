@@ -37,15 +37,7 @@ export const SingleDayEvent: Story = {
         endDateTime: '2023-12-31T00:00:00Z',
         event: {
           iid: '0x1a5086a7dd',
-          id: 'auth0|65538f46da9fa0033488f080.Single Day Event.At work',
           label: 'Single Day Event',
-          tags: [
-            {
-              id: 'auth0|65538f46da9fa0033488f080.Work',
-              iid: '0x1a5086a7dc',
-              label: 'Work',
-            },
-          ],
         },
       },
     ],

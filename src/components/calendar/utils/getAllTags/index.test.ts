@@ -1,8 +1,8 @@
 import { expect } from '@jest/globals'
 import { EventData } from '../../../../models/event'
-import { getTags } from '.'
+import { getAllTags } from '.'
 
-test('extracts all tags from an rray of events without duplicates', () => {
+test('extracts all tags from an array of events without duplicates', () => {
   const events: EventData[] = [
     {
       iid: 'event1',
@@ -57,7 +57,7 @@ test('extracts all tags from an rray of events without duplicates', () => {
     },
   ]
 
-  const actual = getTags(events)
+  const actual = getAllTags(events)
   const actualIids = actual.map((tag) => tag.iid)
 
   expect(actual).toHaveLength(3)

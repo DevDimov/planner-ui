@@ -5,8 +5,6 @@ import startOfMonth from 'date-fns/startOfMonth'
 import { CalendarContext } from '../../context/calendar'
 import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
 import { useLazyQuery } from '@apollo/client'
-import { QUERY_TAG } from '../../gql/operations/queryTag'
-import { TagData } from '../../models/tag'
 import { EventEntryData, UpdateEventEntryData } from '../../models/eventEntry'
 import { QUERY_EVENT } from '../../gql/operations/queryEvent'
 import { EventData } from '../../models/event'
@@ -16,7 +14,9 @@ import { addEventProperty } from './utils/addEventProperty'
 import { updateEventProperty } from './utils/updateEventProperty'
 import { updateEventEntry } from './utils/updateEventEntry'
 import { addEvent } from './utils/addEvent'
-import { getTags } from './utils/getTags'
+import { getAllTags } from './utils/getAllTags'
+import { getEventProperties } from './utils/getEventProperties'
+import { getEventTags } from './utils/getEventTags'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -26,21 +26,15 @@ interface QueryEventEntryData {
   queryEventEntry: EventEntryData[]
 }
 
-interface QueryTagData {
-  queryTag: TagData[]
-}
-
 export default function Calendar() {
   const weekStartsOn = 1
 
   const [month, setMonth] = useState(startOfMonth(new Date()))
   const [events, setEvents] = useState<EventData[]>([])
   const [entries, setEntries] = useState<EventEntryData[]>([])
-  // const [tags, setTags] = useState<TagData[]>([])
 
   const [queryEvents] = useLazyQuery<QueryEventData>(QUERY_EVENT)
   const [queryEntries] = useLazyQuery<QueryEventEntryData>(QUERY_EVENT_ENTRY)
-  // const [queryTags] = useLazyQuery<QueryTagData>(QUERY_TAG)
 
   const fetchEvents = useCallback(async () => {
     const { data, error } = await queryEvents()
@@ -72,29 +66,22 @@ export default function Calendar() {
     }
   }, [queryEntries])
 
-  // const fetchTags = useCallback(async () => {
-  //   const { data, error } = await queryTags()
-
-  //   if (error) {
-  //     return console.log('Error fetching tags', error)
-  //   }
-
-  //   if (data) {
-  //     if (data.queryTag.length) {
-  //       console.log('Fetch tags', data.queryTag)
-  //       setTags(data.queryTag)
-  //     }
-  //   }
-  // }, [queryTags])
-
-  const tags = useMemo(() => getTags(events), [events]);
+  const tags = useMemo(() => getAllTags(events), [events])
 
   const handleAddEvent = (event: EventData) => {
     setEvents(addEvent(events, event))
   }
 
   const handleRemoveEventProperty = (eventIid: string, propertyIid: string) => {
-    setEntries(removeEventProperty(entries, eventIid, propertyIid))
+    setEvents(removeEventProperty(events, eventIid, propertyIid))
+  }
+
+  const handleGetEventProperties = (eventIid: string) => {
+    return getEventProperties(events, eventIid)
+  }
+
+  const handleGetEventTags = (eventIid: string) => {
+    return getEventTags(events, eventIid)
   }
 
   const handleUpdateEventEntry = (eventEntry: UpdateEventEntryData) => {
@@ -105,14 +92,14 @@ export default function Calendar() {
     eventIid: string,
     property: EventPropertyData
   ) => {
-    setEntries(updateEventProperty(entries, eventIid, property))
+    setEvents(updateEventProperty(events, eventIid, property))
   }
 
   const handleAddEventProperty = (
     eventIid: string,
     property: EventPropertyData
   ) => {
-    setEntries(addEventProperty(entries, eventIid, property))
+    setEvents(addEventProperty(events, eventIid, property))
   }
 
   useEffect(() => {
@@ -122,10 +109,6 @@ export default function Calendar() {
   useEffect(() => {
     fetchEntries().catch(console.error)
   }, [fetchEntries])
-
-  // useEffect(() => {
-  //   fetchTags().catch(console.error)
-  // }, [fetchTags])
 
   return (
     <div>
@@ -138,9 +121,10 @@ export default function Calendar() {
           tags: tags,
           setEvents: setEvents,
           setEntries: setEntries,
-          // setTags: setTags,
           addEvent: handleAddEvent,
           addEventProperty: handleAddEventProperty,
+          getEventProperties: handleGetEventProperties,
+          getEventTags: handleGetEventTags,
           // removeEntry: handleRemoveEntry,
           updateEventEntry: handleUpdateEventEntry,
           updateEventProperty: handleUpdateEventProperty,

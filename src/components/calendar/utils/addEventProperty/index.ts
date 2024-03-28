@@ -1,27 +1,24 @@
-import { EventEntryData } from '../../../../models/eventEntry'
+import { EventData } from '../../../../models/event'
 import { EventPropertyData } from '../../../../models/eventProperty'
 
 export const addEventProperty = (
-  entries: EventEntryData[],
+  events: EventData[],
   eventIid: string,
   property: EventPropertyData
 ) => {
-  const result = entries.map((entry) => {
-    if (entry.event.iid === eventIid) {
-      const properties = entry.event.properties
+  const result = events.map((event) => {
+    if (event.iid === eventIid) {
+      const properties = event.properties
 
       if (properties) {
         let newProperties = [...properties, property]
-        let newEvent = { ...entry.event, properties: newProperties }
-
-        return { ...entry, event: newEvent }
+        return { ...event, properties: newProperties }
       }
 
-      const newEvent = { ...entry.event, properties: [property] }
-      return { ...entry, event: newEvent }
+      return { ...event, properties: [property] }
     }
 
-    return entry
+    return event
   })
 
   return result

@@ -10,15 +10,10 @@ import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventEntry'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { DialogClose } from '../../ui/dialog'
-import { QUERY_EVENT_ENTRY } from '../../../gql/operations/queryEventEntry'
 import { EventEntryData } from '../../../models/eventEntry'
 import { TypographySmall } from '../../typography/small'
-
-type AddEntryFormProps = {
-  onClose?: () => void
-}
 
 type EventOption = {
   id: string
@@ -31,7 +26,8 @@ type AddEventEntryData = {
   }
 }
 
-export function AddEntryForm({ onClose }: AddEntryFormProps) {
+export function AddEntryForm() {
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [eventOptions, setEventOptions] = useState<EventOption[]>([])
 
   const { events, entries, setEntries } = useContext(CalendarContext)
@@ -86,13 +82,12 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
             event: { iid: eventId },
           },
         },
-        // refetchQueries: [QUERY_EVENT_ENTRY, 'QueryEventEntry'],
       })
 
       if (data) {
         console.log(data)
-        form.reset()
         setEntries([...entries, ...data.addEventEntry.eventEntry])
+        closeButtonRef?.current?.click()
       }
     } catch (error) {
       console.log(error)
@@ -159,7 +154,7 @@ export function AddEntryForm({ onClose }: AddEntryFormProps) {
         <div className="mt-4 flex justify-between gap-3">
           {!loading ? <Button type="submit">Submit</Button> : <ButtonLoading />}
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" ref={closeButtonRef}>
               Cancel
             </Button>
           </DialogClose>

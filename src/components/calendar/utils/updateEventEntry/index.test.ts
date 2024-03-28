@@ -12,7 +12,6 @@ const entries: EventEntryData[] = [
     endDateTime: 'entry1.end',
     event: {
       iid: 'event1',
-      id: '',
       label: '',
     },
   },
@@ -22,9 +21,7 @@ const entries: EventEntryData[] = [
     endDateTime: 'entry2.end',
     event: {
       iid: 'event2',
-      id: '',
       label: '',
-      properties: [],
     },
   },
 ]

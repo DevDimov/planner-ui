@@ -1,27 +1,14 @@
-// import { gql } from '@apollo/client'
 import { gql } from '../codegen/gql'
 
 export const QUERY_EVENT_ENTRY = gql(`
-query QueryEventEntry($filter: EventFilter) {
+query QueryEventEntry {
     queryEventEntry {
       iid
       startDateTime
       endDateTime
-      event(filter: $filter) {
+      event {
         iid
-        id
         label
-        tags {
-          iid
-          id
-          label
-        }
-        properties {
-          iid
-          id
-          label
-          value
-        }
       }
     }
   }

@@ -32,8 +32,11 @@ type AddEventData = {
 }
 
 export function CreateEventForm() {
-  const { tags: allTags, addEvent } = useContext(CalendarContext)
+  const inputNewTagRef = useRef<HTMLInputElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const newlyAddedTags = useRef<string[]>([])
+
+  const { tags: allTags, addEvent } = useContext(CalendarContext)
 
   const [tags, setTags] = useState<{ id: string; label: string }[]>([])
 
@@ -53,8 +56,6 @@ export function CreateEventForm() {
   })
 
   const { user } = useAuth0()
-
-  const inputNewTagRef = useRef<HTMLInputElement>(null)
 
   const [addEventMutation, { loading, error }] =
     useMutation<AddEventData>(ADD_EVENT)
@@ -81,6 +82,7 @@ export function CreateEventForm() {
         console.log(newEvent)
         if (newEvent) {
           addEvent(newEvent)
+          closeButtonRef?.current?.click()
         }
       })
       .catch((error) => {
@@ -203,7 +205,7 @@ export function CreateEventForm() {
         <div className="mt-4 flex justify-between gap-3">
           {!loading ? <Button type="submit">Submit</Button> : <ButtonLoading />}
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" ref={closeButtonRef}>
               Cancel
             </Button>
           </DialogClose>

@@ -12,9 +12,10 @@ export const defaultValue: {
   entries: EventEntryData[]
   setEntries: Dispatch<SetStateAction<EventEntryData[]>>
   tags: TagData[]
-  // setTags: Dispatch<SetStateAction<TagData[]>>
   addEvent: (event: EventData) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
+  getEventProperties: (eventIid: string) => EventPropertyData[]
+  getEventTags: (eventIid: string) => TagData[]
   removeEventProperty: (eventIid: string, propertyIid: string) => void
   updateEventEntry: (eventEntry: UpdateEventEntryData) => void
   updateEventProperty: (eventIid: string, property: EventPropertyData) => void
@@ -26,9 +27,10 @@ export const defaultValue: {
   entries: [],
   setEntries: () => {},
   tags: [],
-  // setTags: () => {},
   addEvent: () => {},
   addEventProperty: () => {},
+  getEventProperties: () => [],
+  getEventTags: () => [],
   removeEventProperty: () => {},
   updateEventEntry: () => {},
   updateEventProperty: () => {},
