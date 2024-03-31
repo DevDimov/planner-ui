@@ -17,6 +17,7 @@ import { addEvent } from './utils/addEvent'
 import { getAllTags } from './utils/getAllTags'
 import { getEventProperties } from './utils/getEventProperties'
 import { getEventTags } from './utils/getEventTags'
+import { useToast } from '../ui/toast/use-toast'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -36,11 +37,17 @@ export default function Calendar() {
   const [queryEvents] = useLazyQuery<QueryEventData>(QUERY_EVENT)
   const [queryEntries] = useLazyQuery<QueryEventEntryData>(QUERY_EVENT_ENTRY)
 
+  const { toast } = useToast()
+
   const fetchEvents = useCallback(async () => {
     const { data, error } = await queryEvents()
 
     if (error) {
-      return console.log('Error fetching events', error)
+      toast({
+        description: 'There was an error fetching events.',
+        variant: 'destructive',
+      })
+      return
     }
 
     if (data) {
@@ -49,13 +56,17 @@ export default function Calendar() {
         setEvents(data.queryEvent)
       }
     }
-  }, [queryEvents])
+  }, [queryEvents, toast])
 
   const fetchEntries = useCallback(async () => {
     const { data, error } = await queryEntries()
 
     if (error) {
-      return console.log('Error fetching entries', error)
+      toast({
+        description: 'There was an error fetching entries.',
+        variant: 'destructive',
+      })
+      return
     }
 
     if (data) {
@@ -64,7 +75,7 @@ export default function Calendar() {
         setEntries(data.queryEventEntry)
       }
     }
-  }, [queryEntries])
+  }, [queryEntries, toast])
 
   const tags = useMemo(() => getAllTags(events), [events])
 

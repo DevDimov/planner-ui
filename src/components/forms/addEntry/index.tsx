@@ -14,6 +14,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { DialogClose } from '../../ui/dialog'
 import { EventEntryData } from '../../../models/eventEntry'
 import { TypographySmall } from '../../typography/small'
+import { useToast } from '../../ui/toast/use-toast'
 
 type EventOption = {
   id: string
@@ -30,6 +31,7 @@ export function AddEntryForm() {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const [eventOptions, setEventOptions] = useState<EventOption[]>([])
 
+  const { toast } = useToast()
   const { events, entries, setEntries } = useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof addEntryFormSchema>>({
@@ -65,33 +67,47 @@ export function AddEntryForm() {
     setEventOptions(filteredEntries)
   }, [events])
 
-  const [addEventEntry, { loading, error }] =
+  const [addEventEntry, { loading }] =
     useMutation<AddEventEntryData>(ADD_EVENT_ENTRY)
 
-  // if (error) console.log('error', error)
-
   async function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
-    console.log(values)
     const { eventId, startDateTime, endDateTime } = values
-    try {
-      const { data } = await addEventEntry({
-        variables: {
-          input: {
-            startDateTime: startDateTime.toISOString(),
-            endDateTime: endDateTime.toISOString(),
-            event: { iid: eventId },
-          },
-        },
-      })
 
-      if (data) {
-        console.log(data)
-        setEntries([...entries, ...data.addEventEntry.eventEntry])
-        closeButtonRef?.current?.click()
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    addEventEntry({
+      variables: {
+        input: {
+          startDateTime: startDateTime.toISOString(),
+          endDateTime: endDateTime.toISOString(),
+          event: { iid: eventId },
+        },
+      },
+    })
+      .then((response) => {
+        const { data, errors } = response
+        if (data) {
+          console.log(data)
+          setEntries([...entries, ...data.addEventEntry.eventEntry])
+          closeButtonRef?.current?.click()
+          toast({
+            description: 'Event entry added.',
+          })
+        }
+        if (errors) {
+          console.log(errors)
+          toast({
+            title: 'Something went wrong.',
+            description: errors.toString(),
+            variant: 'destructive',
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        toast({
+          description: 'Something went wrong.',
+          variant: 'destructive',
+        })
+      })
   }
 
   return (

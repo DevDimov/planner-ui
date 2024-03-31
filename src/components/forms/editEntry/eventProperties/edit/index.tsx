@@ -19,6 +19,7 @@ import { CalendarContext } from '../../../../../context/calendar'
 import { editEventPropertyFormSchema } from '../../../../../schema/editEventProperty'
 import { UPDATE_EVENT_PROPERTY } from '../../../../../gql/operations/updateEventProperty'
 import { CheckIcon, TrashIcon } from '@radix-ui/react-icons'
+import { useToast } from '../../../../ui/toast/use-toast'
 
 type EditEventPropertyFormProps = {
   entryIid?: string
@@ -30,6 +31,7 @@ export function EditEventPropertyForm({
   eventIid,
   property,
 }: EditEventPropertyFormProps) {
+  const { toast } = useToast()
   const { updateEventProperty, removeEventProperty } =
     useContext(CalendarContext)
 
@@ -59,14 +61,13 @@ export function EditEventPropertyForm({
     }
   }
 
-  // if (error) console.log('error', error)
   if (errorUpdateProp) console.log('error updating prop', errorUpdateProp)
 
   async function onSubmit(values: z.infer<typeof editEventPropertyFormSchema>) {
     const iid = property.iid
     const { label, value } = values
 
-    const { data } = await updateEventPropertyMutation({
+    const { data, errors } = await updateEventPropertyMutation({
       variables: {
         input: {
           filter: {
@@ -93,7 +94,18 @@ export function EditEventPropertyForm({
         }
         console.log('Event property updated', response)
         updateEventProperty(eventIid, newProperty)
+        toast({
+          description: 'Event property updated.',
+        })
+        return
       }
+    }
+
+    if (errors) {
+      toast({
+        description: 'There was an error updating event property.',
+        variant: 'destructive',
+      })
     }
   }
 

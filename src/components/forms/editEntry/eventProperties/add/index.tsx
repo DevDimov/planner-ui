@@ -19,6 +19,7 @@ import { ADD_EVENT_PROPERTY } from '../../../../../gql/operations/addEventProper
 import { CalendarContext } from '../../../../../context/calendar'
 import { useContext } from 'react'
 import { EventPropertyData } from '../../../../../models/eventProperty'
+import { useToast } from '../../../../ui/toast/use-toast'
 
 type AddEventPropertyFormProps = {
   eventIid: string
@@ -26,7 +27,7 @@ type AddEventPropertyFormProps = {
 
 type AddEventPropertyData = {
   addEventProperty: {
-    eventProperty: EventPropertyData[]
+    eventProperty?: EventPropertyData[]
   }
 }
 
@@ -39,6 +40,7 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
     },
   })
 
+  const { toast } = useToast()
   const { user } = useAuth0()
   const { addEventProperty } = useContext(CalendarContext)
 
@@ -70,17 +72,30 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
     //   }
     // })
     // console.log('New props', newProperty)
-    const { data } = await addEventPropertyMutation({
+    const { data, errors } = await addEventPropertyMutation({
       variables: {
         input: newProperty,
       },
     })
 
     if (data) {
-      console.log('Event property added', data)
-      const newProperty = data.addEventProperty.eventProperty[0]
-      addEventProperty(eventIid, newProperty)
-      form.reset()
+      const eventPropertyWithIid = data?.addEventProperty?.eventProperty?.[0]
+      if (eventPropertyWithIid) {
+        addEventProperty(eventIid, eventPropertyWithIid)
+        form.reset()
+        toast({
+          description: 'Event property added.',
+        })
+      }
+      return
+    }
+
+    if (errors) {
+      toast({
+        description: 'There was an error adding event property.',
+        variant: 'destructive',
+      })
+      console.log(errors)
     }
   }
 
