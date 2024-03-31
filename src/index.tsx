@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import './output.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { auth0 } from './authentication/auth0'
 import { router } from './router'
 import { AuthorizedApolloProvider } from './context/apollo'
+import { Toaster } from './components/ui/toast/toaster'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -20,7 +20,7 @@ root.render(
     <AuthorizedApolloProvider>
       <React.StrictMode>
         <RouterProvider router={router} />
-        {/* <App /> */}
+        <Toaster />
       </React.StrictMode>
     </AuthorizedApolloProvider>
   </Auth0Provider>

@@ -11,6 +11,7 @@ import { UPDATE_EVENT_ENTRY } from '../../../../gql/operations/updateEventEntry'
 import { TypographySmall } from '../../../typography/small'
 import { useContext } from 'react'
 import { CalendarContext } from '../../../../context/calendar'
+import { useToast } from '../../../ui/toast/use-toast'
 
 type EditEntryDurationFormProps = {
   entryIid: string
@@ -25,6 +26,7 @@ export function EditEntryDurationForm({
   startDateTime,
   endDateTime,
 }: EditEntryDurationFormProps) {
+  const { toast } = useToast()
   const { updateEventEntry } = useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof editEntryDurationFormSchema>>({
@@ -42,7 +44,7 @@ export function EditEntryDurationForm({
 
   async function onSubmit(values: z.infer<typeof editEntryDurationFormSchema>) {
     const { startDateTime, endDateTime } = values
-    const { data } = await updateEventEntryMutation({
+    const { data, errors } = await updateEventEntryMutation({
       variables: {
         input: {
           filter: {
@@ -61,7 +63,17 @@ export function EditEntryDurationForm({
       if (response) {
         updateEventEntry(response)
         handleCancelEditing()
+        toast({
+          description: 'Entry duration updated.',
+        })
       }
+    }
+
+    if (errors) {
+      toast({
+        description: 'There was an error updating entry.',
+        variant: 'destructive',
+      })
     }
   }
 

@@ -24,6 +24,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { EventData } from '../../../models/event'
 import { TypographySmall } from '../../typography/small'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { useToast } from '../../ui/toast/use-toast'
 
 type AddEventData = {
   addEvent: {
@@ -36,16 +37,12 @@ export function CreateEventForm() {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const newlyAddedTags = useRef<string[]>([])
 
+  const { user } = useAuth0()
+  const { toast } = useToast()
+
   const { tags: allTags, addEvent } = useContext(CalendarContext)
 
   const [tags, setTags] = useState<{ id: string; label: string }[]>([])
-
-  useEffect(() => {
-    const currentTags = allTags.map((tag) => {
-      return { id: tag.id, label: tag.label }
-    })
-    setTags(currentTags)
-  }, [allTags])
 
   const form = useForm<z.infer<typeof createEventFormSchema>>({
     resolver: zodResolver(createEventFormSchema),
@@ -54,8 +51,6 @@ export function CreateEventForm() {
       tags: [],
     },
   })
-
-  const { user } = useAuth0()
 
   const [addEventMutation, { loading, error }] =
     useMutation<AddEventData>(ADD_EVENT)
@@ -83,9 +78,17 @@ export function CreateEventForm() {
         if (newEvent) {
           addEvent(newEvent)
           closeButtonRef?.current?.click()
+          toast({
+            description: 'The event was created successfully',
+          })
         }
       })
       .catch((error) => {
+        toast({
+          title: 'Something went wrong.',
+          description: error,
+          variant: 'destructive',
+        })
         console.log(error)
       })
   }
@@ -114,6 +117,13 @@ export function CreateEventForm() {
       }
     }
   }
+
+  useEffect(() => {
+    const currentTags = allTags.map((tag) => {
+      return { id: tag.id, label: tag.label }
+    })
+    setTags(currentTags)
+  }, [allTags])
 
   return (
     <Form {...form}>
