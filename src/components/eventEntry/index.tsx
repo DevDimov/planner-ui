@@ -1,4 +1,3 @@
-import EventTag from '../tags/eventInstanceTag'
 import React, { useContext, useState } from 'react'
 import PropertyValuePair from '../forms/propertyValuePair'
 import format from 'date-fns/format'
@@ -16,6 +15,7 @@ import { TypographyH4 } from '../typography/h4'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { EditEventPropertyForm } from '../forms/editEntry/eventProperties/edit'
 import { AddEventPropertyForm } from '../forms/editEntry/eventProperties/add'
+import TagsRow from '../tags/TagsRow'
 
 export type EventEntryProps = {
   iid: string
@@ -25,7 +25,7 @@ export type EventEntryProps = {
   colEnd: number
   startDateTime: string
   endDateTime: string
-  tags: TagData[]
+  tags?: TagData[]
   properties?: EventPropertyData[]
 }
 
@@ -62,7 +62,6 @@ export default function EventEntry({
   startDateTime,
   endDateTime,
   tags,
-  // color
   properties,
 }: EventEntryProps) {
   const [canEditDuration, setCanEditDuration] = useState(false)
@@ -70,7 +69,7 @@ export default function EventEntry({
 
   const { entries, setEntries } = useContext(CalendarContext)
 
-  const [deleteEntry, { loading }] = useMutation(DELETE_EVENT_ENTRY)
+  const [deleteEntry] = useMutation(DELETE_EVENT_ENTRY)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -117,20 +116,15 @@ export default function EventEntry({
         <DialogTrigger onClick={handleClick} className="w-full bg-white">
           <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1.5">
             <div className="text-left leading-5">{label}</div>
-            {tags && tags.length > 0 && (
-              <div className="row-start-2 mt-1.5 flex flex-wrap gap-1.5">
-                {tags.map((tag) => {
-                  return (
-                    <EventTag key={tag.iid} label={tag.label} color={'blue'} />
-                  )
-                })}
-              </div>
-            )}
+            {tags && tags.length > 0 && <TagsRow tags={tags} />}
           </div>
         </DialogTrigger>
         <DialogContent className="max-h-[90%] overflow-y-auto">
           <div className="z-50 flex flex-col gap-y-4 rounded-sm">
-            <TypographyH4>{label}</TypographyH4>
+            <div>
+              <TypographyH4>{label}</TypographyH4>
+              {tags && tags.length > 0 && <TagsRow tags={tags} />}
+            </div>
 
             <div className="mt-2 flex flex-col gap-y-4">
               <div className="flex flex-col gap-y-4">
@@ -158,12 +152,12 @@ export default function EventEntry({
                         Submit
                       </Button> */}
                       <Button
-                        title="Cancel editing event entry duration"
+                        title="Finish editing event entry duration"
                         size="sm"
                         variant="ghost"
                         onClick={handleCancelDurationEditing}
                       >
-                        Done
+                        Finish
                       </Button>
                     </div>
                   )}
@@ -214,7 +208,7 @@ export default function EventEntry({
                       variant="ghost"
                       onClick={handleCancelPropertyEditing}
                     >
-                      Done
+                      Finish
                     </Button>
                   )}
                 </div>

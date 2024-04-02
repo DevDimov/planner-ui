@@ -21,12 +21,11 @@ export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
   return (
     <div>
       <WeekdayNames />
-      <div className="grid h-full border-2 border-blue-100 bg-blue-50 p-4 rounded">
+      <div className="grid h-full rounded border-2 border-blue-100 bg-blue-50 p-4">
         {Object.entries(weeksGroup).map(([weekNumber, days]) => {
           return (
             <CalendarWeek
               key={weekNumber}
-              week={weekNumber}
               days={days}
               entries={groupedEntries ? groupedEntries[weekNumber] : []}
             />

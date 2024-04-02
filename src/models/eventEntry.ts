@@ -1,3 +1,5 @@
+import { TagData } from './tag'
+
 export interface EventEntryData {
   iid: string
   startDateTime: string
@@ -6,6 +8,7 @@ export interface EventEntryData {
     iid: string
     label: string
   }
+  tags?: TagData[]
 }
 
 export interface UpdateEventEntryData {

@@ -10,6 +10,12 @@ query QueryEventEntry {
         iid
         label
       }
+      tags {
+        iid
+        id
+        label
+        color
+      }
     }
   }
 `)

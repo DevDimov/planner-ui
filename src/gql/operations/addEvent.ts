@@ -8,11 +8,6 @@ export const ADD_EVENT = gql(`
         id
         iid
         label
-        tags {
-          iid
-          id
-          label
-        }
         properties {
           iid
           id

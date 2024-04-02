@@ -8,6 +8,12 @@ export const UPDATE_EVENT_ENTRY = gql(`
         iid
         startDateTime
         endDateTime
+        tags {
+          iid
+          id
+          label
+          color
+        }
       }
     }
   }

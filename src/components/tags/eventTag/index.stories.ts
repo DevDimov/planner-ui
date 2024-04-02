@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import EventTag from './index'
+import { TagColor } from '../../../gql/codegen/graphql'
 
 const meta: Meta<typeof EventTag> = {
   component: EventTag,
@@ -15,46 +16,46 @@ type Story = StoryObj<typeof EventTag>
 export const Red: Story = {
   args: {
     label: 'Red',
-    color: 'red',
+    color: TagColor.Red,
   },
 }
 
 export const Orange: Story = {
   args: {
     label: 'Orange',
-    color: 'orange',
+    color: TagColor.Orange,
   },
 }
 
 export const Yellow: Story = {
   args: {
     label: 'Yellow',
-    color: 'yellow',
+    color: TagColor.Yellow,
   },
 }
 
 export const Green: Story = {
   args: {
     label: 'Green',
-    color: 'green',
+    color: TagColor.Green,
   },
 }
 
 export const Blue: Story = {
   args: {
     label: 'Blue',
-    color: 'blue',
+    color: TagColor.Blue,
   },
 }
-export const Indigo: Story = {
-  args: {
-    label: 'Indigo',
-    color: 'indigo',
-  },
-}
-export const Violet: Story = {
-  args: {
-    label: 'Violet',
-    color: 'violet',
-  },
-}
+// export const Indigo: Story = {
+//   args: {
+//     label: 'Indigo',
+//     color: 'indigo',
+//   },
+// }
+// export const Violet: Story = {
+//   args: {
+//     label: 'Violet',
+//     color: 'violet',
+//   },
+// }

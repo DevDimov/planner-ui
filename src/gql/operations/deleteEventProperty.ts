@@ -5,11 +5,12 @@ export const DELETE_EVENT_PROPERTY = gql(`
     deleteEventProperty(filter: $filter) {
       numUids
       eventProperty {
-        id
         iid
+        id
         label
         value
         event {
+          iid
           id
           label
         }

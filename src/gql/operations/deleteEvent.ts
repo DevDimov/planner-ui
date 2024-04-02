@@ -5,6 +5,7 @@ export const DELETE_EVENT = gql(`
     deleteEvent(filter: $filter) {
       numUids
       event {
+        iid
         id
         label
       }
