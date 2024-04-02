@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
   PopoverClose,
 } from '../../ui/popover'
+import { useRef } from 'react'
 
 type SingleDateInputProps = {
   value: Date
@@ -22,6 +23,12 @@ export function SingleDateInput({
   onChange,
   placeholder,
 }: SingleDateInputProps) {
+  const popoverCloseRef = useRef<HTMLButtonElement>(null)
+
+  const handleOnDayClick = () => {
+    popoverCloseRef?.current?.click()
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -50,8 +57,9 @@ export function SingleDateInput({
           disabled={(date) => date < new Date('1900-01-01')}
           initialFocus
           weekStartsOn={1}
+          onDayClick={handleOnDayClick}
         />
-        <PopoverClose className="w-full p-2">
+        <PopoverClose className="hidden w-full p-2" ref={popoverCloseRef}>
           <div className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground">
             Close
           </div>

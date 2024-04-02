@@ -18,9 +18,9 @@ export default function CreateEventButton() {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
-          <DialogDescription>
+          {/* <DialogDescription>
             Create a new event with unique tags
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
         <CreateEventForm />
       </DialogContent>
