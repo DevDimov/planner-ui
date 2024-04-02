@@ -5,11 +5,12 @@ export const ADD_EVENT_PROPERTY = gql(`
     addEventProperty(input: $input) {
       numUids
       eventProperty {
+        iid
         id
         label
         value
-        iid
         event {
+          iid
           id
           user {
             email

@@ -1,5 +1,4 @@
-import { gql } from '@apollo/client'
-// import { gql } from '../codegen/gql'
+import { gql } from '../codegen/gql'
 
 export const ADD_EVENT_ENTRY = gql(`
   mutation AddEventEntry($input: [AddEventEntryInput!]!) {
@@ -9,21 +8,15 @@ export const ADD_EVENT_ENTRY = gql(`
       iid
       startDateTime
       endDateTime
+      tags {
+          iid
+          id
+          label
+          color
+        }
       event {
-        id
         iid
-        label
-        tags {
-          id
-          iid
-          label
-        }
-        properties {
-          id
-          iid
-          label
-          value
-        }
+        id
       }
     }
   }

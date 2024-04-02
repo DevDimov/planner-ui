@@ -10,16 +10,10 @@ import { EventEntryData } from '../../../models/eventEntry'
 export type CalendarWeekProps = {
   days: Date[]
   entries: EventEntryData[]
-  week: string
 }
 
-export default function CalendarWeek({
-  days,
-  entries,
-  week,
-}: CalendarWeekProps) {
-  const { month, getEventTags, getEventProperties } =
-    useContext(CalendarContext)
+export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
+  const { month, getEventProperties } = useContext(CalendarContext)
 
   return (
     <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
@@ -41,7 +35,7 @@ export default function CalendarWeek({
       <div className="col-span-full grid grid-cols-7">
         {entries &&
           entries.map((entry) => {
-            const { iid, event, startDateTime, endDateTime } = entry
+            const { iid, event, startDateTime, endDateTime, tags } = entry
 
             const { colStart, colEnd } = getEventColumns({
               weekdays: days,
@@ -54,7 +48,7 @@ export default function CalendarWeek({
                 iid={iid}
                 eventIid={event.iid}
                 label={event.label}
-                tags={getEventTags(event.iid)}
+                tags={tags}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 colStart={colStart}

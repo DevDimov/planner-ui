@@ -5,8 +5,8 @@ export const UPDATE_EVENT = gql(`
     updateEvent(input: $input) {
       numUids
       event {
-        id
         iid
+        id
         label
       }
     }

@@ -5,9 +5,9 @@ export const DELETE_EVENT_ENTRY = gql(`
     deleteEventEntry(filter: $filter) {
       numUids
       eventEntry {
-        endDateTime
         iid
         startDateTime
+        endDateTime
       }
     }
   }

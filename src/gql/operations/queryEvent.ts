@@ -6,14 +6,9 @@ export const QUERY_EVENT = gql(`
       iid
       id
       label
-      tags {
-        id
-        iid
-        label
-      }
       properties {
-        id
         iid
+        id
         label
         value
       }

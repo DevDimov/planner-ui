@@ -5,9 +5,10 @@ export const DELETE_TAG = gql(`
     deleteTag(filter: $filter) {
       numUids
       tag {
-        id
         iid
+        id
         label
+        color
       }
     }
   }
