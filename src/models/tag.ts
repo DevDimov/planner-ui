@@ -4,5 +4,5 @@ export interface TagData {
   iid: string
   id: string
   label: string
-  color?: TagColor
+  color?: TagColor | null
 }

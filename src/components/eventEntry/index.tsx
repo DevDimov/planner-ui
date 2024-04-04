@@ -67,7 +67,7 @@ export default function EventEntry({
   const [canEditDuration, setCanEditDuration] = useState(false)
   const [canEditProperties, setCanEditProperties] = useState(false)
 
-  const { entries, setEntries } = useContext(CalendarContext)
+  const { removeEntry } = useContext(CalendarContext)
 
   const [deleteEntry] = useMutation(DELETE_EVENT_ENTRY)
 
@@ -99,11 +99,8 @@ export default function EventEntry({
         variables: { filter: { iid: [iid] } },
       })
 
-      if (data) {
-        const newEntries = entries.filter((entry) => {
-          return entry.iid !== iid
-        })
-        setEntries(newEntries)
+      if (data?.deleteEventEntry?.numUids) {
+        removeEntry(iid)
       }
     } catch (error) {
       console.log('Error deleting occurrence', error)

@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { UseFormSetError, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-
 import { Button } from '../../buttons'
 import {
   Form,
@@ -21,26 +20,31 @@ import { Input } from '../../ui/input/default'
 import { Checkbox } from '../../ui/checkbox'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { EventData } from '../../../models/event'
 import { TypographySmall } from '../../typography/small'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useToast } from '../../ui/toast/use-toast'
-
-type AddEventData = {
-  addEvent: {
-    event: EventData[]
-  }
-}
+import { SingleDateInput } from '../../input/singleDateInput'
+import EventTag from '../../tags/eventTag'
+import { TypographyH3 } from '../../typography/h3'
+import { getAddEventInput } from '../utils/getAddEventInput'
+import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventEntry'
+import { getAddEventEntryInput } from '../utils/getAddEventEntryInput'
+import { TagColor } from '../../../gql/codegen/graphql'
+import { TagData } from '../../../models/tag'
+import { EventPropertyData } from '../../../models/eventProperty'
 
 export function CreateEventForm() {
   const inputNewTagRef = useRef<HTMLInputElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const newlyAddedTags = useRef<string[]>([])
 
   const { user } = useAuth0()
   const { toast } = useToast()
 
-  const { tags: allTags, addEvent } = useContext(CalendarContext)
+  const {
+    tags: existingsTags,
+    addEvent,
+    addEventEntry,
+  } = useContext(CalendarContext)
 
   const [tags, setTags] = useState<{ id: string; label: string }[]>([])
 
@@ -48,39 +52,113 @@ export function CreateEventForm() {
     resolver: zodResolver(createEventFormSchema),
     defaultValues: {
       label: '',
-      tags: [],
+      entry: {},
+      existingTags: [],
+      newTags: [],
     },
   })
 
-  const [addEventMutation, { loading, error }] =
-    useMutation<AddEventData>(ADD_EVENT)
+  const {
+    fields: fieldsNewTags,
+    append,
+    remove,
+  } = useFieldArray({
+    control: form.control,
+    name: 'newTags',
+  })
+
+  const [addEventMutation, { loading, error }] = useMutation(ADD_EVENT)
+  const [addEventEntryMutation] = useMutation(ADD_EVENT_ENTRY)
 
   if (error) console.log('error', error)
 
   async function onSubmit(values: z.infer<typeof createEventFormSchema>) {
-    const { label, tags } = values
-    const tagsString = tags.map((tag) => tag.label).toString()
-    const userId = user?.sub || 'auth0|undefined'
-    const userPayload = { email: user?.email }
-    const eventId = ''.concat(userId, '|', label, '|', tagsString)
-    const tagsPayload = tags.map((tag) => {
-      return { ...tag, user: userPayload }
-    })
+    const addEventInput = getAddEventInput({ user, formValues: values })
 
     addEventMutation({
       variables: {
-        input: [{ id: eventId, label, user: userPayload, tags: tagsPayload }],
+        upsert: true,
+        input: addEventInput,
       },
     })
       .then((response) => {
         const newEvent = response.data?.addEvent?.event?.[0]
-        console.log(newEvent)
         if (newEvent) {
-          addEvent(newEvent)
-          closeButtonRef?.current?.click()
-          toast({
-            description: 'The event was created successfully',
+          console.log('Event created.', newEvent)
+
+          const { iid, id, label, properties } = newEvent
+          let propertyData: EventPropertyData[] = []
+          if (properties && properties.length > 0) {
+            propertyData = properties.map((newProperty) => {
+              return {
+                iid: newProperty?.iid || '',
+                id: newProperty?.id || '',
+                label: newProperty?.label || '',
+                value: newProperty?.value || '',
+              }
+            })
+          }
+          addEvent({ iid, id, label, properties: propertyData })
+
+          const addEventEntryInput = getAddEventEntryInput({
+            user,
+            eventId: addEventInput.id,
+            formValues: values,
           })
+
+          toast({
+            description: 'Event created.',
+          })
+
+          addEventEntryMutation({
+            variables: {
+              input: addEventEntryInput,
+            },
+          })
+            .then((response) => {
+              const newEntry = response.data?.addEventEntry?.eventEntry?.[0]
+              const newTags = newEntry?.tags
+              let tagData: TagData[] = []
+              if (newTags && newTags.length > 0) {
+                tagData = newTags.map((newTag) => {
+                  return {
+                    iid: newTag?.iid || '',
+                    id: newTag?.id || '',
+                    label: newTag?.label || '',
+                    color: newTag?.color || TagColor.Default,
+                  }
+                })
+              }
+
+              if (newEntry) {
+                addEventEntry({
+                  iid: newEntry?.iid,
+                  startDateTime: newEntry?.startDateTime,
+                  endDateTime: newEntry?.endDateTime,
+                  event: {
+                    iid,
+                    label,
+                  },
+                  tags: tagData,
+                })
+
+                console.log('Event entry.', newEntry)
+
+                toast({
+                  description: 'Entry added.',
+                })
+
+                closeButtonRef?.current?.click()
+              }
+            })
+            .catch((error) => {
+              toast({
+                title: 'Something went wrong.',
+                description: error,
+                variant: 'destructive',
+              })
+              console.log(error)
+            })
         }
       })
       .catch((error) => {
@@ -93,37 +171,54 @@ export function CreateEventForm() {
       })
   }
 
-  const handleOnClickNewTag = () => {
+  const handleOnClickNewTag = (
+    formSetError: UseFormSetError<z.infer<typeof createEventFormSchema>>
+  ) => {
     if (inputNewTagRef.current) {
       let tagLabel = inputNewTagRef.current.value.trim()
-      if (tagLabel.length > 0) {
-        const exists = tags.find((e) => e.label === tagLabel)
-        if (!exists) {
-          const userId = user?.sub || 'auth0|undefined'
-          const tagId = ''.concat(userId, '|', tagLabel)
 
-          setTags([
-            ...tags,
-            {
-              id: tagId,
-              label: tagLabel,
-            },
-          ])
-
-          newlyAddedTags.current.push(tagId)
-
-          inputNewTagRef.current.value = ''
-        }
+      if (tagLabel.length === 0) {
+        formSetError('newTags', {
+          type: 'string',
+          message: 'Cannot add empty label',
+        })
+        return
       }
+
+      const existsInCurrentTags = tags.find((e) => e.label === tagLabel)
+
+      if (existsInCurrentTags) {
+        formSetError('newTags', {
+          type: 'string',
+          message: 'A tag with this label already exists',
+        })
+        return
+      }
+
+      const existsInNewlyAddedTags = fieldsNewTags.find(
+        (e) => e.label === tagLabel
+      )
+
+      if (existsInNewlyAddedTags) {
+        formSetError('newTags', {
+          type: 'string',
+          message: 'A tag with this label was already added',
+        })
+        return
+      }
+
+      append({ label: tagLabel })
+
+      inputNewTagRef.current.value = ''
     }
   }
 
   useEffect(() => {
-    const currentTags = allTags.map((tag) => {
+    const currentTags = existingsTags.map((tag) => {
       return { id: tag.id, label: tag.label }
     })
     setTags(currentTags)
-  }, [allTags])
+  }, [existingsTags])
 
   return (
     <Form {...form}>
@@ -131,6 +226,12 @@ export function CreateEventForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full flex-col gap-5"
       >
+        <div className="flex flex-col gap-1">
+          <TypographyH3>Create event</TypographyH3>
+          <FormDescription>
+            Create a new event with at least one entry.
+          </FormDescription>
+        </div>
         <FormField
           control={form.control}
           name="label"
@@ -146,72 +247,141 @@ export function CreateEventForm() {
             </FormItem>
           )}
         />
+
+        <div className="flex flex-row gap-3">
+          <FormField
+            control={form.control}
+            name="entry.startDateTime"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>
+                  <TypographySmall>From</TypographySmall>
+                </FormLabel>
+                <SingleDateInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Pick start date"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="entry.endDateTime"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>
+                  <TypographySmall>To</TypographySmall>
+                </FormLabel>
+                <SingleDateInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Pick end date"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
-          name="tags"
+          name="existingTags"
           render={() => (
             <FormItem className="flex flex-col">
               <FormLabel>
-                <TypographySmall>Tags</TypographySmall>
+                <TypographySmall>Tags (optional)</TypographySmall>
               </FormLabel>
               {tags.length > 0 && (
-                <FormDescription>
-                  Choose an existing tag or add new one
-                </FormDescription>
+                <div className="flex flex-wrap items-end justify-items-start gap-2">
+                  <FormDescription className="w-full">
+                    Choose an existing tag or add new one
+                  </FormDescription>
+                  {tags.map((item) => (
+                    <FormField
+                      key={item.id}
+                      control={form.control}
+                      name="existingTags"
+                      render={({ field }) => {
+                        const checked = field.value?.find(
+                          (v) => v.id === item.id
+                        )
+                          ? true
+                          : false
+
+                        return (
+                          <FormItem key={item.id}>
+                            <FormControl>
+                              <Checkbox
+                                className="hidden"
+                                checked={checked}
+                                onCheckedChange={(checked) => {
+                                  const tags = field.value || []
+                                  return checked
+                                    ? field.onChange([...tags, item])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value.id !== item.id
+                                        )
+                                      )
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel>
+                              <EventTag
+                                label={item.label}
+                                variant={checked ? 'checked' : 'outline'}
+                              ></EventTag>
+                            </FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
+                  ))}
+                  {fieldsNewTags.length > 0 &&
+                    fieldsNewTags.map((field, index) => (
+                      <EventTag
+                        variant="checked"
+                        label={fieldsNewTags[index].label}
+                        key={field.id}
+                        onClick={() => remove(index)}
+                      />
+                    ))}
+                </div>
               )}
-              {tags.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="tags"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={
-                              field.value?.find((v) => v.id === item.id)
-                                ? true
-                                : false
-                            }
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value.id !== item.id
-                                    )
-                                  )
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              ))}
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="newTags"
+          render={() => (
+            <FormItem className="flex flex-col">
               <FormDescription>New tag</FormDescription>
-              <div className="flex flex-row gap-4">
-                <Input placeholder="Enter tag label" ref={inputNewTagRef} />
+              <div className="flex flex-row gap-3">
+                <Input
+                  placeholder="Label"
+                  ref={inputNewTagRef}
+                  onChange={() => form.clearErrors('newTags')}
+                />
                 <Button
                   type="button"
                   variant="outline"
                   className="w-min"
-                  onClick={handleOnClickNewTag}
+                  onClick={() => handleOnClickNewTag(form.setError)}
                 >
                   Add
                 </Button>
               </div>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <div className="mt-4 flex justify-between gap-3">
           {!loading ? <Button type="submit">Submit</Button> : <ButtonLoading />}
           <DialogClose asChild>
