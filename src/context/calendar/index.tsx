@@ -10,12 +10,12 @@ export const defaultValue: {
   events: EventData[]
   setEvents: Dispatch<SetStateAction<EventData[]>>
   entries: EventEntryData[]
-  setEntries: Dispatch<SetStateAction<EventEntryData[]>>
   tags: TagData[]
   addEvent: (event: EventData) => void
+  addEventEntry: (entry: EventEntryData) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
   getEventProperties: (eventIid: string) => EventPropertyData[]
-  getEventTags: (eventIid: string) => TagData[]
+  removeEntry: (entryIid: string) => void
   removeEventProperty: (eventIid: string, propertyIid: string) => void
   updateEventEntry: (eventEntry: UpdateEventEntryData) => void
   updateEventProperty: (eventIid: string, property: EventPropertyData) => void
@@ -25,13 +25,13 @@ export const defaultValue: {
   events: [],
   setEvents: () => {},
   entries: [],
-  setEntries: () => {},
   tags: [],
   addEvent: () => {},
+  addEventEntry: () => {},
   addEventProperty: () => {},
   getEventProperties: () => [],
-  getEventTags: () => [],
   removeEventProperty: () => {},
+  removeEntry: () => [],
   updateEventEntry: () => {},
   updateEventProperty: () => {},
 }

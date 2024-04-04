@@ -4,6 +4,8 @@ import { DELETE_EVENT_ENTRY } from '../../gql/operations/deleteEventEntry'
 import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
 import { mockQueryEventEntry } from '../../mockData/queryEventEntry'
 import { ADD_EVENT_ENTRY } from '../../gql/operations/addEventEntry'
+import { QUERY_TAG } from '../../gql/operations/queryTag'
+import { mockQueryTag } from '../../mockData/queryTag'
 
 const currentDate = new Date()
 currentDate.setHours(0, 0, 0, 0)
@@ -24,6 +26,17 @@ const meta: Meta<typeof Calendar> = {
           result: {
             data: {
               queryEventEntry: mockQueryEventEntry,
+            },
+          },
+        },
+        {
+          delay: 1000,
+          request: {
+            query: QUERY_TAG,
+          },
+          result: {
+            data: {
+              queryTag: mockQueryTag,
             },
           },
         },

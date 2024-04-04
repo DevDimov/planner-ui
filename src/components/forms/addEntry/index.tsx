@@ -32,7 +32,7 @@ export function AddEntryForm() {
   const [eventOptions, setEventOptions] = useState<EventOption[]>([])
 
   const { toast } = useToast()
-  const { events, entries, setEntries } = useContext(CalendarContext)
+  const { events, addEventEntry } = useContext(CalendarContext)
 
   const form = useForm<z.infer<typeof addEntryFormSchema>>({
     resolver: zodResolver(addEntryFormSchema),
@@ -48,18 +48,9 @@ export function AddEntryForm() {
 
     if (events) {
       filteredEntries = events.map((event) => {
-        const eventLabel = event.label
-        let tags = event.tags
-          ?.map((tag) => {
-            return tag.label
-          })
-          .toString()
-
-        tags = tags ? ''.concat('(', tags, ')') : ''
-
         return {
           id: event.iid,
-          label: tags ? `${eventLabel} ${tags}` : eventLabel,
+          label: event.label,
         }
       })
     }
@@ -67,13 +58,13 @@ export function AddEntryForm() {
     setEventOptions(filteredEntries)
   }, [events])
 
-  const [addEventEntry, { loading }] =
+  const [addEventEntryMutation, { loading }] =
     useMutation<AddEventEntryData>(ADD_EVENT_ENTRY)
 
   async function onSubmit(values: z.infer<typeof addEntryFormSchema>) {
     const { eventId, startDateTime, endDateTime } = values
 
-    addEventEntry({
+    addEventEntryMutation({
       variables: {
         input: {
           startDateTime: startDateTime.toISOString(),
@@ -86,7 +77,7 @@ export function AddEntryForm() {
         const { data, errors } = response
         if (data) {
           console.log(data)
-          setEntries([...entries, ...data.addEventEntry.eventEntry])
+          addEventEntry(data.addEventEntry.eventEntry[0])
           closeButtonRef?.current?.click()
           toast({
             description: 'Event entry added.',
