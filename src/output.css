@@ -1035,6 +1035,10 @@ body{
   align-items: center;
 }
 
+.justify-start{
+  justify-content: flex-start;
+}
+
 .justify-end{
   justify-content: flex-end;
 }
@@ -1053,6 +1057,10 @@ body{
 
 .justify-items-center{
   justify-items: center;
+}
+
+.gap-0{
+  gap: 0px;
 }
 
 .gap-1{

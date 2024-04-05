@@ -17,12 +17,6 @@ export default function AddEntryButton() {
         <Button variant="outline">Add entry</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Add entry</DialogTitle>
-          <DialogDescription>
-            Add new entry to an existing event
-          </DialogDescription>
-        </DialogHeader>
         <AddEntryForm />
       </DialogContent>
     </Dialog>

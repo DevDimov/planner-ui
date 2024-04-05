@@ -11,10 +11,11 @@ import {
   PopoverClose,
 } from '../../ui/popover'
 import { useRef } from 'react'
+import React from 'react'
 
 type SingleDateInputProps = {
-  value: Date
-  onChange: (...event: any[]) => void
+  value: Date | undefined
+  onChange: (value: Date | undefined) => void
   placeholder?: string
 }
 
@@ -24,6 +25,8 @@ export function SingleDateInput({
   placeholder,
 }: SingleDateInputProps) {
   const popoverCloseRef = useRef<HTMLButtonElement>(null)
+
+  // const [date, setDate] = React.useState<Date | undefined>(value)
 
   const handleOnDayClick = () => {
     popoverCloseRef?.current?.click()
@@ -43,7 +46,9 @@ export function SingleDateInput({
             {value ? (
               format(value, 'PPP')
             ) : (
-              <span>{placeholder || 'Pick a date'}</span>
+              <span className={cn('text-muted-foreground')}>
+                {placeholder || 'Pick a date'}
+              </span>
             )}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
           </Button>
@@ -53,7 +58,10 @@ export function SingleDateInput({
         <Calendar
           mode="single"
           selected={value}
-          onSelect={onChange}
+          onSelect={(selected) => {
+            // setDate(currentValue)
+            onChange && onChange(selected)
+          }}
           disabled={(date) => date < new Date('1900-01-01')}
           initialFocus
           weekStartsOn={1}
