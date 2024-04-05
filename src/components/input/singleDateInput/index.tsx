@@ -11,7 +11,6 @@ import {
   PopoverClose,
 } from '../../ui/popover'
 import { useRef } from 'react'
-import React from 'react'
 
 type SingleDateInputProps = {
   value: Date | undefined
@@ -26,8 +25,6 @@ export function SingleDateInput({
 }: SingleDateInputProps) {
   const popoverCloseRef = useRef<HTMLButtonElement>(null)
 
-  // const [date, setDate] = React.useState<Date | undefined>(value)
-
   const handleOnDayClick = () => {
     popoverCloseRef?.current?.click()
   }
@@ -39,12 +36,12 @@ export function SingleDateInput({
           <Button
             variant="outline"
             className={cn(
-              'pl-3 text-left font-normal',
+              'w-full pl-3 text-left font-normal',
               value && 'text-muted-foreground'
             )}
           >
             {value ? (
-              format(value, 'PPP')
+              format(value, 'PP')
             ) : (
               <span className={cn('text-muted-foreground')}>
                 {placeholder || 'Pick a date'}
@@ -59,7 +56,6 @@ export function SingleDateInput({
           mode="single"
           selected={value}
           onSelect={(selected) => {
-            // setDate(currentValue)
             onChange && onChange(selected)
           }}
           disabled={(date) => date < new Date('1900-01-01')}

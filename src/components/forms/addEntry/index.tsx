@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UseFormSetError, useFieldArray, useForm } from 'react-hook-form'
-import { addEntryFormSchema } from '../../../schema/addEntry'
+import { addEntryFormSchema, rangeIsValid } from '../../../schema/addEntry'
 import { z } from 'zod'
 import { Button } from '../../buttons'
 import {
@@ -17,7 +17,7 @@ import { ADD_EVENT_ENTRY } from '../../../gql/operations/addEventEntry'
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { ButtonLoading } from '../../ui/button/buttonLoading'
 import { CalendarContext } from '../../../context/calendar'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useRef } from 'react'
 import { DialogClose } from '../../ui/dialog'
 import { EventEntryData } from '../../../models/eventEntry'
 import { TypographySmall } from '../../typography/small'
@@ -29,15 +29,19 @@ import { TypographyH3 } from '../../typography/h3'
 import format from 'date-fns/format'
 import { TypographyMuted } from '../../typography/muted'
 import React from 'react'
-
-type EventOption = {
-  id: string
-  label: string
-}
+import isEqual from 'date-fns/isEqual'
+import { cn } from '../../../utils'
+import { TrashIcon } from '@radix-ui/react-icons'
+import { AddEventEntryMutationVariables } from '../../../gql/codegen/graphql'
+import { getAddEventInput } from '../utils/getAddEventInput'
+import { useAuth0 } from '@auth0/auth0-react'
+import { getUserInput } from '../utils/getUserInput'
+import { getUserId } from '../utils/getUserId'
+import { getAddEntryInput } from '../utils/getAddEntryInput'
 
 type AddEventEntryData = {
   addEventEntry: {
-    eventEntry: EventEntryData[]
+    eventEntry: EventEntryData[] | null
   }
 }
 
@@ -45,15 +49,15 @@ export function AddEntryForm() {
   const inputNewTagRef = useRef<HTMLInputElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
-  const [eventOptions, setEventOptions] = useState<EventOption[]>([])
   const [range, setRange] = React.useState<{
     from: Date | undefined
     to: Date | undefined
   }>({ from: undefined, to: undefined })
 
   const { toast } = useToast()
+  const { user } = useAuth0()
 
-  const { tags, addEvent, addEventEntry } = useContext(CalendarContext)
+  const { tags, addEventEntry } = useContext(CalendarContext)
 
   type schemaType = z.infer<typeof addEntryFormSchema>
 
@@ -70,7 +74,6 @@ export function AddEntryForm() {
   const {
     fields: fieldsEntries,
     append: appendEntry,
-    prepend: prependEntry,
     remove: removeEntry,
   } = useFieldArray({
     control: form.control,
@@ -86,23 +89,10 @@ export function AddEntryForm() {
     name: 'newTags',
   })
 
-  // useEffect(() => {
-  //   let filteredEntries: EventOption[] = []
-
-  //   if (events) {
-  //     filteredEntries = events.map((event) => {
-  //       return {
-  //         id: event.iid,
-  //         label: event.label,
-  //       }
-  //     })
-  //   }
-
-  //   setEventOptions(filteredEntries)
-  // }, [events])
-
-  const [addEventEntryMutation, { loading }] =
-    useMutation<AddEventEntryData>(ADD_EVENT_ENTRY)
+  const [addEventEntryMutation, { loading }] = useMutation<
+    AddEventEntryData,
+    AddEventEntryMutationVariables
+  >(ADD_EVENT_ENTRY)
 
   const handleOnClickNewTag = (formSetError: UseFormSetError<schemaType>) => {
     if (inputNewTagRef.current) {
@@ -145,43 +135,58 @@ export function AddEntryForm() {
   }
 
   async function onSubmit(values: schemaType) {
-    const { eventLabel, entries } = values
+    const { eventLabel, entries, existingTags, newTags } = values
+    const userId = getUserId({ user })
+    const userPayload = getUserInput({ user })
+    if (userId && userPayload) {
+      const eventPayload = getAddEventInput({ userId, userPayload, eventLabel })
+      const entriesPayload = getAddEntryInput({
+        userId,
+        userPayload,
+        eventPayload,
+        entries,
+        existingTags,
+        newTags,
+      })
 
-    addEventEntryMutation({
-      variables: {
-        input: {
-          startDateTime: startDateTime.toISOString(),
-          endDateTime: endDateTime.toISOString(),
-          event: { iid: eventLabel },
+      addEventEntryMutation({
+        variables: {
+          input: entriesPayload,
         },
-      },
-    })
-      .then((response) => {
-        const { data, errors } = response
-        if (data) {
-          console.log(data)
-          addEventEntry(data.addEventEntry.eventEntry[0])
-          closeButtonRef?.current?.click()
+      })
+        .then((response) => {
+          const { data, errors } = response
+          if (data) {
+            console.log(data)
+            const newEntries = data.addEventEntry.eventEntry
+            if (newEntries) {
+              addEventEntry(newEntries)
+              closeButtonRef?.current?.click()
+              toast({
+                description:
+                  newEntries.length > 1
+                    ? `${newEntries.length} event entries added.`
+                    : 'Event entry added.',
+              })
+            }
+          }
+          if (errors) {
+            console.log(errors)
+            toast({
+              title: 'Something went wrong.',
+              description: errors.toString(),
+              variant: 'destructive',
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
           toast({
-            description: 'Event entry added.',
-          })
-        }
-        if (errors) {
-          console.log(errors)
-          toast({
-            title: 'Something went wrong.',
-            description: errors.toString(),
+            description: 'Something went wrong.',
             variant: 'destructive',
           })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        toast({
-          description: 'Something went wrong.',
-          variant: 'destructive',
         })
-      })
+    }
   }
 
   return (
@@ -216,85 +221,111 @@ export function AddEntryForm() {
           control={form.control}
           name="entries"
           render={() => (
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row items-end gap-3">
-                <FormItem className="flex w-full flex-col">
-                  <FormLabel>
-                    <TypographySmall>From</TypographySmall>
-                  </FormLabel>
-                  <SingleDateInput
-                    value={range.from}
-                    onChange={(day) => {
-                      setRange({ ...range, from: day })
-                      // form.setError('entries', {
-                      //   type: 'string',
-                      //   message: 'Test',
-                      // })
-                    }}
-                    placeholder="Pick start date"
-                  />
-                </FormItem>
-
-                <FormItem className="flex w-full flex-col">
-                  <FormLabel>
-                    <TypographySmall>To</TypographySmall>
-                  </FormLabel>
-                  <SingleDateInput
-                    value={range.to}
-                    onChange={(day) => {
-                      setRange({ ...range, to: day })
-                    }}
-                    placeholder="Pick end date"
-                  />
-                </FormItem>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-min"
-                  onClick={() => {
-                    if (range) {
-                      const { from, to } = range
-                      if (from && to) {
-                        prependEntry({
-                          startDateTime: from,
-                          endDateTime: to,
-                        })
-                        setRange({ from: undefined, to: undefined })
-                      }
-                    }
-                  }}
-                >
-                  Add
-                </Button>
-              </div>
-              <FormMessage />
-              {fieldsEntries.length > 0 && (
-                <div className="flex flex-col gap-0">
-                  {fieldsEntries.map((field, index) => (
-                    <div
-                      key={'entryDuration' + index}
-                      className="flex w-full flex-row items-center justify-items-center gap-3"
-                    >
-                      <TypographyMuted>
-                        {format(field.startDateTime, 'PPP')}
-                      </TypographyMuted>
-                      <TypographyMuted>
-                        {format(field.endDateTime, 'PPP')}
-                      </TypographyMuted>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="w-min"
-                        size="sm"
-                        onClick={() => removeEntry(index)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+            <div
+              className={cn(
+                'grid auto-rows-auto grid-cols-[2fr_2fr_min-content] items-center gap-x-3 gap-y-2'
               )}
+            >
+              <div>
+                <TypographySmall>From</TypographySmall>
+              </div>
+              <div className="col-span-2">
+                <TypographySmall>To</TypographySmall>
+              </div>
+              {fieldsEntries.length > 0 &&
+                fieldsEntries.map((field, index) => (
+                  <>
+                    <TypographyMuted>
+                      {format(field.startDateTime, 'PPP')}
+                    </TypographyMuted>
+                    <TypographyMuted>
+                      {format(field.endDateTime, 'PPP')}
+                    </TypographyMuted>
+                    <Button
+                      key={'removeEntryButton' + index}
+                      type="button"
+                      variant="ghost"
+                      className="text-muted-foreground hover:text-foreground"
+                      size={'sm'}
+                      onClick={() => {
+                        removeEntry(index)
+                        form.clearErrors('entries')
+                      }}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </Button>
+                  </>
+                ))}
+              <SingleDateInput
+                value={range.from}
+                onChange={(day) => {
+                  setRange({ ...range, from: day })
+                }}
+                key={'startDateInput'}
+                placeholder="Pick start date"
+              />
+              <SingleDateInput
+                value={range.to}
+                onChange={(day) => {
+                  setRange({ ...range, to: day })
+                }}
+                key={'endDateInput'}
+                placeholder="Pick end date"
+              />
+              <Button
+                key="AddDateRangeButton"
+                type="button"
+                variant="outline"
+                className="w-min self-end"
+                onClick={() => {
+                  const { from, to } = range
+
+                  if (!from || !to) {
+                    return form.setError('entries', {
+                      type: 'string',
+                      message: 'Pick a start and end date',
+                    })
+                  }
+
+                  if (from && to) {
+                    const duplicateRange = fieldsEntries.find(
+                      (entry) =>
+                        isEqual(entry.startDateTime, from) &&
+                        isEqual(entry.endDateTime, to)
+                    )
+                    if (duplicateRange) {
+                      return form.setError('entries', {
+                        type: 'string',
+                        message:
+                          'An entry with the same duration was already added',
+                      })
+                    }
+
+                    const dateRangeIsValid = rangeIsValid(from, to)
+
+                    if (!dateRangeIsValid) {
+                      return form.setError('entries', {
+                        type: 'string',
+                        message: 'The start date must be before the end date',
+                      })
+                    }
+
+                    appendEntry({
+                      startDateTime: from,
+                      endDateTime: to,
+                    })
+
+                    setRange({ from: undefined, to: undefined })
+                    form.clearErrors('entries')
+                  }
+                }}
+              >
+                Add
+              </Button>
+
+              <div className="col-span-3">
+                <FormMessage />
+              </div>
             </div>
           )}
         />
@@ -314,7 +345,7 @@ export function AddEntryForm() {
                   </FormDescription>
                   {tags.map((item) => (
                     <FormField
-                      key={item.id}
+                      key={'formField' + item.id}
                       control={form.control}
                       name="existingTags"
                       render={({ field }) => {
@@ -325,7 +356,7 @@ export function AddEntryForm() {
                           : false
 
                         return (
-                          <FormItem key={item.id}>
+                          <FormItem key={'formItem' + item.id}>
                             <FormControl>
                               <Checkbox
                                 className="hidden"

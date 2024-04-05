@@ -106,8 +106,8 @@ export default function Calendar() {
     setEvents(addEvent(events, event))
   }
 
-  const handleAddEventEntry = (entry: EventEntryData) => {
-    setEntries([...entries, entry])
+  const handleAddEventEntry = (entry: EventEntryData[]) => {
+    setEntries([...entries, ...entry])
   }
 
   const handleRemoveEntry = (entryIid: string) => {

@@ -4,7 +4,6 @@ import subMonths from 'date-fns/subMonths'
 import addMonths from 'date-fns/addMonths'
 import { GrNext, GrPrevious } from 'react-icons/gr'
 import { Button } from '../../buttons'
-import CreateEventButton from '../../buttons/createEvent'
 import AddEntryButton from '../../buttons/addEntry'
 
 type CalendarControlProps = {
@@ -49,7 +48,6 @@ export default function CalendarControls({
       </div>
       <div className="flex gap-2">
         <AddEntryButton />
-        <CreateEventButton />
       </div>
     </div>
   )

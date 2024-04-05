@@ -1,7 +1,7 @@
 import { gql } from '../codegen/gql'
 
-export const ADD_EVENT_ENTRY = gql(`
-  mutation AddEventEntry($input: [AddEventEntryInput!]!) {
+export const ADD_EVENT_ENTRY =
+  gql(`mutation AddEventEntry($input: [AddEventEntryInput!]!) {
   addEventEntry(input: $input) {
     numUids
     eventEntry {
@@ -17,8 +17,8 @@ export const ADD_EVENT_ENTRY = gql(`
       event {
         iid
         id
+        label
       }
     }
   }
-}
-`)
+}`)

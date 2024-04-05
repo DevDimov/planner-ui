@@ -12,7 +12,7 @@ export const defaultValue: {
   entries: EventEntryData[]
   tags: TagData[]
   addEvent: (event: EventData) => void
-  addEventEntry: (entry: EventEntryData) => void
+  addEventEntry: (entry: EventEntryData[]) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
   getEventProperties: (eventIid: string) => EventPropertyData[]
   removeEntry: (entryIid: string) => void
