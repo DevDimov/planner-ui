@@ -13,8 +13,8 @@ import {
 import { useRef } from 'react'
 
 type SingleDateInputProps = {
-  value: Date
-  onChange: (...event: any[]) => void
+  value: Date | undefined
+  onChange: (value: Date | undefined) => void
   placeholder?: string
 }
 
@@ -36,14 +36,16 @@ export function SingleDateInput({
           <Button
             variant="outline"
             className={cn(
-              'pl-3 text-left font-normal',
+              'w-full pl-3 text-left font-normal',
               value && 'text-muted-foreground'
             )}
           >
             {value ? (
-              format(value, 'PPP')
+              format(value, 'PP')
             ) : (
-              <span>{placeholder || 'Pick a date'}</span>
+              <span className={cn('text-muted-foreground')}>
+                {placeholder || 'Pick a date'}
+              </span>
             )}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
           </Button>
@@ -53,7 +55,9 @@ export function SingleDateInput({
         <Calendar
           mode="single"
           selected={value}
-          onSelect={onChange}
+          onSelect={(selected) => {
+            onChange && onChange(selected)
+          }}
           disabled={(date) => date < new Date('1900-01-01')}
           initialFocus
           weekStartsOn={1}

@@ -1,23 +1,17 @@
-import { User } from '@auth0/auth0-react'
-import { AddEventInput } from '../../../../gql/codegen/graphql'
-import { createEventFormSchema } from '../../../../schema/createEvent'
-import { z } from 'zod'
+import { AddEventInput, AddUserInput } from '../../../../gql/codegen/graphql'
 
 export const getAddEventInput = ({
-  user,
-  formValues,
+  userId,
+  userPayload,
+  eventLabel,
 }: {
-  user?: User
-  formValues: z.infer<typeof createEventFormSchema>
+  userId: string
+  userPayload: AddUserInput
+  eventLabel: string
 }): AddEventInput => {
-  const userId = user?.sub || 'auth0|undefined'
-  const { label } = formValues
-
   return {
-    id: ''.concat(userId, '|', label),
-    label,
-    user: {
-      email: user?.email,
-    },
+    id: ''.concat(userId, '|', eventLabel),
+    label: eventLabel,
+    user: userPayload,
   }
 }
