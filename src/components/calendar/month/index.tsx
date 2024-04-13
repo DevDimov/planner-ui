@@ -2,7 +2,7 @@ import { getAllDaysInMonth } from '../utils/getAllDaysInMonth'
 import { groupDatesByWeek } from '../utils/groupDatesByWeek'
 import CalendarWeek from '../week'
 import WeekdayNames from '../weekdayNames'
-import { groupOccurrencesByWeek } from '../utils/groupOccurrencesByWeek'
+import { groupEntriesByWeek } from '../utils/groupEntriesByWeek'
 import { EventEntryData } from '../../../models/eventEntry'
 
 export type GroupedEntries = {
@@ -15,7 +15,7 @@ export type CalendarMonthProps = {
 }
 
 export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
-  const groupedEntries = groupOccurrencesByWeek(entries)
+  const groupedEntries = groupEntriesByWeek(entries)
   const weeksGroup = groupDatesByWeek(getAllDaysInMonth(month))
 
   return (
