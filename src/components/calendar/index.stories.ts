@@ -21,7 +21,6 @@ const meta: Meta<typeof Calendar> = {
           delay: 1000,
           request: {
             query: QUERY_EVENT_ENTRY,
-            // variables: { filter: { iid: ['0x1a5086a7de2'] } },
           },
           result: {
             data: {
