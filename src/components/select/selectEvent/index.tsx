@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../index'
+} from '../../ui/select'
 import { FormControl } from '../../forms'
 
 type SelectEventProps = {
