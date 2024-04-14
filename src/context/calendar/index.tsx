@@ -13,6 +13,7 @@ export const defaultValue: {
   tags: TagData[]
   addEvent: (event: EventData) => void
   addEventEntry: (entry: EventEntryData[]) => void
+  addTag: (newTag: TagData[]) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
   getEventProperties: (eventIid: string) => EventPropertyData[]
   removeEntry: (entryIid: string) => void
@@ -28,6 +29,7 @@ export const defaultValue: {
   tags: [],
   addEvent: () => {},
   addEventEntry: () => {},
+  addTag: () => {},
   addEventProperty: () => {},
   getEventProperties: () => [],
   removeEventProperty: () => {},

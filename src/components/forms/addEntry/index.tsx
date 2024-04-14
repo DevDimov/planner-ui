@@ -32,12 +32,16 @@ import React from 'react'
 import isEqual from 'date-fns/isEqual'
 import { cn } from '../../../utils'
 import { TrashIcon } from '@radix-ui/react-icons'
-import { AddEventEntryMutationVariables } from '../../../gql/codegen/graphql'
+import {
+  AddEventEntryMutationVariables,
+  TagColor,
+} from '../../../gql/codegen/graphql'
 import { getAddEventInput } from '../utils/getAddEventInput'
 import { useAuth0 } from '@auth0/auth0-react'
 import { getUserInput } from '../utils/getUserInput'
 import { getUserId } from '../utils/getUserId'
 import { getAddEntryInput } from '../utils/getAddEntryInput'
+import TagColourSelect from '../../select/TagColourSelect'
 
 type AddEventEntryData = {
   addEventEntry: {
@@ -47,6 +51,7 @@ type AddEventEntryData = {
 
 export function AddEntryForm() {
   const inputNewTagRef = useRef<HTMLInputElement>(null)
+  const tagColourSelectRef = useRef<TagColor>(TagColor.Default)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const [range, setRange] = React.useState<{
@@ -97,6 +102,7 @@ export function AddEntryForm() {
   const handleOnClickNewTag = (formSetError: UseFormSetError<schemaType>) => {
     if (inputNewTagRef.current) {
       let tagLabel = inputNewTagRef.current.value.trim()
+      let tagColor = tagColourSelectRef.current
 
       if (tagLabel.length === 0) {
         formSetError('newTags', {
@@ -128,7 +134,7 @@ export function AddEntryForm() {
         return
       }
 
-      append({ label: tagLabel })
+      append({ label: tagLabel, color: tagColor })
 
       inputNewTagRef.current.value = ''
     }
@@ -376,6 +382,7 @@ export function AddEntryForm() {
                             <FormLabel>
                               <EventTag
                                 label={item.label}
+                                color={item.color}
                                 variant={checked ? 'checked' : 'outline'}
                               ></EventTag>
                             </FormLabel>
@@ -389,6 +396,7 @@ export function AddEntryForm() {
                       <EventTag
                         variant="checked"
                         label={fieldsNewTags[index].label}
+                        color={fieldsNewTags[index].color}
                         key={field.id}
                         onClick={() => remove(index)}
                       />
@@ -411,6 +419,12 @@ export function AddEntryForm() {
                   placeholder="Label"
                   ref={inputNewTagRef}
                   onChange={() => form.clearErrors('newTags')}
+                />
+                <TagColourSelect
+                  defaultValue={TagColor.Default}
+                  onValueChange={(value) =>
+                    (tagColourSelectRef.current = TagColor[value])
+                  }
                 />
                 <Button
                   type="button"

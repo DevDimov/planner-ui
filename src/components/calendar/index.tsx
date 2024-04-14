@@ -18,6 +18,7 @@ import { getEventProperties } from './utils/getEventProperties'
 import { useToast } from '../ui/toast/use-toast'
 import { TagData } from '../../models/tag'
 import { QUERY_TAG } from '../../gql/operations/queryTag'
+import { filterNewTags } from './utils/filterNewTags'
 
 interface QueryEventData {
   queryEvent: EventData[]
@@ -106,8 +107,17 @@ export default function Calendar() {
     setEvents(addEvent(events, event))
   }
 
-  const handleAddEventEntry = (entry: EventEntryData[]) => {
-    setEntries([...entries, ...entry])
+  const handleAddEventEntry = (newEntries: EventEntryData[]) => {
+    setEntries([...entries, ...newEntries])
+    const newTags = newEntries[0]?.tags
+    if (newTags) {
+      handleAddTag(newTags)
+    }
+  }
+
+  const handleAddTag = (data: TagData[]) => {
+    const newTags = filterNewTags(tags, data)
+    setTags([...tags, ...newTags])
   }
 
   const handleRemoveEntry = (entryIid: string) => {
@@ -165,6 +175,7 @@ export default function Calendar() {
           setEvents: setEvents,
           addEvent: handleAddEvent,
           addEventEntry: handleAddEventEntry,
+          addTag: handleAddTag,
           addEventProperty: handleAddEventProperty,
           getEventProperties: handleGetEventProperties,
           removeEntry: handleRemoveEntry,
