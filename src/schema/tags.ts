@@ -9,7 +9,7 @@ export const newTagsSchema = z
   .array(
     z.object({
       label: z.string().min(2),
-      colour: z.nativeEnum(TagColor).default(TagColor.Default),
+      color: z.nativeEnum(TagColor),
     })
   )
   .optional()

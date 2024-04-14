@@ -1,3 +1,4 @@
+import React from 'react'
 import { tagColourMap, tagColours } from '../../../constants/tagColours'
 import { TagColor } from '../../../gql/codegen/graphql'
 import { cn } from '../../../utils'
@@ -34,7 +35,9 @@ export default function TagColourSelect({
                 <span
                   className={cn('w-4 rounded pb-4', tagColourMap[colour])}
                 ></span>
-                <span>{colour}</span>
+                <span>
+                  {colour === TagColor.Default ? `Blue (default)` : colour}
+                </span>
               </div>
             </SelectItem>
           )

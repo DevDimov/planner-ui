@@ -102,7 +102,7 @@ export function AddEntryForm() {
   const handleOnClickNewTag = (formSetError: UseFormSetError<schemaType>) => {
     if (inputNewTagRef.current) {
       let tagLabel = inputNewTagRef.current.value.trim()
-      let tagColour = tagColourSelectRef.current
+      let tagColor = tagColourSelectRef.current
 
       if (tagLabel.length === 0) {
         formSetError('newTags', {
@@ -134,7 +134,7 @@ export function AddEntryForm() {
         return
       }
 
-      append({ label: tagLabel, colour: tagColour })
+      append({ label: tagLabel, color: tagColor })
 
       inputNewTagRef.current.value = ''
     }
@@ -396,7 +396,7 @@ export function AddEntryForm() {
                       <EventTag
                         variant="checked"
                         label={fieldsNewTags[index].label}
-                        color={fieldsNewTags[index].colour}
+                        color={fieldsNewTags[index].color}
                         key={field.id}
                         onClick={() => remove(index)}
                       />
