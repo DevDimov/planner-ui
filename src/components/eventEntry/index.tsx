@@ -168,18 +168,21 @@ export default function EventEntry({
                     handleCancelEditing={handleCancelDurationEditing}
                   />
                 ) : (
-                  <>
+                  <div className="flex flex-col gap-x-3 gap-y-5">
                     <PropertyValuePair
                       key={'From' + startDateTime.toString()}
                       label={'From'}
-                      value={format(parseISO(startDateTime), 'eee, d LLL')}
+                      value={format(
+                        parseISO(startDateTime),
+                        'eeee, d LLL yyyy'
+                      )}
                     />
                     <PropertyValuePair
                       key={'To:' + endDateTime.toString()}
                       label={'To'}
-                      value={format(parseISO(endDateTime), 'eee, d LLL')}
+                      value={format(parseISO(endDateTime), 'eeee, d LLL yyyy')}
                     />
-                  </>
+                  </div>
                 )}
               </div>
 

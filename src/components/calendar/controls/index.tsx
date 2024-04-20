@@ -31,6 +31,8 @@ export default function CalendarControls({
         <span className="mr-8 text-xl font-medium">
           {format(month, 'MMMM yyyy')}
         </span>
+      </div>
+      <div className="flex gap-2">
         <Button
           variant="outline"
           onClick={showPreviousMonth}
@@ -45,8 +47,6 @@ export default function CalendarControls({
         >
           <GrNext />
         </Button>
-      </div>
-      <div className="flex gap-2">
         <AddEntryButton />
       </div>
     </div>

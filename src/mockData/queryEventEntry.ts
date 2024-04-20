@@ -2,6 +2,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 import { EventEntryData } from '../models/eventEntry'
 import endOfWeek from 'date-fns/endOfWeek'
 import addDays from 'date-fns/addDays'
+import addYears from 'date-fns/addYears'
 
 const weekStartsOn = 1
 const today = new Date()
@@ -71,6 +72,16 @@ export const mockQueryEventEntry: EventEntryData[] = [
     event: {
       iid: 'event4',
       label: '7-day Event',
+    },
+  },
+  {
+    iid: 'entry5',
+    startDateTime: addDays(today, 14).toISOString(),
+    endDateTime: addYears(addDays(today, 14), 1).toISOString(),
+    tags: [],
+    event: {
+      iid: 'event5',
+      label: '1-year Event',
     },
   },
 ]
