@@ -572,20 +572,6 @@ body{
   --tw-backdrop-sepia:  ;
 }
 
-.container{
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 2rem;
-  padding-left: 2rem;
-}
-
-@media (min-width: 1400px){
-  .container{
-    max-width: 1400px;
-  }
-}
-
 .sr-only{
   position: absolute;
   width: 1px;
@@ -1025,6 +1011,10 @@ body{
   scroll-margin: 5rem;
 }
 
+.auto-cols-auto{
+  grid-auto-columns: auto;
+}
+
 .auto-rows-auto{
   grid-auto-rows: auto;
 }
@@ -1036,6 +1026,14 @@ body{
 .grid-cols-\[2fr_2fr_min-content\]{
   grid-template-columns: 2fr 2fr -webkit-min-content;
   grid-template-columns: 2fr 2fr min-content;
+}
+
+.grid-cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-rows-2{
+  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -1144,6 +1142,26 @@ body{
 
 .gap-y-4{
   row-gap: 1rem;
+}
+
+.gap-y-3{
+  row-gap: 0.75rem;
+}
+
+.gap-y-5{
+  row-gap: 1.25rem;
+}
+
+.gap-y-6{
+  row-gap: 1.5rem;
+}
+
+.gap-y-8{
+  row-gap: 2rem;
+}
+
+.gap-y-56{
+  row-gap: 14rem;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]){
@@ -1281,11 +1299,6 @@ body{
 .bg-gray-100{
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-
-.bg-gray-200{
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .bg-gray-500{
@@ -1540,11 +1553,6 @@ body{
   color: hsl(var(--accent-foreground));
 }
 
-.text-black{
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
-}
-
 .text-blue-300{
   --tw-text-opacity: 1;
   color: rgb(147 197 253 / var(--tw-text-opacity));
@@ -1603,11 +1611,6 @@ body{
 
 .text-secondary-foreground{
   color: hsl(var(--secondary-foreground));
-}
-
-.text-white{
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .underline-offset-4{
@@ -1765,22 +1768,12 @@ body{
   background-color: hsl(var(--accent));
 }
 
-.hover\:bg-blue-400:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-destructive\/80:hover{
   background-color: hsl(var(--destructive) / 0.8);
 }
 
 .hover\:bg-destructive\/90:hover{
   background-color: hsl(var(--destructive) / 0.9);
-}
-
-.hover\:bg-gray-300:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-primary:hover{

@@ -2,12 +2,11 @@ import { getAllDaysInMonth } from '../utils/getAllDaysInMonth'
 import { groupDatesByWeek } from '../utils/groupDatesByWeek'
 import CalendarWeek from '../week'
 import WeekdayNames from '../weekdayNames'
-import { groupEntriesByWeek } from '../utils/groupEntriesByWeek'
 import { EventEntryData } from '../../../models/eventEntry'
-
-export type GroupedEntries = {
-  [id: string]: EventEntryData[]
-}
+import { groupEntriesByYearAndWeek } from '../utils/groupEntriesByYearAndWeek'
+import getYear from 'date-fns/getYear'
+import { useMemo } from 'react'
+import { getWeeksForCalendarMonth } from '../utils/getWeeksForCalendarMonth'
 
 export type CalendarMonthProps = {
   month: Date
@@ -15,19 +14,31 @@ export type CalendarMonthProps = {
 }
 
 export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
-  const groupedEntries = groupEntriesByWeek(entries)
-  const weeksGroup = groupDatesByWeek(getAllDaysInMonth(month))
+  const currentYear = getYear(month)
+  const entriesByYearAndWeek = useMemo(() => {
+    return groupEntriesByYearAndWeek(entries)
+  }, [entries])
+  const allDaysInMonth = getAllDaysInMonth(month)
+  const datesByWeekForSelectedMonth = groupDatesByWeek(allDaysInMonth)
+  const weeks = getWeeksForCalendarMonth(allDaysInMonth)
 
   return (
     <div>
       <WeekdayNames />
       <div className="grid h-full rounded border-2 border-blue-100 bg-blue-50 p-4">
-        {Object.entries(weeksGroup).map(([weekNumber, days]) => {
+        {weeks.map((weekNumber) => {
+          let currentWeekEntries: EventEntryData[] = []
+          if (
+            entriesByYearAndWeek.hasOwnProperty(currentYear) &&
+            entriesByYearAndWeek[currentYear].hasOwnProperty(weekNumber)
+          ) {
+            currentWeekEntries = entriesByYearAndWeek[currentYear][weekNumber]
+          }
           return (
             <CalendarWeek
               key={weekNumber}
-              days={days}
-              entries={groupedEntries ? groupedEntries[weekNumber] : []}
+              days={datesByWeekForSelectedMonth[weekNumber]}
+              entries={currentWeekEntries}
             />
           )
         })}
