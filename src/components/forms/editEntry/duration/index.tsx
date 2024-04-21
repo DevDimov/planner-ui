@@ -10,7 +10,7 @@ import { ButtonLoading } from '../../../ui/button/buttonLoading'
 import { UPDATE_EVENT_ENTRY } from '../../../../gql/operations/updateEventEntry'
 import { TypographySmall } from '../../../typography/small'
 import { useContext } from 'react'
-import { CalendarContext } from '../../../../context/calendar'
+import { CalendarContext } from '../../../../context/calendar/index'
 import { useToast } from '../../../ui/toast/use-toast'
 
 type EditEntryDurationFormProps = {

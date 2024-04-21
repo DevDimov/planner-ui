@@ -1,9 +1,8 @@
 import { NavBar } from '../../components/navigation'
 import Welcome from './welcome'
 import { useAuth0 } from '@auth0/auth0-react'
-import App from '../../App'
 
-export default function Root() {
+export default function EventsRoute() {
   const { isAuthenticated, isLoading, error } = useAuth0()
 
   if (isLoading) {
@@ -19,7 +18,7 @@ export default function Root() {
       {isAuthenticated ? (
         <div className="flex flex-col gap-y-4 p-4">
           <NavBar />
-          <App />
+          <div>Events page coming soon</div>
         </div>
       ) : (
         <Welcome />

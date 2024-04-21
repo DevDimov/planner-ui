@@ -8,6 +8,7 @@ import { auth0 } from './authentication/auth0'
 import { router } from './router'
 import { AuthorizedApolloProvider } from './context/apollo'
 import { Toaster } from './components/ui/toast/toaster'
+import CalendarContextProvider from 'context/calendar'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -19,7 +20,9 @@ root.render(
   >
     <AuthorizedApolloProvider>
       <React.StrictMode>
-        <RouterProvider router={router} />
+        <CalendarContextProvider>
+          <RouterProvider router={router} />
+        </CalendarContextProvider>
         <Toaster />
       </React.StrictMode>
     </AuthorizedApolloProvider>

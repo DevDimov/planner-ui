@@ -19,7 +19,7 @@ import { EventPropertyData } from '../../../../../models/eventProperty'
 import { useAuth0 } from '@auth0/auth0-react'
 import { DELETE_EVENT_PROPERTY } from '../../../../../gql/operations/deleteEventProperty'
 import { AddEventPropertyForm } from '../add'
-import { CalendarContext } from '../../../../../context/calendar'
+import { CalendarContext } from '../../../../../context/calendar/index'
 
 type EditEventPropertiesFormProps = {
   entryIid?: string
@@ -147,9 +147,8 @@ export function EditEventPropertiesForm({
                         <Input
                           key={prop.iid + 'propValue'}
                           placeholder="Enter value"
-                          value={field.value || "Value"}
+                          value={field.value || 'Value'}
                           onChange={field.onChange}
-                          
                         />
                       </FormControl>
                       <FormMessage />

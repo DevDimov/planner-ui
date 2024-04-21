@@ -628,6 +628,10 @@ body{
   right: 1rem;
 }
 
+.right-5{
+  right: 1.25rem;
+}
+
 .top-0{
   top: 0px;
 }
@@ -743,6 +747,14 @@ body{
   margin-bottom: 0.5rem;
 }
 
+.mb-2{
+  margin-bottom: 0.5rem;
+}
+
+.mb-4{
+  margin-bottom: 1rem;
+}
+
 .mb-6{
   margin-bottom: 1.5rem;
 }
@@ -775,6 +787,10 @@ body{
   margin-top: 0.375rem;
 }
 
+.mt-12{
+  margin-top: 3rem;
+}
+
 .mt-2{
   margin-top: 0.5rem;
 }
@@ -789,6 +805,10 @@ body{
 
 .mt-\[-2px\]{
   margin-top: -2px;
+}
+
+.mb-1{
+  margin-bottom: 0.25rem;
 }
 
 .flex{
@@ -821,6 +841,10 @@ body{
 
 .h-0\.5{
   height: 0.125rem;
+}
+
+.h-1{
+  height: 0.25rem;
 }
 
 .h-10{
@@ -931,6 +955,10 @@ body{
   width: 1px;
 }
 
+.w-\[30vw\]{
+  width: 30vw;
+}
+
 .w-auto{
   width: auto;
 }
@@ -1011,10 +1039,6 @@ body{
   scroll-margin: 5rem;
 }
 
-.auto-cols-auto{
-  grid-auto-columns: auto;
-}
-
 .auto-rows-auto{
   grid-auto-rows: auto;
 }
@@ -1026,14 +1050,6 @@ body{
 .grid-cols-\[2fr_2fr_min-content\]{
   grid-template-columns: 2fr 2fr -webkit-min-content;
   grid-template-columns: 2fr 2fr min-content;
-}
-
-.grid-cols-2{
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-rows-2{
-  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -1066,10 +1082,6 @@ body{
 
 .justify-start{
   justify-content: flex-start;
-}
-
-.justify-end{
-  justify-content: flex-end;
 }
 
 .justify-center{
@@ -1140,12 +1152,12 @@ body{
   row-gap: 0.5rem;
 }
 
-.gap-y-4{
-  row-gap: 1rem;
-}
-
 .gap-y-3{
   row-gap: 0.75rem;
+}
+
+.gap-y-4{
+  row-gap: 1rem;
 }
 
 .gap-y-5{
@@ -1154,14 +1166,6 @@ body{
 
 .gap-y-6{
   row-gap: 1.5rem;
-}
-
-.gap-y-8{
-  row-gap: 2rem;
-}
-
-.gap-y-56{
-  row-gap: 14rem;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]){
@@ -1238,6 +1242,10 @@ body{
 
 .border-b{
   border-bottom-width: 1px;
+}
+
+.border-b-4{
+  border-bottom-width: 4px;
 }
 
 .border-blue-100{
@@ -1764,6 +1772,10 @@ body{
   z-index: 20;
 }
 
+.hover\:cursor-default:hover{
+  cursor: default;
+}
+
 .hover\:bg-accent:hover{
   background-color: hsl(var(--accent));
 }
@@ -1794,6 +1806,11 @@ body{
 
 .hover\:bg-secondary\/80:hover{
   background-color: hsl(var(--secondary) / 0.8);
+}
+
+.hover\:bg-white:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .hover\:text-accent-foreground:hover{
