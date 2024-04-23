@@ -16,3 +16,7 @@ export interface UpdateEventEntryData {
   startDateTime: string
   endDateTime: string
 }
+
+export interface QueryEventEntryData {
+  queryEventEntry: EventEntryData[]
+}

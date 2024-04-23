@@ -10,3 +10,7 @@ export interface EventData {
   properties?: EventPropertyData[]
   user?: User
 }
+
+export interface QueryEventData {
+  queryEvent: EventData[]
+}

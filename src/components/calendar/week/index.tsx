@@ -13,7 +13,7 @@ export type CalendarWeekProps = {
 }
 
 export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
-  const { month, getEventProperties } = useContext(CalendarContext)
+  const { month, getTags, getEventProperties } = useContext(CalendarContext)
 
   return (
     <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
@@ -48,7 +48,8 @@ export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
                 iid={iid}
                 eventIid={event.iid}
                 label={event.label}
-                tags={tags}
+                // tags={tags}
+                tags={getTags(tags)}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 colStart={colStart}

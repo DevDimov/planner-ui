@@ -34,6 +34,7 @@ export function NavBar() {
       <NavLink to="/">
         {({ isActive }) => <NavButton isActive={isActive} text="Home" />}
       </NavLink>
+      {/* Coming Soon! */}
       {/* <Button variant="ghost">
         <NavLink to="/events">Events</NavLink>
       </Button> */}

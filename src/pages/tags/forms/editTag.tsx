@@ -78,6 +78,7 @@ export default function EditTag({
   }
 
   const onSubmit = async (values: schemaType) => {
+    console.log(tag.label, values)
     const { iid } = tag
     const { label, color } = values
 
@@ -85,7 +86,7 @@ export default function EditTag({
       variables: { input: { filter: { iid: [iid] }, set: { label, color } } },
     })
 
-    if (data?.updateTag?.numUids) {
+    if (data?.updateTag?.tag) {
       const updatedTag = data.updateTag.tag[0]
       onUpdateTag(updatedTag)
       reset()
@@ -121,7 +122,8 @@ export default function EditTag({
                 <Input
                   placeholder="Label"
                   disabled={canEdit ? false : true}
-                  {...field}
+                  defaultValue={field.value}
+                  onChange={field.onChange}
                 />
               </div>
             )

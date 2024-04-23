@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { EditEventPropertyForm } from '../forms/editEntry/eventProperties/edit'
 import { AddEventPropertyForm } from '../forms/editEntry/eventProperties/add'
 import TagsRow from '../tags/TagsRow'
+import { useToast } from 'components/ui/toast/use-toast'
 
 export type EventEntryProps = {
   iid: string
@@ -68,7 +69,7 @@ export default function EventEntry({
   const [canEditProperties, setCanEditProperties] = useState(false)
 
   const { removeEntry } = useContext(CalendarContext)
-
+  const { toast } = useToast()
   const [deleteEntry] = useMutation(DELETE_EVENT_ENTRY)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -99,11 +100,17 @@ export default function EventEntry({
         variables: { filter: { iid: [iid] } },
       })
 
-      if (data?.deleteEventEntry?.numUids) {
+      if (data?.deleteEventEntry?.eventEntry) {
         removeEntry(iid)
+        toast({
+          description: 'Event entry deleted.',
+        })
       }
     } catch (error) {
-      console.log('Error deleting occurrence', error)
+      toast({
+        description: 'Error deleting entry',
+      })
+      console.log('Error deleting entry', error)
     }
   }
 

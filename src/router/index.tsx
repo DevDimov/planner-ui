@@ -1,22 +1,28 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Root from './routes/root'
 import ErrorRoute from './routes/errorPage'
-import TagsRoute from './routes/tags'
-import EventsRoute from './routes/events'
+// import EventsRoute from './routes/events'
+import Calendar from 'components/calendar'
+import TagsPage from 'pages/tags'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     errorElement: <ErrorRoute />,
-    children: [],
-  },
-  {
-    path: '/tags',
-    element: <TagsRoute />,
-  },
-  {
-    path: '/events',
-    element: <EventsRoute />,
+    children: [
+      {
+        index: true,
+        element: <Calendar />,
+      },
+      // {
+      //   path: '/events',
+      //   element: <EventsRoute />,
+      // },
+      {
+        path: 'tags',
+        element: <TagsPage />,
+      },
+    ],
   },
 ])
