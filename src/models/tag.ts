@@ -6,3 +6,7 @@ export interface TagData {
   label: string
   color?: TagColor | null
 }
+
+export interface QueryTagData {
+  queryTag: TagData[]
+}

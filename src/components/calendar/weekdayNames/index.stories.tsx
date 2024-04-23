@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import WeekdayNames from './index'
-import { CalendarContext } from '../../../context/calendar'
+import { CalendarContext } from '../../../context/calendar/index'
 import { defaultValue } from '../../../context/calendar/index'
 
 const meta: Meta<typeof WeekdayNames> = {

@@ -11,7 +11,7 @@ export default function Welcome() {
             <Logo />
           </div>
           <TypographyH3 className="text-center">
-            A handy tool for scheduling events and staying organised.
+            A handy tool for managing and visualising your schedule.
           </TypographyH3>
           <div className="w-fit">
             <LoginButton />

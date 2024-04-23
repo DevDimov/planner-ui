@@ -3,7 +3,7 @@ import EventEntry from '../../eventEntry'
 import { getDayColorClass } from './utils/getDayColorClass'
 import { getEventColumns } from '../utils/getEventColumns'
 import { useContext } from 'react'
-import { CalendarContext } from '../../../context/calendar'
+import { CalendarContext } from '../../../context/calendar/index'
 import { formatDay } from './utils/formatDay'
 import { EventEntryData } from '../../../models/eventEntry'
 
@@ -13,7 +13,7 @@ export type CalendarWeekProps = {
 }
 
 export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
-  const { month, getEventProperties } = useContext(CalendarContext)
+  const { month, getTags, getEventProperties } = useContext(CalendarContext)
 
   return (
     <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
@@ -48,7 +48,8 @@ export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
                 iid={iid}
                 eventIid={event.iid}
                 label={event.label}
-                tags={tags}
+                // tags={tags}
+                tags={getTags(tags)}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 colStart={colStart}

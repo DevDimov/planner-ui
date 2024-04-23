@@ -1,6 +1,13 @@
 import { z } from 'zod'
 import { TagColor } from '../gql/codegen/graphql'
 
+export const existingTagSchema = z.object({
+  label: z
+    .string()
+    .min(2, { message: 'Label must contain at least 1 character' }),
+  color: z.nativeEnum(TagColor).optional(),
+})
+
 export const existingTagsSchema = z
   .array(z.object({ id: z.string(), label: z.string().min(2) }))
   .optional()

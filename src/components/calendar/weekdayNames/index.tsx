@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { CalendarContext } from '../../../context/calendar'
+import { CalendarContext } from '../../../context/calendar/index'
 
 export default function WeekdayNames() {
   const { weekStartsOn } = useContext(CalendarContext)
