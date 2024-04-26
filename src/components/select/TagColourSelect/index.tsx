@@ -10,15 +10,17 @@ import {
 } from '../../ui/select'
 
 type SelectEventProps = {
+  value?: string
   defaultValue?: TagColor
   onValueChange?: (value: TagColor) => void
   disabled?: boolean
 }
 
 export default function TagColourSelect(props: SelectEventProps) {
-  const { onValueChange, defaultValue, disabled } = props
+  const { onValueChange, defaultValue, disabled, value } = props
   return (
     <Select
+      value={value}
       defaultValue={defaultValue || TagColor.Default}
       onValueChange={onValueChange}
       disabled={disabled}

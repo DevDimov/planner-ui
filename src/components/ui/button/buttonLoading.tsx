@@ -1,7 +1,5 @@
 import { ReloadIcon } from '@radix-ui/react-icons'
-
 import { Button } from '../../buttons'
-import { ReactNode } from 'react'
 
 export function ButtonLoading({ label }: { label?: string }) {
   return (

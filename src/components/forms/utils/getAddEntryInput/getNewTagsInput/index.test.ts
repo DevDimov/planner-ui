@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { getNewTagsInput } from '.'
-import { newTagsSchema } from 'schema/tags'
+import { newTagsSchema } from '../../../../../schema/tags'
 // import { AddTagInput, TagColor } from '../../../../../gql/codegen/graphql'
-import { AddTagInput, TagColor } from 'gql/codegen/graphql'
+import { AddTagInput, TagColor } from '../../../../../gql/codegen/graphql'
 
 const userId: string = 'auth|user1'
 const userPayload = { email: 'user1@gmail.com' }

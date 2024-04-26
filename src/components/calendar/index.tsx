@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import CalendarControls from './controls'
 import CalendarMonth from './month'
-import { CalendarContext } from 'context/calendar'
+import { CalendarContext } from '../../context/calendar'
 
 export default function Calendar() {
   const { month, setMonth, entries } = useContext(CalendarContext)

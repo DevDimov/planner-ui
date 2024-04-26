@@ -16,7 +16,7 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { EditEventPropertyForm } from '../forms/editEntry/eventProperties/edit'
 import { AddEventPropertyForm } from '../forms/editEntry/eventProperties/add'
 import TagsRow from '../tags/TagsRow'
-import { useToast } from 'components/ui/toast/use-toast'
+import { useToast } from '../../components/ui/toast/use-toast'
 
 export type EventEntryProps = {
   iid: string

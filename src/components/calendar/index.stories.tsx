@@ -6,6 +6,7 @@ import { mockQueryEventEntry } from '../../mockData/queryEventEntry'
 import { ADD_EVENT_ENTRY } from '../../gql/operations/addEventEntry'
 import { QUERY_TAG } from '../../gql/operations/queryTag'
 import { mockQueryTag } from '../../mockData/queryTag'
+import CalendarContextProvider from '../../context/calendar'
 
 const currentDate = new Date()
 currentDate.setHours(0, 0, 0, 0)
@@ -118,4 +119,10 @@ type Story = StoryObj<typeof Calendar>
 
 export const EmptyCalendar: Story = {}
 
-export const FullCalendar: Story = {}
+export const FullCalendar: Story = {
+  decorators: (Story) => (
+    <CalendarContextProvider>
+      <Story />
+    </CalendarContextProvider>
+  ),
+}

@@ -1,19 +1,22 @@
 import { useMutation } from '@apollo/client/react/hooks/useMutation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from 'components/buttons'
-import TagColourSelect from 'components/select/TagColourSelect'
-import EventTag from 'components/tags/eventTag'
-import ButtonPairSubmitDelete from 'components/ui/form/buttonPairSubmitDelete'
-import FormError from 'components/ui/form/formError'
-import { Input } from 'components/ui/input/default'
-import { useToast } from 'components/ui/toast/use-toast'
-import { DELETE_TAG } from 'gql/operations/deleteTag'
-import { UPDATE_TAG } from 'gql/operations/updateTag'
-import { TagData } from 'models/tag'
-import { useState } from 'react'
+import { Button } from '../../../components/buttons'
+import TagColourSelect from '../../../components/select/TagColourSelect'
+import EventTag from '../../../components/tags/eventTag'
+import ButtonPairSubmitDelete from '../../../components/ui/form/buttonPairSubmitDelete'
+import FormError from '../../../components/ui/form/formError'
+import { Input } from '../../../components/ui/input/default'
+import { useToast } from '../../../components/ui/toast/use-toast'
+import { DELETE_TAG } from '../../../gql/operations/deleteTag'
+import { UPDATE_TAG } from '../../../gql/operations/updateTag'
+import { TagData } from '../../../models/tag'
+import { useContext, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { existingTagSchema } from 'schema/tags'
+import { existingTagSchema } from '../../../schema/tags'
 import { z } from 'zod'
+import { TagColor } from '../../../gql/codegen/graphql'
+import { isLabelUnique } from '../utils/isLabelUnique'
+import { CalendarContext } from '../../../context/calendar'
 
 interface UpdateTagData {
   updateTag: {
@@ -33,19 +36,21 @@ export default function EditTag({
   onUpdateTag: (tag: TagData) => void
   onDeleteTag: (iid: string) => void
 }) {
-  const { toast } = useToast()
   const [canEdit, setCanEdit] = useState(false)
+  const { toast } = useToast()
+  const { tags } = useContext(CalendarContext)
 
   const {
     handleSubmit,
     control,
     reset,
     formState: { errors },
+    setError,
   } = useForm<schemaType>({
     resolver: zodResolver(existingTagSchema),
     defaultValues: {
       label: tag.label,
-      color: tag?.color || undefined,
+      color: tag?.color || TagColor.Default,
     },
   })
 
@@ -82,6 +87,14 @@ export default function EditTag({
     const { iid } = tag
     const { label, color } = values
 
+    const labelIsUnique = isLabelUnique(label, tags)
+    if (!labelIsUnique) {
+      return setError('label', {
+        type: 'string',
+        message: 'A tag with this label already exists',
+      })
+    }
+
     const { data, errors } = await updateTagMutation({
       variables: { input: { filter: { iid: [iid] }, set: { label, color } } },
     })
@@ -89,7 +102,7 @@ export default function EditTag({
     if (data?.updateTag?.tag) {
       const updatedTag = data.updateTag.tag[0]
       onUpdateTag(updatedTag)
-      reset()
+      reset({ label, color })
       setCanEdit(false)
       toast({
         description: 'Event tag updated.',
@@ -122,7 +135,7 @@ export default function EditTag({
                 <Input
                   placeholder="Label"
                   disabled={canEdit ? false : true}
-                  defaultValue={field.value}
+                  value={field.value}
                   onChange={field.onChange}
                 />
               </div>
@@ -138,7 +151,7 @@ export default function EditTag({
               <TagColourSelect
                 disabled={canEdit ? false : true}
                 onValueChange={field.onChange}
-                defaultValue={field.value}
+                value={field.value}
               />
             )
           }}

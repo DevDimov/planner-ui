@@ -1,4 +1,4 @@
-import { Button } from 'components/buttons'
+import { Button } from '../../../components/buttons'
 import { ButtonLoading } from '../button/buttonLoading'
 import { CheckIcon, TrashIcon } from '@radix-ui/react-icons'
 
