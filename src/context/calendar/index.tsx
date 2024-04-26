@@ -13,20 +13,24 @@ import {
   UpdateEventEntryData,
 } from '../../models/eventEntry'
 import { EventData, QueryEventData } from '../../models/event'
-import { removeEventProperty } from 'components/calendar/utils/removeEventProperty'
-import { EventPropertyData } from 'models/eventProperty'
-import { addEventProperty } from 'components/calendar/utils/addEventProperty'
-import { updateEventProperty } from 'components/calendar/utils/updateEventProperty'
-import { updateEventEntry } from 'components/calendar/utils/updateEventEntry'
-import { addEvent } from 'components/calendar/utils/addEvent'
-import { getEventProperties } from 'components/calendar/utils/getEventProperties'
-import { QueryTagData, TagData } from 'models/tag'
-import { filterNewTags } from 'components/calendar/utils/filterNewTags'
-import { useToast } from 'components/ui/toast/use-toast'
+import { removeEventProperty } from '../../components/calendar/utils/removeEventProperty'
+import { EventPropertyData } from '../../models/eventProperty'
+import { addEventProperty } from '../../components/calendar/utils/addEventProperty'
+import { updateEventProperty } from '../../components/calendar/utils/updateEventProperty'
+import { updateEventEntry } from '../../components/calendar/utils/updateEventEntry'
+import { addEvent } from '../../components/calendar/utils/addEvent'
+import { getEventProperties } from '../../components/calendar/utils/getEventProperties'
+import { QueryTagData, TagData } from '../../models/tag'
+import { filterNewTags } from '../../components/calendar/utils/filterNewTags'
+import { useToast } from '../../components/ui/toast/use-toast'
 import { useLazyQuery } from '@apollo/client/react/hooks/useLazyQuery'
-import { QUERY_EVENT } from 'gql/operations/queryEvent'
-import { QUERY_EVENT_ENTRY } from 'gql/operations/queryEventEntry'
-import { QUERY_TAG } from 'gql/operations/queryTag'
+import { QUERY_EVENT } from '../../gql/operations/queryEvent'
+import { QUERY_EVENT_ENTRY } from '../../gql/operations/queryEventEntry'
+import { QUERY_TAG } from '../../gql/operations/queryTag'
+
+interface AddOptions {
+  prepend?: boolean
+}
 
 export const defaultValue: {
   month: Date
@@ -41,7 +45,7 @@ export const defaultValue: {
   removeTag: (iid: string) => void
   addEvent: (event: EventData) => void
   addEventEntry: (entry: EventEntryData[]) => void
-  addTag: (newTag: TagData[]) => void
+  addTag: (newTag: TagData[], options?: AddOptions) => void
   addEventProperty: (eventIid: string, property: EventPropertyData) => void
   getEventProperties: (eventIid: string) => EventPropertyData[]
   getTags: (data: TagData[] | undefined) => TagData[]
@@ -129,8 +133,11 @@ export default function CalendarContextProvider({
   }
 
   const handleAddTag = useCallback(
-    (data: TagData[]) => {
+    (data: TagData[], { prepend }: AddOptions = {}) => {
       const newTags = filterNewTags(tags, data)
+      if (prepend) {
+        return setTags([...newTags, ...tags])
+      }
       setTags([...tags, ...newTags])
     },
     [tags]

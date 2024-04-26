@@ -10,7 +10,7 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-styling-webpack',
     'storybook-addon-apollo-client',
-    '@storybook/addon-mdx-gfm'
+    '@storybook/addon-mdx-gfm',
   ],
   framework: {
     name: '@storybook/react-webpack5',

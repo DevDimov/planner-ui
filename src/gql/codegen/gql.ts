@@ -16,6 +16,7 @@ const documents = {
     "mutation AddEvent($upsert: Boolean, $input: [AddEventInput!]!) {\n  addEvent(upsert: $upsert, input: $input) {\n    numUids\n    event {\n      id\n      iid\n      label\n      properties {\n        iid\n        id\n        label\n        value\n      }\n    }\n  }\n}": types.AddEventDocument,
     "mutation AddEventEntry($input: [AddEventEntryInput!]!) {\n  addEventEntry(input: $input) {\n    numUids\n    eventEntry {\n      iid\n      startDateTime\n      endDateTime\n      tags {\n          iid\n          id\n          label\n          color\n        }\n      event {\n        iid\n        id\n        label\n      }\n    }\n  }\n}": types.AddEventEntryDocument,
     "\n  mutation AddEventProperty($input: [AddEventPropertyInput!]!) {\n    addEventProperty(input: $input) {\n      numUids\n      eventProperty {\n        iid\n        id\n        label\n        value\n        event {\n          iid\n          id\n          user {\n            email\n          }\n        }\n      }\n    }\n  }\n": types.AddEventPropertyDocument,
+    "mutation AddTag($input: [AddTagInput!]!, $upsert: Boolean) {\n  addTag(input: $input, upsert: $upsert) {\n    numUids\n    tag {\n      iid\n      id\n      label\n      color\n    }\n  }\n}": types.AddTagDocument,
     "\n  mutation AddUser($input: [AddUserInput!]!, $upsert: Boolean) {\n    addUser(input: $input, upsert: $upsert) {\n      numUids\n    }\n  }\n": types.AddUserDocument,
     "\n  mutation DeleteEvent($filter: EventFilter!) {\n    deleteEvent(filter: $filter) {\n      numUids\n      event {\n        iid\n        id\n        label\n      }\n    }\n  }\n": types.DeleteEventDocument,
     "\n  mutation DeleteEventEntry($filter: EventEntryFilter!) {\n    deleteEventEntry(filter: $filter) {\n      numUids\n      eventEntry {\n        iid\n        startDateTime\n        endDateTime\n      }\n    }\n  }\n": types.DeleteEventEntryDocument,
@@ -60,6 +61,10 @@ export function gql(source: "mutation AddEventEntry($input: [AddEventEntryInput!
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation AddEventProperty($input: [AddEventPropertyInput!]!) {\n    addEventProperty(input: $input) {\n      numUids\n      eventProperty {\n        iid\n        id\n        label\n        value\n        event {\n          iid\n          id\n          user {\n            email\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation AddEventProperty($input: [AddEventPropertyInput!]!) {\n    addEventProperty(input: $input) {\n      numUids\n      eventProperty {\n        iid\n        id\n        label\n        value\n        event {\n          iid\n          id\n          user {\n            email\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "mutation AddTag($input: [AddTagInput!]!, $upsert: Boolean) {\n  addTag(input: $input, upsert: $upsert) {\n    numUids\n    tag {\n      iid\n      id\n      label\n      color\n    }\n  }\n}"): (typeof documents)["mutation AddTag($input: [AddTagInput!]!, $upsert: Boolean) {\n  addTag(input: $input, upsert: $upsert) {\n    numUids\n    tag {\n      iid\n      id\n      label\n      color\n    }\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

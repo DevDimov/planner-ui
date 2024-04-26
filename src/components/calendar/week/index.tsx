@@ -18,7 +18,7 @@ export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
   return (
     <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
       <div className="col-span-full grid grid-cols-7">
-        {days.map((day) => {
+        {days && days.map((day) => {
           const dateTime = format(day, 'yyyy-MM-dd')
           const colorClass = getDayColorClass(day, month)
 
@@ -48,7 +48,6 @@ export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
                 iid={iid}
                 eventIid={event.iid}
                 label={event.label}
-                // tags={tags}
                 tags={getTags(tags)}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}

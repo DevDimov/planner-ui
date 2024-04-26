@@ -1,4 +1,4 @@
-import { TagData } from 'models/tag'
+import { TagData } from '../../../../models/tag'
 
 export const filterNewTags = (
   existingTags: TagData[],

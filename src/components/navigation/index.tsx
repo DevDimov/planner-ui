@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import LogoutButton from '../../authentication/logout'
-import { Button } from 'components/buttons'
-import { cn } from 'utils'
+import { Button } from '../../components/buttons'
+import { cn } from '../../utils'
 
 export function NavButton({
   text,
