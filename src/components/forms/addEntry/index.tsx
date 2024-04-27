@@ -199,7 +199,7 @@ export function AddEntryForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-5"
+        className="flex flex-col gap-5"
       >
         <div className="flex flex-col gap-1">
           <TypographyH3>Add entry</TypographyH3>

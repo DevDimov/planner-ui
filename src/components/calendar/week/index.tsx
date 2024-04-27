@@ -18,18 +18,21 @@ export default function CalendarWeek({ days, entries }: CalendarWeekProps) {
   return (
     <div className="col-span-full grid grid-cols-7 gap-y-1 pb-16 font-inter font-medium">
       <div className="col-span-full grid grid-cols-7">
-        {days && days.map((day) => {
-          const dateTime = format(day, 'yyyy-MM-dd')
-          const colorClass = getDayColorClass(day, month)
+        {days &&
+          days.map((day) => {
+            const dateTime = format(day, 'yyyy-MM-dd')
+            const colorClass = getDayColorClass(day, month)
 
-          return (
-            <time dateTime={dateTime} key={dateTime}>
-              <span className={`${colorClass} rounded p-1`}>
-                {formatDay(day)}
-              </span>
-            </time>
-          )
-        })}
+            return (
+              <time dateTime={dateTime} key={dateTime}>
+                <span
+                  className={`${colorClass} rounded text-sm md:p-1 md:text-base`}
+                >
+                  {formatDay(day)}
+                </span>
+              </time>
+            )
+          })}
       </div>
 
       <div className="col-span-full grid grid-cols-7">

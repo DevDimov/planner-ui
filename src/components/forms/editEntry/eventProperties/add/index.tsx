@@ -107,7 +107,7 @@ export function AddEventPropertyForm({ eventIid }: AddEventPropertyFormProps) {
         className="flex w-full flex-col gap-4"
       >
         <TypographyMuted>New Property</TypographyMuted>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-wrap gap-2 md:flex-row md:flex-nowrap">
           <FormField
             control={form.control}
             name="label"

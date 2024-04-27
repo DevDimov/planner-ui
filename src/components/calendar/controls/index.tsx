@@ -26,13 +26,12 @@ export default function CalendarControls({
   }
 
   return (
-    <div className="mb-6 flex flex-row items-center justify-between gap-2 p-4">
-      <div className="flex flex-row items-center gap-2">
-        <span className="mr-8 text-xl font-medium">
-          {format(month, 'MMMM yyyy')}
-        </span>
-      </div>
-      <div className="flex gap-2">
+    <div className="mb-2 flex flex-row flex-wrap items-center justify-between gap-2 p-3 md:mb-6 md:p-4">
+      <span className="mr-8 text-xl font-medium">
+        {format(month, 'MMMM yyyy')}
+      </span>
+
+      <div className="flex w-full gap-2 md:w-auto">
         <Button
           variant="outline"
           onClick={showPreviousMonth}
@@ -47,7 +46,9 @@ export default function CalendarControls({
         >
           <GrNext />
         </Button>
-        <AddEntryButton />
+        <div className="flex flex-grow justify-end">
+          <AddEntryButton />
+        </div>
       </div>
     </div>
   )

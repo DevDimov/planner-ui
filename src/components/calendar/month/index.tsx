@@ -25,7 +25,7 @@ export default function CalendarMonth({ month, entries }: CalendarMonthProps) {
   return (
     <div>
       <WeekdayNames />
-      <div className="grid h-full rounded border-2 border-blue-100 bg-blue-50 p-4">
+      <div className="grid h-full rounded border-blue-100 bg-blue-50 p-1.5 md:border-2 md:p-4">
         {weeks.map((weekNumber) => {
           let currentWeekEntries: EventEntryData[] = []
           if (
