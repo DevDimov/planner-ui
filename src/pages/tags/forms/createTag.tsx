@@ -91,7 +91,7 @@ export default function CreateTagForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="mb-8 mt-2 flex flex-col gap-3"
     >
-      <div className="flex w-full flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Controller
           name="label"
           control={control}

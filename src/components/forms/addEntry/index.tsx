@@ -227,31 +227,29 @@ export function AddEntryForm() {
           control={form.control}
           name="entries"
           render={() => (
-            <div
-              className={cn(
-                'grid auto-rows-auto grid-cols-[2fr_2fr_min-content] items-center gap-x-3 gap-y-2'
-              )}
-            >
-              <div>
-                <TypographySmall>From</TypographySmall>
-              </div>
-              <div className="col-span-2">
-                <TypographySmall>To</TypographySmall>
+            <div className={cn('flex flex-col items-center gap-3')}>
+              <div className="flex w-full flex-row">
+                <div className="w-full">
+                  <TypographySmall>From</TypographySmall>
+                </div>
+                <div className="w-full">
+                  <TypographySmall>To</TypographySmall>
+                </div>
               </div>
               {fieldsEntries.length > 0 &&
                 fieldsEntries.map((field, index) => (
-                  <>
-                    <TypographyMuted>
+                  <div className="flex w-full items-center sm:gap-3">
+                    <TypographyMuted className="w-full">
                       {format(field.startDateTime, 'PPP')}
                     </TypographyMuted>
-                    <TypographyMuted>
+                    <TypographyMuted className="w-full">
                       {format(field.endDateTime, 'PPP')}
                     </TypographyMuted>
                     <Button
                       key={'removeEntryButton' + index}
                       type="button"
                       variant="ghost"
-                      className="text-muted-foreground hover:text-foreground"
+                      className="absolute right-2 text-muted-foreground hover:text-foreground sm:right-8"
                       size={'sm'}
                       onClick={() => {
                         removeEntry(index)
@@ -260,24 +258,26 @@ export function AddEntryForm() {
                     >
                       <TrashIcon className="h-5 w-5" />
                     </Button>
-                  </>
+                  </div>
                 ))}
-              <SingleDateInput
-                value={range.from}
-                onChange={(day) => {
-                  setRange({ ...range, from: day })
-                }}
-                key={'startDateInput'}
-                placeholder="Pick start date"
-              />
-              <SingleDateInput
-                value={range.to}
-                onChange={(day) => {
-                  setRange({ ...range, to: day })
-                }}
-                key={'endDateInput'}
-                placeholder="Pick end date"
-              />
+              <div className="flex w-full flex-col gap-3 sm:flex-row">
+                <SingleDateInput
+                  value={range.from}
+                  onChange={(day) => {
+                    setRange({ ...range, from: day })
+                  }}
+                  key={'startDateInput'}
+                  placeholder="Pick start date"
+                />
+                <SingleDateInput
+                  value={range.to}
+                  onChange={(day) => {
+                    setRange({ ...range, to: day })
+                  }}
+                  key={'endDateInput'}
+                  placeholder="Pick end date"
+                />
+              </div>
               <Button
                 key="AddDateRangeButton"
                 type="button"
@@ -414,7 +414,7 @@ export function AddEntryForm() {
           render={() => (
             <FormItem className="flex flex-col">
               <FormDescription>New tag</FormDescription>
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <Input
                   placeholder="Label"
                   ref={inputNewTagRef}
@@ -426,14 +426,16 @@ export function AddEntryForm() {
                     (tagColourSelectRef.current = TagColor[value])
                   }
                 />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-min"
-                  onClick={() => handleOnClickNewTag(form.setError)}
-                >
-                  Add
-                </Button>
+                <div className="flex w-full justify-end sm:w-min">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-min"
+                    onClick={() => handleOnClickNewTag(form.setError)}
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
               <FormMessage />
             </FormItem>

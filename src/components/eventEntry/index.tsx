@@ -118,7 +118,7 @@ export default function EventEntry({
     <div className={`${colStarts[colStart]} ${colEnds[colEnd]}`}>
       <Dialog modal={false}>
         <DialogTrigger onClick={handleClick} className="w-full bg-white">
-          <div className="mr-[-2px] mt-[-2px] rounded-sm border-2 border-blue-100 p-1 md:p-1.5">
+          <div className="mr-[-2px] mt-[-2px] overflow-hidden rounded-sm border-2 border-blue-100 p-1 md:p-1.5">
             <div className="my-[-0.2rem] text-left text-sm leading-5 md:my-[-0.1rem] md:text-base">
               {label}
             </div>
