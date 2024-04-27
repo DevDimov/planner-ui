@@ -9,7 +9,7 @@ export default function WeekdayNames() {
   }
 
   return (
-    <div className="grid grid-cols-7 px-1 pb-2 font-medium md:px-4 md:pb-2">
+    <div className="grid grid-cols-7 px-2 pb-2 font-medium md:px-4 md:pb-2">
       {weekdayNames.map((item, index) => {
         const color = index <= 4 ? 'text-blue-900' : 'text-blue-400'
 
