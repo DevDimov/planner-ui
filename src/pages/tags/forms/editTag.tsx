@@ -125,7 +125,7 @@ export default function EditTag({
       <div className="w-full">
         <EventTag label={tag.label} color={tag.color} key={tag.iid} />
       </div>
-      <div className="flex w-full flex-row gap-3">
+      <div className="flex w-full flex-col gap-3 sm:flex-row">
         <Controller
           name="label"
           control={control}

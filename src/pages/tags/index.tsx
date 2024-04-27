@@ -10,7 +10,7 @@ export default function TagsPage() {
 
   return (
     <div className="flex flex-col items-center gap-y-4 p-4">
-      <div className="mt-12 w-[30vw]">
+      <div className="w-full sm:mt-12 sm:max-w-sm">
         <div className="flex flex-col gap-y-6">
           <TypographyH3 className="mb-1">Create Tag</TypographyH3>
           <CreateTag />
