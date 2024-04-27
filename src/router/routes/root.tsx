@@ -1,4 +1,4 @@
-import { NavBar } from '../../components/navigation'
+import { NavBar } from '../../components/navigation/navBar'
 import Welcome from './welcome'
 import { useAuth0 } from '@auth0/auth0-react'
 import CalendarContextProvider from '../../context/calendar'
@@ -19,7 +19,7 @@ export default function Root() {
   return (
     <div>
       {isAuthenticated ? (
-        <div className="flex flex-col gap-y-4 p-4">
+        <div className="flex flex-col md:gap-y-4 md:p-4">
           <AuthorizedApolloProvider>
             <CalendarContextProvider>
               <NavBar />

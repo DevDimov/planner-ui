@@ -9,12 +9,15 @@ export default function WeekdayNames() {
   }
 
   return (
-    <div className="grid grid-cols-7 px-4 pb-2 font-medium">
+    <div className="grid grid-cols-7 px-1 pb-2 font-medium md:px-4 md:pb-2">
       {weekdayNames.map((item, index) => {
         const color = index <= 4 ? 'text-blue-900' : 'text-blue-400'
 
         return (
-          <span key={item} className={`my-2 ml-2 ${color}`}>
+          <span
+            key={item}
+            className={`my-1 md:my-2 md:ml-2 ${color} text-sm md:text-base`}
+          >
             {item}
           </span>
         )

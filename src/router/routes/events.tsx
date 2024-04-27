@@ -1,4 +1,4 @@
-import { NavBar } from '../../components/navigation'
+import { NavBar } from '../../components/navigation/navBar'
 import Welcome from './welcome'
 import { useAuth0 } from '@auth0/auth0-react'
 
