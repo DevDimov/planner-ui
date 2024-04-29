@@ -87,13 +87,14 @@ export default function EditTag({
     const { iid } = tag
     const { label, color } = values
 
-    const labelIsUnique = isLabelUnique(label, tags)
-    if (!labelIsUnique) {
-      return setError('label', {
-        type: 'string',
-        message: 'A tag with this label already exists',
-      })
-    }
+    // TO-DO Review Condition
+    // const labelIsUnique = isLabelUnique(label, tags)
+    // if (!labelIsUnique) {
+    //   return setError('label', {
+    //     type: 'string',
+    //     message: 'A tag with this label already exists',
+    //   })
+    // }
 
     const { data, errors } = await updateTagMutation({
       variables: { input: { filter: { iid: [iid] }, set: { label, color } } },
